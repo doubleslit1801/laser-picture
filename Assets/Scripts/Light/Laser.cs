@@ -13,6 +13,15 @@ public class Laser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Ray ray = new Ray(transform.position, -transform.right);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit))
+        {
+            Debug.DrawRay(transform.position, -transform.right * hit.distance, Color.red);
+
+            IDevice device = GameManager.Instance.searchDevice(hit.collider);
+            device?.Process(ray);
+        }
     }
 }

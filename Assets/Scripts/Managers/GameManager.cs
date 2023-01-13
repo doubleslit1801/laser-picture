@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    private Dictionary<Collider, IDevice> deviceDict;
 
+    public static GameManager Instance;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -17,6 +19,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+
+        deviceDict = new Dictionary<Collider, IDevice>();
     }
     
     // Start is called before the first frame update
@@ -29,5 +33,24 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public IDevice searchDevice(Collider col)
+    {
+        IDevice device;
+
+        if(deviceDict.TryGetValue(col, out device))
+        {
+            return device;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void registerDevice(Collider col, IDevice device) 
+    {
+        deviceDict[col] = device;
     }
 }
