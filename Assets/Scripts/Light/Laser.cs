@@ -4,24 +4,16 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private LineRenderer lr;
+    
     void Start()
     {
-        
+        lr = GetComponent<LineRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(transform.position, -transform.right);
-        RaycastHit hit;
-
-        if(Physics.Raycast(ray, out hit))
-        {
-            Debug.DrawRay(transform.position, -transform.right * hit.distance, Color.red);
-
-            IDevice device = GameManager.Instance.searchDevice(hit.collider);
-            device?.Process(ray);
-        }
+        Light light = new Light(transform.position, -transform.right, lr, Color.red);
+        light.Raycast();
     }
 }

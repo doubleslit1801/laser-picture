@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDevice
 {
-    void Process(Ray ray);
+    void HandleInput(Light light, Vector3 hitPos);
 }

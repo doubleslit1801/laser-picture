@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class TestDevice : MonoBehaviour, IDevice
 {
-    private bool isInput = false;
-    private Ray inputRay;
+    private Light inputLight;
+    private Vector3 inputPos;
+    private LineRenderer lr;
 
-    // Start is called before the first frame update
     void Start()
     {
+        lr = GetComponent<LineRenderer>();
         GameManager.Instance.registerDevice(GetComponent<Collider>(), this);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(isInput)
+        if(inputLight != null)
         {
-            Debug.DrawRay(transform.position, transform.forward * 10, Color.green);
+            Light outputLight = new Light(transform.position, transform.forward, lr, Color.green);
+            outputLight.Raycast();
         }
     }
 
-    public void Process(Ray ray) 
+    public void HandleInput(Light light, Vector3 hitPos) 
     {
-        inputRay = ray;
-        isInput = true;
+        inputLight = light;
+        inputPos = hitPos;
     }
 }
