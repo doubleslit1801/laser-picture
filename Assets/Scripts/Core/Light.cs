@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Light
 {
+    private IDevice targetDevice;
+
     public Vector3 Origin { get; set; }
     public Vector3 Direction { get; set; }
     public LineRenderer Renderer { get; set; }
@@ -26,12 +28,13 @@ public class Light
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
             
-            IDevice device = GameManager.Instance.searchDevice(hit.collider);
-            device?.HandleInput(this, hit.point);
+            targetDevice = GameManager.Instance.searchDevice(hit.collider);
+            targetDevice?.HandleInput(this, hit.point);
         }
         else
         {
             Render();
+            targetDevice?.HandleInputStop();
         }
     }
 

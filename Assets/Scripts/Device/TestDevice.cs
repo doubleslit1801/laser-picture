@@ -5,6 +5,7 @@ using UnityEngine;
 public class TestDevice : MonoBehaviour, IDevice
 {
     private Light inputLight;
+    private Light outputLight;
     private Vector3 inputPos;
     private LineRenderer lr;
 
@@ -18,8 +19,12 @@ public class TestDevice : MonoBehaviour, IDevice
     {
         if(inputLight != null)
         {
-            Light outputLight = new Light(transform.position, transform.forward, lr, Color.green);
+            outputLight ??= new Light(transform.position, transform.forward, lr, Color.green);
             outputLight.Raycast();
+        }
+        else
+        {
+            outputLight?.Render(0);
         }
     }
 
@@ -27,5 +32,10 @@ public class TestDevice : MonoBehaviour, IDevice
     {
         inputLight = light;
         inputPos = hitPos;
+    }
+
+    public void HandleInputStop()
+    {
+        inputLight = null;
     }
 }

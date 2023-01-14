@@ -5,6 +5,7 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     private LineRenderer lr;
+    private Light outputLight;
     
     void Start()
     {
@@ -13,7 +14,7 @@ public class Laser : MonoBehaviour
 
     void Update()
     {
-        Light light = new Light(transform.position, -transform.right, lr, Color.red);
-        light.Raycast();
+        outputLight ??= new Light(transform.position, -transform.right, lr, Color.red);
+        outputLight.Raycast();
     }
 }
