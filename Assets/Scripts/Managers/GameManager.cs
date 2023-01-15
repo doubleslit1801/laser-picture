@@ -53,4 +53,13 @@ public class GameManager : MonoBehaviour
     {
         deviceDict[col] = device;
     }
+
+    public Vector3[] GetDrawing(int stageNumber)
+    {
+        return new Vector3[] 
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(10, 0, 0)
+        };
+    }
 }
