@@ -19,8 +19,15 @@ public class TestDevice : MonoBehaviour, IDevice
     {
         if(inputLight != null)
         {
-            outputLight ??= new Light(transform.position, transform.forward, lr, Color.green);
-            outputLight.Raycast();
+            if(outputLight == null)
+            {
+                outputLight = new Light(transform.position, transform.forward, lr, Color.green);
+            }
+            else
+            {
+                outputLight.Update(transform.position, transform.forward);
+            }
+            outputLight.Enable();
         }
         else
         {

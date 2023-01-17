@@ -14,7 +14,14 @@ public class Laser : MonoBehaviour
 
     void Update()
     {
-        outputLight ??= new Light(transform.position, -transform.right, lr, Color.red);
-        outputLight.Raycast();
+        if(outputLight == null)
+        {
+            outputLight = new Light(transform.position, -transform.right, lr, Color.red);
+        }
+        else
+        {
+            outputLight.Update(transform.position, -transform.right);
+        }
+        outputLight.Enable();
     }
 }

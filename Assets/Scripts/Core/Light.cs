@@ -19,7 +19,13 @@ public class Light
         LightColor = color;
     }
 
-    public void Raycast() 
+    public void Update(Vector3 origin, Vector3 direction)
+    {
+        Origin = origin;
+        Direction = direction;
+    }
+
+    public void Enable() 
     {
         RaycastHit hit;
 
@@ -28,14 +34,28 @@ public class Light
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
             
-            targetDevice = GameManager.Instance.searchDevice(hit.collider);
+            IDevice newTarget = GameManager.Instance.searchDevice(hit.collider);
+            //target device change
+            if(targetDevice != newTarget)
+            {
+                targetDevice?.HandleInputStop();
+                targetDevice = newTarget;
+            }
             targetDevice?.HandleInput(this, hit.point);
         }
         else
         {
+            //no target device
             Render();
             targetDevice?.HandleInputStop();
+            targetDevice = null;
         }
+    }
+
+    //deprecated
+    public void Raycast()
+    {
+        Enable();
     }
 
     public void Render(float length = 100.0f) 
