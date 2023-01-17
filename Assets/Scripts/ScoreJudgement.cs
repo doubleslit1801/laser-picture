@@ -1,25 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
+//Activates Noramlly When "GameManager"is Activated
 public class ScoreJudgement : MonoBehaviour
 {
     void Start()
     {
-
+        
     }
     void Update()
     {
-
+        UnityEngine.Debug.Log(JudgeClear());
     }
 
+    //유저 드로잉 인식 필요
     public Vector3[] GetUserDrawing()
     {
         return new Vector3[]
         {
             new Vector3(0, 0, 0),
-            new Vector3(10, 0, 0)
+            new Vector3(10, 0, 0),
+            new Vector3(15, 5, 0),
         };
     }
 
@@ -28,35 +32,47 @@ public class ScoreJudgement : MonoBehaviour
         return new Vector3[]
         {
             new Vector3(0, 0, 0),
-            new Vector3(10, 0, 0)
+            new Vector3(10, 0, 0),
+            new Vector3(15,5, 0)
         };
+
+        //return Instance.GetDrawing(1);
     }
 
     //Scores drawing according to simularity
-    public float ScoreDrawing(Vector3[] userDrawing)
+    public (int correctCnt, int maxCnt) ScoreDrawing(Vector3[] answer,Vector3[] userDrawing)
     {
-        Vector3[] answer = GetAnswerDrawing();
-        float score = 0.0f; //0~1.0
+        int correctCnt = 0; 
+        int maxCnt = answer.Length - 1;
 
-        //그림 형태 비교 알고리즘 개선 필요(꼭지점만이 아닌 선으로서 비교 필요)
-        //for (int dotI = 0; (dotI < userDrawing.Count) && (dotI < answer.Count); dotI++)
-        //{
-        //    if (answer[dotI] == userDrawing[dotI])
-        //    {
-        //        score += 1 / answer.Count;
-        //    }
-        //}
+        //그림 형태 비교 알고리즘 개선 필요
+        //임시로 벡터가 일치해야 점수 오르게 해둠.
+        for (int dotI = 0; (dotI < (userDrawing.Length - 1)) && (dotI < (answer.Length - 1)); dotI++)
+        {
+            Vector3 aV = answer[dotI + 1] - answer[dotI];
+            Vector3 uV = userDrawing[dotI + 1] - userDrawing[dotI];
 
-        return score;
+            if (aV == uV)
+            {
+                correctCnt += 1;
+            }
+        }
+
+        return (correctCnt, maxCnt);
     }
 
     //Judges if the score satisfies the threshold of each stage
     public bool JudgeClear()
     {
-        float currentScore = ScoreDrawing(/*유저드로잉*/GetUserDrawing()); //별 등 다양한 점수들 종합적으로 계산 필요
-        float threshold = 0.8f;
+        var (curCnt, maxCnt) = ScoreDrawing(GetAnswerDrawing() ,GetUserDrawing());
 
-        if (currentScore > threshold)
+        UnityEngine.Debug.Log("Current Correct Count : " + curCnt);
+        UnityEngine.Debug.Log("Max Correct Count : " + maxCnt);
+
+        float threshold = 0.8f;
+        float curPer = (float)curCnt / (float)maxCnt;
+
+        if (curPer > threshold)
         {
             return true;
         }
