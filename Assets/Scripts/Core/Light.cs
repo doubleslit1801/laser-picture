@@ -52,6 +52,11 @@ public class Light
         }
     }
 
+    public void Disable()
+    {
+        Render(0);
+    }
+
     //deprecated
     public void Raycast()
     {

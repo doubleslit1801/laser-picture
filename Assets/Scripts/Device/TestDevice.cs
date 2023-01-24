@@ -31,7 +31,7 @@ public class TestDevice : MonoBehaviour, IDevice
         }
         else
         {
-            outputLight?.Render(0);
+            outputLight?.Disable();
         }
     }
 
@@ -44,5 +44,6 @@ public class TestDevice : MonoBehaviour, IDevice
     public void HandleInputStop()
     {
         inputLight = null;
+        outputLight?.Disable();
     }
 }
