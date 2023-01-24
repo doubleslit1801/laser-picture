@@ -59,20 +59,23 @@ public class Light
         targetDevice = null;
     }
 
-    //deprecated
-    public void Raycast()
+    private void Render(float length = 100.0f) 
     {
-        Enable();
+        if(length == 0)
+        {
+            Renderer.enabled = false;
+        }
+        else
+        {
+            Renderer.enabled = true;
+            Renderer.SetPosition(0, Origin);
+            Renderer.SetPosition(1, Origin + Direction * length);
+        }
     }
 
-    public void Render(float length = 100.0f) 
+    private void Render(Vector3 end)
     {
-        Renderer.SetPosition(0, Origin);
-        Renderer.SetPosition(1, Origin + Direction * length);
-    }
-
-    public void Render(Vector3 end)
-    {
+        Renderer.enabled = true;
         Renderer.SetPosition(0, Origin);
         Renderer.SetPosition(1, end);
     }
