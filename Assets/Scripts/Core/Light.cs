@@ -55,6 +55,8 @@ public class Light
     public void Disable()
     {
         Render(0);
+        targetDevice?.HandleInputStop();
+        targetDevice = null;
     }
 
     //deprecated
