@@ -33,7 +33,7 @@ public class Mirror : MonoBehaviour, IDevice
         }
         else
         {
-            outputLight?.Render(0);
+            outputLight?.Disable();
         }
     }
 
