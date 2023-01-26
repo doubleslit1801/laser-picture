@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class InGameUI : MonoBehaviour
 {
-    public GameObject laserStart, mirror1;
+    public GameObject laserStart, mirror1, objSelPanel;
 
     Camera cam;
 
-    bool isMouseFull;
+    bool isMouseFull, isHide;
     GameObject mouseObject;
 
     // Start is called before the first frame update
@@ -19,6 +19,7 @@ public class InGameUI : MonoBehaviour
 
         isMouseFull= false;
         mouseObject = null;
+        isHide = false;
     }
 
     // Update is called once per frame
@@ -60,6 +61,21 @@ public class InGameUI : MonoBehaviour
         mousePos.y = 0.33f;
 
         return mousePos;
+    }
+
+    public void PopHideButton()
+    {
+        RectTransform rectT = objSelPanel.GetComponent<RectTransform>();
+        if (isHide)
+        {
+            rectT.anchoredPosition = new Vector3(0, 0, 0);
+            isHide = false;
+        }
+        else
+        {
+            rectT.anchoredPosition = new Vector3(-rectT.sizeDelta.x, 0, 0);
+            isHide = true;
+        }
     }
 
     public void Button1()
