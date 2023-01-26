@@ -1,78 +1,233 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
 //Activates Noramlly When "GameManager"is Activated
 public class ScoreJudgement : MonoBehaviour
 {
+    public Camera screenCaptureCamera;
+
+    private int resWidth;
+    private int resHeight;
+
+    string SCPath = "Assets/Resources/ScreenCapture/";
+
     void Start()
     {
-        
-    }
-    void Update()
-    {
-        UnityEngine.Debug.Log(JudgeClear());
-    }
+        resWidth = Screen.width;
+        resHeight = Screen.height;
 
-    //유저 드로잉 인식 필요
-    public Vector3[] GetUserDrawing()
+        Instantiate(screenCaptureCamera);
+    }
+    void Update() //테스트용 지워도 무관
     {
-        return new Vector3[]
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            new Vector3(0, 0, 0),
-            new Vector3(10, 0, 0),
-            new Vector3(15, 5, 0),
-        };
+            ExtractAnswerMap(1);
+
+            UnityEngine.Debug.Log("ClearJudgement : " + JudgeClear(1));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            ResetScreenCaptureDirectory(SCPath);
+        }
     }
 
-    public Vector3[] GetAnswerDrawing()
+    private Texture2D GetAnswerTexture(int stageNum)
     {
-        return new Vector3[]
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(10, 0, 0),
-            new Vector3(15,5, 0)
-        };
-
-        //return Instance.GetDrawing(1);
+        return ReadPNGAsTexture("Answer_Stage" + stageNum);
     }
 
-    //Scores drawing according to simularity
-    public (int correctCnt, int maxCnt) ScoreDrawing(Vector3[] answer,Vector3[] userDrawing)
+    private Texture2D GetUserDrawingTexture()
     {
-        int correctCnt = 0; 
-        int maxCnt = answer.Length - 1;
+        Texture2D screenCapture = CaptureScreenAsTexture();
 
-        //그림 형태 비교 알고리즘 개선 필요
-        //임시로 벡터가 일치해야 점수 오르게 해둠.
-        for (int dotI = 0; (dotI < (userDrawing.Length - 1)) && (dotI < (answer.Length - 1)); dotI++)
+        List<List<int>> positiveLst = new List<List<int>>();
+
+        (screenCapture, positiveLst) = BinarizeTexture(screenCapture, resWidth, resHeight);
+
+        SaveTextureAsPNG(screenCapture, "UserDrawing");
+
+        return screenCapture;
+    }
+
+    private Texture2D CaptureScreenAsTexture()
+    {
+        RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+        screenCaptureCamera.targetTexture = rt;
+        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        Rect rec = new Rect(0, 0, screenShot.width, screenShot.height);
+        screenCaptureCamera.Render();
+        RenderTexture.active = rt;
+        screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+        screenShot.Apply();
+
+        screenCaptureCamera.targetTexture = null;
+
+        return screenShot;
+    }
+
+    private void SaveTextureAsPNG(Texture2D tx, string fileName)
+    {
+        //string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        //string fileName = "SCREENSHOT-" + timestamp + ".png";
+        if (!fileName.EndsWith(".png"))
         {
-            Vector3 aV = answer[dotI + 1] - answer[dotI];
-            Vector3 uV = userDrawing[dotI + 1] - userDrawing[dotI];
+            fileName = fileName + ".png";
+        }
 
-            if (aV == uV)
+        byte[] bytes = tx.EncodeToPNG();
+
+        if (!Directory.Exists(SCPath))
+        {
+            Directory.CreateDirectory(SCPath);
+        }
+
+        File.WriteAllBytes(SCPath + fileName, bytes);
+
+        UnityEngine.Debug.Log("Saved Texture As PNG : " + fileName);
+    }
+
+    private Texture2D ReadPNGAsTexture(string fileName)
+    {
+        if (!fileName.EndsWith(".png"))
+        {
+            fileName = fileName + ".png";
+        }
+
+        if (!File.Exists(SCPath + fileName))
+        {
+            return null;
+        }
+
+        byte[] byteTexture = File.ReadAllBytes(SCPath + fileName);
+        Texture2D texture = new Texture2D(1, 1);
+        texture.LoadImage(byteTexture);
+
+        UnityEngine.Debug.Log("Read PNG As Texture : " + fileName);
+
+        return texture;
+    }
+
+    private (Texture2D, List<List<int>>) BinarizeTexture(Texture2D tx, int width, int height)
+    {
+        List<List<int>> positiveLst = new List<List<int>>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
             {
-                correctCnt += 1;
+                Color rgbValue = tx.GetPixel(x, y);
+                if (rgbValue[0] > 0.8 && rgbValue[1] > 0.8 && rgbValue[2] > 0.8) //색깔에 따른 인식 개선 필요
+                {
+                    tx.SetPixel(x, y, Color.white);
+
+                    positiveLst.Add(new List<int> { x, y });
+                }
+                else
+                {
+                    tx.SetPixel(x, y, Color.black);
+                }
             }
         }
 
-        return (correctCnt, maxCnt);
+        return (tx, positiveLst);
+    }
+
+    private Texture2D ExpandTexturePixel(Texture2D tx, List<List<int>> positiveLst, int width, int height, int expandScale)
+    {
+        Texture2D tmpTexture = tx;
+
+        for (int i = 0; i < positiveLst.Count;i++)
+        {
+            List<int> pivot = positiveLst[i];
+
+            for (int x = pivot[0] - expandScale; x < pivot[0] + expandScale + 1; x++)
+            {
+                for (int y = pivot[1] - expandScale; y < pivot[1] + expandScale + 1; y++)
+                {
+                    if ((x >= 0 && x <= width) && (y >= 0 && y <= height))
+                    {
+                        tmpTexture.SetPixel(x, y, Color.white);
+                    }
+                }
+            }
+        }
+
+        return tmpTexture;
+    }
+
+    //Scores drawing according to simularity
+    private float ScoreDrawingByGrid(Texture2D answerTx, Texture2D userDrawingTx, int gridScale)
+    {
+        if (answerTx.width != userDrawingTx.width || answerTx.height != userDrawingTx.height)
+        {
+            UnityEngine.Debug.Log("Error : ScoringDrawingByGrid() / Texture Size Difference");
+            return 0.0f;
+        }
+
+        int maxCnt = 0;
+        int hitCnt = 0;
+
+        for (int c = 0; c < answerTx.width - gridScale; c = c + gridScale)
+        {
+            for (int r = 0; r < answerTx.height - gridScale; r = r + gridScale)
+            {
+                bool isAFilled = false;
+                bool isUFilled = false;
+
+                for (int x = c; x < c + gridScale; x++)
+                {
+                    for (int y = r; y < r + gridScale; y++)
+                    {
+                        if (answerTx.GetPixel(x, y) == Color.white)
+                        {
+                            isAFilled = true;
+                        }
+                        if (userDrawingTx.GetPixel(x, y) == Color.white)
+                        {
+                            isUFilled = true;
+                        }
+                    }
+                }
+
+                maxCnt++;
+
+                if (isAFilled == isUFilled)
+                {
+                    hitCnt++;
+                }
+            }
+        }
+
+        return (float)hitCnt / (float)maxCnt;
     }
 
     //Judges if the score satisfies the threshold of each stage
-    public bool JudgeClear()
+    public bool JudgeClear(int stageNum)
     {
-        var (curCnt, maxCnt) = ScoreDrawing(GetAnswerDrawing() ,GetUserDrawing());
+        Texture2D answerTx = GetAnswerTexture(stageNum);
+        Texture2D userDrawingTx = GetUserDrawingTexture();
 
-        UnityEngine.Debug.Log("Current Correct Count : " + curCnt);
-        UnityEngine.Debug.Log("Max Correct Count : " + maxCnt);
+        if (answerTx == null)
+        {
+            UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum);
+            return false;
+        }
+
+        var simularity = ScoreDrawingByGrid(answerTx, userDrawingTx, 2);
+
+        UnityEngine.Debug.Log("Simularity : " + simularity);
 
         float threshold = 0.8f;
-        float curPer = (float)curCnt / (float)maxCnt;
 
-        if (curPer > threshold)
+        if (simularity > threshold)
         {
             return true;
         }
@@ -80,5 +235,27 @@ public class ScoreJudgement : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void ExtractAnswerMap(int stageNum)
+    {
+        Texture2D screenCapture = CaptureScreenAsTexture();
+
+        List<List<int>> positiveLst = new List<List<int>>();
+
+        (screenCapture, positiveLst) = BinarizeTexture(screenCapture, resWidth, resHeight);
+
+        SaveTextureAsPNG(screenCapture, "Answer_Stage" + stageNum);
+    }
+
+    public void ResetScreenCaptureDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, true);
+        }
+        Directory.CreateDirectory(path);
+
+        UnityEngine.Debug.Log("Directory Reset : " + path);
     }
 }
