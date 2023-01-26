@@ -41,7 +41,7 @@ public class TestDevice : MonoBehaviour, IDevice
         inputPos = hitPos;
     }
 
-    public void HandleInputStop()
+    public void HandleInputStop(Light light)
     {
         inputLight = null;
         outputLight?.Disable();
