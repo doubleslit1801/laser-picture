@@ -41,6 +41,7 @@ public class StageManager : MonoBehaviour
     public void LoadStage(int number)
     {
         Vector3[] newDrawing = GameManager.Instance.GetDrawing(number);
+        stageNumber = number;
         lr.SetPositions(newDrawing);
     }
 
