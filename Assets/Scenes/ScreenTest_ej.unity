@@ -649,7 +649,7 @@ GameObject:
   - component: {fileID: 1045022499}
   - component: {fileID: 1045022498}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: StageManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,8 +667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6721a948ec1fe4db2ab042e1ce2266, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageNumber: 1
-  lr: {fileID: 1045022499}
 --- !u!120 &1045022499
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -721,7 +719,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.1
+        value: 0.5
         inSlope: 0
         outSlope: 0
         tangentMode: 0
