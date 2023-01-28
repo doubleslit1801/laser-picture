@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InGameUI : MonoBehaviour
 {
@@ -9,15 +10,16 @@ public class InGameUI : MonoBehaviour
 
     Camera cam;
 
-    bool isMouseFull, isHide;
+    bool isHide;
     GameObject mouseObject;
+
+    public Sprite openTrash, closeTrash;
 
     // Start is called before the first frame update
     void Start()
     {
         cam = Camera.main;
 
-        isMouseFull= false;
         mouseObject = null;
         isHide = false;
     }
@@ -25,26 +27,52 @@ public class InGameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isMouseFull)
+        if (mouseObject != null)
         {
-            UpdateObjPosToMouse();
+            MoveObjToMouse();
 
-            if (Input.GetMouseButtonDown(0))
+            UpdateSelObjUI();
+
+            if(Input.GetAxis("Mouse ScrollWheel") != 0)
             {
-                Vector3 mousePoint = GetMousePos();
+                RotateMouseObj();
+            }
 
-                mouseObject.transform.position = mousePoint;
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                PlaceObjAtMouse();
+            }
 
-                isMouseFull = false;
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                DestroyMouseObj();
             }
         }
+        else
+        {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                SelectObj();
+            }
+        }
+        
     }
 
-    private void UpdateObjPosToMouse()
+    public void OnPointerUp()
     {
-        Vector3 mousePoint = GetMousePos();
 
-        mouseObject.transform.position = mousePoint;
+    }
+
+    private void MoveObjToMouse()
+    {
+        mouseObject.transform.position = GetMousePos();
+    }
+
+    private void PlaceObjAtMouse()
+    {
+        mouseObject.transform.position = GetMousePos();
+
+        mouseObject = null;
     }
 
     private Vector3 GetMousePos()
@@ -61,6 +89,32 @@ public class InGameUI : MonoBehaviour
         mousePos.y = 0.33f;
 
         return mousePos;
+    }
+
+    private void UpdateSelObjUI()
+    {
+
+    }
+
+    private void SelectObj()
+    {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit) && !hit.transform.gameObject.CompareTag("Plane"))
+        {
+            mouseObject = hit.transform.gameObject;
+        }
+    }
+
+    private void RotateMouseObj()
+    {
+        float rotSpeed = 5000f;
+
+        if (mouseObject != null)
+        {
+            mouseObject.transform.Rotate(new Vector3(0, Input.GetAxis("Mouse ScrollWheel") * rotSpeed * Time.deltaTime, 0));
+        }
     }
 
     public void PopHideButton()
@@ -80,25 +134,28 @@ public class InGameUI : MonoBehaviour
 
     public void Button1()
     {
-        if (!isMouseFull)
-        {
-            Vector3 point = GetMousePos();
+        DestroyMouseObj();
 
-            mouseObject = Instantiate(laserStart, point, Quaternion.identity);
+        Vector3 point = GetMousePos();
 
-            isMouseFull= true;
-        }
+        mouseObject = Instantiate(laserStart, point, Quaternion.identity);
     }
 
     public void Button2()
     {
-        if (!isMouseFull)
+        DestroyMouseObj();
+
+        Vector3 point = GetMousePos();
+
+        mouseObject = Instantiate(mirror1, point, Quaternion.identity);
+    }
+
+    public void DestroyMouseObj()
+    {
+        if(mouseObject != null)
         {
-            Vector3 point = GetMousePos();
-
-            mouseObject = Instantiate(mirror1, point, Quaternion.identity);
-
-            isMouseFull = true;
+            Destroy(mouseObject);
+            mouseObject = null;
         }
     }
 }
