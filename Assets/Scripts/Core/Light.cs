@@ -79,4 +79,47 @@ public class Light
         Renderer.SetPosition(0, Origin);
         Renderer.SetPosition(1, end);
     }
+
+    public override bool Equals(object obj) => this.Equals(obj as Light);
+
+    public bool Equals(Light l)
+    {
+        if (l is null)
+        {
+            return false;
+        }
+
+        if (Object.ReferenceEquals(this, l))
+        {
+            return true;
+        }
+
+        if (this.GetType() != l.GetType())
+        {
+            return false;
+        }
+
+        return (Origin == l.Origin) && (Direction == l.Direction) && (Renderer == l.Renderer) && (LightColor == l.LightColor);
+    }
+
+    public override int GetHashCode()
+    {
+        return Origin.GetHashCode() + Direction.GetHashCode() + Renderer.GetHashCode() + LightColor.GetHashCode();
+    }
+
+    public static bool operator ==(Light l1, Light l2)
+    {
+        if (l1 is null)
+        {
+            if (l2 is null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        return l1.Equals(l2);
+    }
+
+    public static bool operator !=(Light l1, Light l2) => !(l1 == l2);
 }
