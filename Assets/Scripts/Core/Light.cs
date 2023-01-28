@@ -33,12 +33,12 @@ public class Light
         {
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
-            
+
             IDevice newTarget = GameManager.Instance.searchDevice(hit.collider);
             //target device change
             if(targetDevice != newTarget)
             {
-                targetDevice?.HandleInputStop();
+                targetDevice?.HandleInputStop(this);
                 targetDevice = newTarget;
             }
             targetDevice?.HandleInput(this, hit.point);
@@ -47,7 +47,7 @@ public class Light
         {
             //no target device
             Render();
-            targetDevice?.HandleInputStop();
+            targetDevice?.HandleInputStop(this);
             targetDevice = null;
         }
     }
@@ -55,7 +55,7 @@ public class Light
     public void Disable()
     {
         Render(0);
-        targetDevice?.HandleInputStop();
+        targetDevice?.HandleInputStop(this);
         targetDevice = null;
     }
 
