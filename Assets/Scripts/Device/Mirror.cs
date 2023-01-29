@@ -2,26 +2,25 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 public class Mirror : MonoBehaviour, IDevice
 {
     private class LightInfo
     {
-        public LightInfo(Light inputLight, Light outputLight, Vector3 inputPos, GameObject laserObject)
+        public LightInfo(Light outputLight, Vector3 inputPos, GameObject laserObject)
         {
-            this.inputLight = inputLight;
             this.outputLight = outputLight;
             this.inputPos = inputPos;
             this.laserObject = laserObject;
         }
 
-        public Light inputLight;
         public Light outputLight;
         public Vector3 inputPos;
         public GameObject laserObject;
     }
-    private List<LightInfo> lights = new();
+    private Dictionary<Light, LightInfo> lights = new();
     public Material laserMaterial;
 
     void Start()
@@ -33,17 +32,21 @@ public class Mirror : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
-            Vector3 outputDirection = Vector3.Reflect(i.inputLight.Direction, transform.forward);
-            i.outputLight.Update(i.inputPos, outputDirection);
-            i.outputLight.Enable();
+            Vector3 outputDirection = Vector3.Reflect(i.Key.Direction, transform.forward);
+            i.Value.outputLight.Update(i.Value.inputPos, outputDirection);
+            i.Value.outputLight.Enable();
         }
     }
 
     public void HandleInput(Light inputLight, Vector3 hitPos)
     {
-        var findRes = lights.Find(x => x.inputLight == inputLight);
-        if (findRes == null)
+        try
         {
+            lights[inputLight].inputPos = hitPos;
+        }
+        catch
+        {
+            print("new input: " + inputLight.GetHashCode());
             GameObject laserChild = new("laser");
             laserChild.transform.parent = transform;
             LineRenderer lr = laserChild.AddComponent<LineRenderer>();
@@ -52,20 +55,18 @@ public class Mirror : MonoBehaviour, IDevice
             lr.material = laserMaterial;
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
             Light outputLight = new(hitPos, outputDirection, lr, Color.green);
-            lights.Add(new LightInfo(inputLight, outputLight, hitPos, laserChild));
+            lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
             print(lights.Count);
-        }
-        else
-        {
-            findRes.inputPos = hitPos;
         }
     }
 
     public void HandleInputStop(Light light)
     {
-        var stopLight = lights.Find(x => x.inputLight == light);
+        print("stop input: " + light.GetHashCode());
+        var stopLight = lights[light];
         stopLight.outputLight.Disable();
         Destroy(stopLight.laserObject);
-        lights.Remove(stopLight);
+        lights.Remove(light);
+        print(lights.Count);
     }
 }
