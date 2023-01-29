@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor;
 using UnityEngine;
 
 public class Mirror : MonoBehaviour, IDevice
@@ -55,6 +51,7 @@ public class Mirror : MonoBehaviour, IDevice
             lr.material = laserMaterial;
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
             Light outputLight = new(hitPos, outputDirection, lr, Color.green);
+            outputLight.Enable();
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
             print(lights.Count);
         }
