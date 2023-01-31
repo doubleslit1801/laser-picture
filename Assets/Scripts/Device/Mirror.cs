@@ -30,6 +30,13 @@ public class Mirror : MonoBehaviour, IDevice
         {
             Vector3 outputDirection = Vector3.Reflect(i.Key.Direction, transform.forward);
             i.Value.outputLight.Update(i.Value.inputPos, outputDirection);
+        }
+    }
+
+    void LateUpdate()
+    {
+        foreach (var i in lights)
+        {
             i.Value.outputLight.Enable();
         }
     }
@@ -51,7 +58,6 @@ public class Mirror : MonoBehaviour, IDevice
             lr.material = laserMaterial;
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
             Light outputLight = new(hitPos, outputDirection, lr, Color.green);
-            outputLight.Enable();
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
             print(lights.Count);
         }
