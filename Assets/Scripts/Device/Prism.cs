@@ -20,17 +20,11 @@ public class Prism : MonoBehaviour, IDevice
         public (GameObject, GameObject) laserObject;
     }
     private Dictionary<Light, LightInfo> lights = new();
-    private Vector3[] normals = new Vector3[2];
     public Material laserMaterial;
 
     void Start()
     {
         GameManager.Instance.registerDevice(GetComponent<Collider>(), this);
-        for (int i = 0; i < 2; i++)
-        {
-            normals[i] = Quaternion.AngleAxis(120 * (i + 1), transform.up) * transform.forward;
-            print(gameObject.name + "//" + "normals[" + i + "]: " + normals[i]);
-        }
     }
 
     // Update is called once per frame
@@ -38,11 +32,11 @@ public class Prism : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
-            for(int j = 0; j < 2; j++)
+            for (int j = 0; j < 2; j++)
             {
                 Quaternion rotation = Quaternion.AngleAxis(120 * (j + 1), transform.up);
                 Vector3 outputPos = rotation * (i.Value.inputPos - transform.parent.position) + transform.parent.position;
-                Vector3 outputDirection = Vector3.Reflect((rotation * i.Key.Direction) * -1, normals[j]) * -1;
+                Vector3 outputDirection = Vector3.Reflect((rotation * i.Key.Direction) * -1, Normal(j)) * -1;
                 if (j == 0)
                 {
                     i.Value.outputLight.Item1.Update(outputPos, outputDirection);
@@ -65,6 +59,7 @@ public class Prism : MonoBehaviour, IDevice
         }
         catch
         {
+            print(gameObject.name + "\tstart: " + inputLight);
             Light[] outputLight = new Light[2];
             GameObject[] laserObject = new GameObject[] { new("laser0"), new("laser1") };
             for (int i = 0; i < 2; i++)
@@ -76,7 +71,7 @@ public class Prism : MonoBehaviour, IDevice
                 lr.material = laserMaterial;
                 Quaternion rotation = Quaternion.AngleAxis(120 * (i + 1), transform.up);
                 Vector3 outputPos = rotation * (inputPos - transform.parent.position) + transform.parent.position;
-                Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, normals[i]) * -1;
+                Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, Normal(i)) * -1;
                 outputLight[i] = new(outputPos, outputDirection, lr, inputLight.LightColor);
                 outputLight[i].Enable();
             }
@@ -86,11 +81,17 @@ public class Prism : MonoBehaviour, IDevice
 
     public void HandleInputStop(Light light)
     {
+        print(gameObject.name + "\tstop: " + light);
         var stopLight = lights[light];
         stopLight.outputLight.Item1.Disable();
         stopLight.outputLight.Item2.Disable();
         Destroy(stopLight.laserObject.Item1);
         Destroy(stopLight.laserObject.Item2);
         lights.Remove(light);
+    }
+
+    private Vector3 Normal(int i)
+    {
+        return Quaternion.AngleAxis(120 * (i + 1), transform.up) * transform.forward;
     }
 }
