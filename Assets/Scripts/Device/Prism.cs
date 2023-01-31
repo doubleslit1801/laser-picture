@@ -40,14 +40,21 @@ public class Prism : MonoBehaviour, IDevice
                 if (j == 0)
                 {
                     i.Value.outputLight.Item1.Update(outputPos, outputDirection);
-                    i.Value.outputLight.Item1.Enable();
                 }
                 else
                 {
                     i.Value.outputLight.Item2.Update(outputPos, outputDirection);
-                    i.Value.outputLight.Item2.Enable();
                 }
             }
+        }
+    }
+
+    public void LateUpdate()
+    {
+        foreach (var i in lights)
+        {
+            i.Value.outputLight.Item1.Enable();
+            i.Value.outputLight.Item2.Enable();
         }
     }
 
@@ -73,7 +80,6 @@ public class Prism : MonoBehaviour, IDevice
                 Vector3 outputPos = rotation * (inputPos - transform.parent.position) + transform.parent.position;
                 Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, Normal(i)) * -1;
                 outputLight[i] = new(outputPos, outputDirection, lr, inputLight.LightColor);
-                outputLight[i].Enable();
             }
             lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1])));
         }
