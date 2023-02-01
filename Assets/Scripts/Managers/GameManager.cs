@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public readonly int MaxStage = 100;
 
-    private StageMap[] stageMaps;
+    private StageData[] stages;
     private Dictionary<Collider, IDevice> deviceDict;
 
     public static GameManager Instance;
@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        stageMaps = new StageMap[MaxStage];
-        LoadStageMaps();
+        stages = new StageData[MaxStage];
+        LoadStageData();
 
         deviceDict = new Dictionary<Collider, IDevice>();
     }
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public IDevice searchDevice(Collider col)
+    public IDevice SearchDevice(Collider col)
     {
         IDevice device;
 
@@ -60,29 +60,43 @@ public class GameManager : MonoBehaviour
         deviceDict[col] = device;
     }
 
-    public Vector3[] GetDrawing(int stageNumber)
+    public void RemoveDevice(Collider col)
+    {
+        deviceDict.Remove(col);
+    }
+
+    public StageData GetStageData(int stageNumber)
     {
         if(stageNumber < 0 && stageNumber >= MaxStage)
         {
             //error
         }
-        return stageMaps[stageNumber].Drawing;
+        return stages[stageNumber];
     }
 
-    private void LoadStageMaps()
+    public void SetStageData(int stageNumber, StageData data)
     {
-        stageMaps[0] = new StageMap();
-        stageMaps[0].Drawing = new Vector3[] 
-        {
-            new Vector3(0, 0, 0),
-            new Vector3(10, 0, 0)
-        };
+        stages[stageNumber] = data;
+    }
 
-        stageMaps[1] = new StageMap();
-        stageMaps[1].Drawing = new Vector3[] 
+    private void LoadStageData()
+    {
+        //test data
+        stages[0] = new StageData();
+        stages[0].Drawing = new Vector3[]
         {
             new Vector3(0, 0, 0),
             new Vector3(0, 0, 10)
         };
+    }
+
+    public void SaveData()
+    {
+
+    }
+
+    public void LoadData()
+    {
+        
     }
 }

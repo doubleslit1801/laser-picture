@@ -34,7 +34,7 @@ public class Light
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
 
-            IDevice newTarget = GameManager.Instance.searchDevice(hit.collider);
+            IDevice newTarget = GameManager.Instance.SearchDevice(hit.collider);
             //target device change
             if(targetDevice != newTarget)
             {
