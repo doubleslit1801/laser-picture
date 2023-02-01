@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Plane
+  - SelectButton
+  - Trashcan
+  - SlidePanel
   layers:
   - Default
   - TransparentFX
