@@ -11,18 +11,11 @@ public class PopControl : MonoBehaviour
         canvas = GameObject.Find("Canvas");
     }
 
-    public void RotateButtonL()
+    public void GrabButtonDown()
     {
-        canvas.GetComponent<InGameUI>().RotateMouseObj(-45);
-    }
-
-    public void RotateButtonR()
-    {
-        canvas.GetComponent<InGameUI>().RotateMouseObj(45);
-    }
-
-    public void GrabButton()
-    {
-        canvas.GetComponent<InGameUI>().GrabSelectedObj();
+        if (Input.GetMouseButtonDown(0))
+        {
+            canvas.GetComponent<InGameUI>().GrabSelectedObj();
+        }
     }
 }

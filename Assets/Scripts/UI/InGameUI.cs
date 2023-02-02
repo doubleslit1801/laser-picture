@@ -12,7 +12,7 @@ public class InGameUI : MonoBehaviour
 
     private Camera cam;
 
-    private bool isHide, isMouseObjMovable;
+    private bool isHide, isMouseObjMovable, isMouseRightButtonDown;
 
     private GameObject mouseObject, selectedObj, preMouseUIObj;
 
@@ -24,6 +24,8 @@ public class InGameUI : MonoBehaviour
 
     private List<GameObject> objControlButtonLst;
 
+    private Vector3 initObjAngle, initMouseVector;
+
     void Start()
     {
         cam = Camera.main;
@@ -34,12 +36,16 @@ public class InGameUI : MonoBehaviour
 
         isHide = false;
         isMouseObjMovable = false;
+        isMouseRightButtonDown = false;
 
         m_canvas = gameObject.GetComponent<Canvas>();
         m_gr = m_canvas.GetComponent<GraphicRaycaster>();
         m_ped = new PointerEventData(null);
 
         objControlButtonLst = new List<GameObject>();
+
+        initObjAngle = Vector3.zero;
+        initMouseVector = Vector3.zero;
 
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
 
@@ -61,12 +67,7 @@ public class InGameUI : MonoBehaviour
             {
                 MoveObjToMouse();
 
-                if (Input.GetAxis("Mouse ScrollWheel") != 0)
-                {
-                    RotateMouseObj(10 * Input.GetAxis("Mouse ScrollWheel"));
-                }
-
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     PlaceObjAtMouse();
                 }
@@ -84,6 +85,8 @@ public class InGameUI : MonoBehaviour
                 SelectObj();
             }
 
+            RotateObjWithMouse();
+
             if (Input.GetKeyDown(KeyCode.Delete))
             {
                 DestroyMouseObj();
@@ -98,6 +101,35 @@ public class InGameUI : MonoBehaviour
         }
 
         UIOverMouseEffect();
+    }
+
+    private void RotateObjWithMouse()
+    {
+        if (Input.GetMouseButtonDown(1) && (GetObjUnderMouse() == selectedObj))
+        {
+            isMouseRightButtonDown = true;
+            initObjAngle = selectedObj.transform.eulerAngles;
+
+            Vector3 mousePos = GetMousePos();
+            Vector3 objPos = selectedObj.transform.position;
+            initMouseVector = new Vector3(mousePos.x - objPos.x, 0, mousePos.z - objPos.z);
+        }
+
+        if (isMouseRightButtonDown)
+        {
+            Vector3 mousePos = GetMousePos();
+            Vector3 objPos = selectedObj.transform.position;
+            Vector3 curMouseVector = new Vector3(mousePos.x - objPos.x, 0, mousePos.z - objPos.z);
+
+            SetRotationMouseObj(Quaternion.FromToRotation(initMouseVector, curMouseVector).eulerAngles.y);
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
+            isMouseRightButtonDown = false;
+            initObjAngle = Vector3.zero;
+            initMouseVector = Vector3.zero;
+        }
     }
 
     private bool CheckTagExist(GameObject obj, string[] tags) //tags중 obj의 tag에 해당하는 tag가 있는지 확인.
@@ -202,42 +234,47 @@ public class InGameUI : MonoBehaviour
         mouseObject.transform.position = GetMousePos();
     }
 
-    private void PlaceObjAtMouse() //선택한 월드 오브젝트 마우스 위치에 배치.
-    {
-        mouseObject.transform.position = GetMousePos();
-
-        mouseObject = null;
-
-        isMouseObjMovable = false;
-    }
-
     private Vector3 GetMousePos() //마우스가 가리키는 월드 위치 반환.
     {
-        Vector3 mousePos = Vector3.one;
+        Vector3 hitPos = Vector3.one;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))
         {
-            mousePos = hit.point;
+            hitPos = new Vector3(hit.point.x, 0.5f, hit.point.z);
         }
 
-        mousePos.y = 0.33f;
+        return hitPos;
+    }
 
-        return mousePos;
+    private GameObject GetObjUnderMouse()
+    {
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] hits;
+
+        hits = Physics.RaycastAll(ray);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].transform.gameObject.CompareTag("Object"))
+            {
+                return hits[i].transform.gameObject;
+            }
+        }
+
+        return null;
     }
 
     private void SelectObj() //마우스에 위치한 월드 오브젝트 선택.
     {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
         selectedObj = null;
         ClearControlButton();
 
-        if (Physics.Raycast(ray, out hit) && !hit.transform.gameObject.CompareTag("Plane"))
+        GameObject obj = GetObjUnderMouse();
+
+        if (obj != null)
         {
-            selectedObj = hit.transform.gameObject;
+            selectedObj = obj;
 
             PopControlButton();
         }
@@ -247,22 +284,10 @@ public class InGameUI : MonoBehaviour
     {
         ClearControlButton();
 
-        Vector3 selObjPos = cam.WorldToScreenPoint(selectedObj.transform.position) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0f);
+        Vector3 selObjPos = cam.WorldToScreenPoint(selectedObj.transform.position + new Vector3(0, 0.5f, 0)) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
         selObjPos.z = 0f;
 
-        GameObject tmpObj = Instantiate(rotateButtonL);
-        tmpObj.transform.SetParent(gameObject.transform);
-        tmpObj.GetComponent<RectTransform>().localPosition = selObjPos + new Vector3(-40, 40, 0);
-        tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
-        objControlButtonLst.Add(tmpObj);
-
-        tmpObj = Instantiate(rotateButtonR);
-        tmpObj.transform.SetParent(gameObject.transform);
-        tmpObj.GetComponent<RectTransform>().localPosition = selObjPos + new Vector3(40, 40, 0);
-        tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
-        objControlButtonLst.Add(tmpObj);
-
-        tmpObj = Instantiate(grabButton);
+        GameObject tmpObj = Instantiate(grabButton);
         tmpObj.transform.SetParent(gameObject.transform);
         tmpObj.GetComponent<RectTransform>().localPosition = selObjPos;
         tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
@@ -277,6 +302,31 @@ public class InGameUI : MonoBehaviour
         }
 
         objControlButtonLst.Clear();
+    }
+
+    private void InstantiateObj(GameObject obj)
+    {
+        if (mouseObject != null)
+        {
+            Destroy(mouseObject);
+            mouseObject = null;
+        }
+
+        if (selectedObj != null)
+        {
+            selectedObj = null;
+            isMouseObjMovable = false;
+        }
+
+        ClearControlButton();
+
+        Vector3 point = GetMousePos();
+
+        mouseObject = Instantiate(obj, point, Quaternion.identity);
+
+        isMouseObjMovable = true;
+
+        selectedObj= mouseObject;
     }
 
     private IEnumerator SlideUI(GameObject obj, Vector3 destination, float duration)
@@ -297,15 +347,11 @@ public class InGameUI : MonoBehaviour
 
     //===========================Public==============================
 
-    public void RotateMouseObj(float angle) //선택된 월드 오브젝트 회전.
+    public void SetRotationMouseObj(float angle) //선택된 월드 오브젝트 회전.
     {
-        if (mouseObject != null)
+        if (selectedObj != null)
         {
-            mouseObject.transform.Rotate(new Vector3(0, angle, 0));
-        }
-        else if (selectedObj != null)
-        {
-            selectedObj.transform.Rotate(new Vector3(0, angle, 0));
+            selectedObj.transform.rotation = Quaternion.Euler(0, angle, 0);
         }
     }
 
@@ -326,35 +372,17 @@ public class InGameUI : MonoBehaviour
 
     public void Button1()
     {
-        DestroyMouseObj();
-
-        Vector3 point = GetMousePos();
-
-        mouseObject = Instantiate(laserStart, point, Quaternion.identity);
-
-        isMouseObjMovable = true;
+        InstantiateObj(laserStart);
     }
 
     public void Button2()
     {
-        DestroyMouseObj();
-
-        Vector3 point = GetMousePos();
-
-        mouseObject = Instantiate(oneSideMirror, point, Quaternion.identity);
-
-        isMouseObjMovable = true;
+        InstantiateObj(oneSideMirror);
     }
 
     public void Button3()
     {
-        DestroyMouseObj();
-
-        Vector3 point = GetMousePos();
-
-        mouseObject = Instantiate(doubleSideMirror, point, Quaternion.identity);
-
-        isMouseObjMovable = true;
+        InstantiateObj(doubleSideMirror);
     }
 
     public void DestroyMouseObj() //선택된 월드 오브젝트 삭제.
@@ -383,5 +411,16 @@ public class InGameUI : MonoBehaviour
             isMouseObjMovable = true;
             ClearControlButton();
         }
+    }
+
+    public void PlaceObjAtMouse() //선택한 월드 오브젝트 마우스 위치에 배치.
+    {
+        mouseObject.transform.position = GetMousePos();
+
+        mouseObject = null;
+
+        isMouseObjMovable = false;
+
+        PopControlButton();
     }
 }

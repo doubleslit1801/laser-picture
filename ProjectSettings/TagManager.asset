@@ -8,6 +8,7 @@ TagManager:
   - SelectButton
   - Trashcan
   - SlidePanel
+  - Object
   layers:
   - Default
   - TransparentFX

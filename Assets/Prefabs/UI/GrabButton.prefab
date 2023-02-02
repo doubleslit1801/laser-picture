@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2309736709793803851}
   - component: {fileID: 7477767426759660036}
   - component: {fileID: 4145229652525571376}
+  - component: {fileID: 1500654733335270736}
   m_Layer: 5
   m_Name: GrabButton
   m_TagString: Untagged
@@ -121,19 +122,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2309736709793803851}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4145229652525571376}
-        m_TargetAssemblyTypeName: PopControl, Assembly-CSharp
-        m_MethodName: GrabButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &4145229652525571376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,3 +135,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df1bc928803b5c4291c12ef64af27be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1500654733335270736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4041468692330884932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4145229652525571376}
+          m_TargetAssemblyTypeName: PopControl, Assembly-CSharp
+          m_MethodName: GrabButtonDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
