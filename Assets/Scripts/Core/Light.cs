@@ -29,7 +29,7 @@ public class Light
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(Origin, Direction, out hit))
+        if(Physics.Raycast(Origin, Direction, out hit, Mathf.Infinity, 1 << 6))
         {
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
@@ -38,6 +38,7 @@ public class Light
             //target device change
             if(targetDevice != newTarget)
             {
+                MonoBehaviour.print(targetDevice + ">" + newTarget);
                 targetDevice?.HandleInputStop(this);
                 targetDevice = newTarget;
             }
