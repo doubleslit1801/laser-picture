@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class Prism : MonoBehaviour, IDevice
@@ -8,16 +6,18 @@ public class Prism : MonoBehaviour, IDevice
     private class LightInfo
     {
 
-        public LightInfo(Vector3 inputPos, (Light, Light) outputLight, (GameObject, GameObject) laserObject)
+        public LightInfo(Vector3 inputPos, (Light, Light) outputLight, (GameObject, GameObject) laserObject, bool isEnabled)
         {
             this.inputPos = inputPos;
             this.outputLight = outputLight;
             this.laserObject = laserObject;
+            this.isEnabled = isEnabled;
         }
 
         public Vector3 inputPos;
         public (Light, Light) outputLight;
         public (GameObject, GameObject) laserObject;
+        public bool isEnabled;
     }
     private Dictionary<Light, LightInfo> lights = new();
     public Material laserMaterial;
@@ -32,19 +32,27 @@ public class Prism : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
-            for (int j = 0; j < 2; j++)
+            print(Vector3.Angle(i.Key.Direction, transform.forward));
+            if(Vector3.Angle(i.Key.Direction, transform.forward) <= 30.0f){
+                i.Value.isEnabled = true;
+                for (int j = 0; j < 2; j++)
+                {
+                    Quaternion rotation = Quaternion.AngleAxis(120 * (j + 1), transform.up);
+                    Vector3 outputPos = rotation * (transform.position - transform.parent.position) + transform.parent.position;
+                    Vector3 outputDirection = Vector3.Reflect((rotation * i.Key.Direction) * -1, Normal(j)) * -1;
+                    if (j == 0)
+                    {
+                        i.Value.outputLight.Item1.Update(outputPos, outputDirection);
+                    }
+                    else
+                    {
+                        i.Value.outputLight.Item2.Update(outputPos, outputDirection);
+                    }
+                }
+            }
+            else
             {
-                Quaternion rotation = Quaternion.AngleAxis(120 * (j + 1), transform.up);
-                Vector3 outputPos = rotation * (i.Value.inputPos - transform.parent.position) + transform.parent.position;
-                Vector3 outputDirection = Vector3.Reflect((rotation * i.Key.Direction) * -1, Normal(j)) * -1;
-                if (j == 0)
-                {
-                    i.Value.outputLight.Item1.Update(outputPos, outputDirection);
-                }
-                else
-                {
-                    i.Value.outputLight.Item2.Update(outputPos, outputDirection);
-                }
+                i.Value.isEnabled = false;
             }
         }
     }
@@ -53,8 +61,16 @@ public class Prism : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
-            i.Value.outputLight.Item1.Enable();
-            i.Value.outputLight.Item2.Enable();
+            if (i.Value.isEnabled)
+            {
+                i.Value.outputLight.Item1.Enable();
+                i.Value.outputLight.Item2.Enable();
+            }
+            else
+            {
+                i.Value.outputLight.Item1.Disable();
+                i.Value.outputLight.Item2.Disable();
+            }
         }
     }
 
@@ -81,7 +97,7 @@ public class Prism : MonoBehaviour, IDevice
                 Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, Normal(i)) * -1;
                 outputLight[i] = new(outputPos, outputDirection, lr, inputLight.LightColor);
             }
-            lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1])));
+            lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1]), Vector3.Angle(inputLight.Direction, transform.forward) <= 30.0f));
         }
     }
 
