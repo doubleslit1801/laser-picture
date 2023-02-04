@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4573112575418189205}
   - component: {fileID: 4573112575418189290}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4573112575645868866}
   - component: {fileID: 4573112575645868877}
   - component: {fileID: 4573112575645868876}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DoublesideMirror
   m_TagString: Object
   m_Icon: {fileID: 0}

@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 2925757147800844603}
   - component: {fileID: 2925757147800844600}
   - component: {fileID: 6609715449364226528}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PrismSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 2925757147936703858}
   - component: {fileID: 2925757147936703859}
   - component: {fileID: 8083042358281222860}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PrismSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 2925757148064463397}
   - component: {fileID: 2925757148064463394}
   - component: {fileID: 4126463938540601950}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PrismSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
