@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public readonly int MaxStage = 100;
 
+    private PlayerData playerData;
     private StageData[] stages;
     private Dictionary<Collider, IDevice> deviceDict;
 
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
+        playerData = new PlayerData();
+        playerData.stars = new int[MaxStage];
         stages = new StageData[MaxStage];
         LoadStageData();
 
@@ -77,6 +80,20 @@ public class GameManager : MonoBehaviour
     public void SetStageData(int stageNumber, StageData data)
     {
         stages[stageNumber] = data;
+    }
+
+    public int GetPlayerStar(int stageNumber)
+    {
+        if(stageNumber < 0 && stageNumber >= MaxStage)
+        {
+            //error
+        }
+        return playerData.stars[stageNumber];
+    }
+
+    public void SetPlayerStar(int stageNumber, int star)
+    {
+        playerData.stars[stageNumber] = star;
     }
 
     private void LoadStageData()
