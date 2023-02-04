@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7674774484676817654}
   m_Layer: 0
   m_Name: Mirror1
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa905d5a8b5e2741885e704428bfc83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laserMaterial: {fileID: 0}
 --- !u!120 &7674774484676817654
 LineRenderer:
   m_ObjectHideFlags: 0
