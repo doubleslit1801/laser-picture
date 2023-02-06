@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public readonly int MaxStage = 100;
 
+    private string playerDataPath;
+    private string stageDataPath;
     private PlayerData playerData;
+    private StageDataNew[] stageData;
     private StageData[] stages;
+    private Dictionary<string, GameObject> prefabDict;
     private Dictionary<Collider, IDevice> deviceDict;
 
     public static GameManager Instance;
@@ -24,12 +30,16 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        playerData = new PlayerData();
-        playerData.stars = new int[MaxStage];
+        prefabDict = new Dictionary<string, GameObject>();
+        deviceDict = new Dictionary<Collider, IDevice>();
+        LoadPrefabs();
+
+        playerDataPath = Path.Combine(Application.dataPath, "PlayerData.json");
+        LoadPlayerData();
+
+        stageDataPath = Path.Combine(Application.dataPath, "StageData.json");
         stages = new StageData[MaxStage];
         LoadStageData();
-
-        deviceDict = new Dictionary<Collider, IDevice>();
     }
     
     // Start is called before the first frame update
@@ -42,6 +52,20 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public GameObject GetPrefab(string name)
+    {
+        GameObject prefab;
+
+        if(prefabDict.TryGetValue(name, out prefab))
+        {
+            return prefab;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public IDevice SearchDevice(Collider col)
@@ -94,26 +118,61 @@ public class GameManager : MonoBehaviour
     public void SetPlayerStar(int stageNumber, int star)
     {
         playerData.stars[stageNumber] = star;
+        SavePlayerData();
+    }
+
+    private void LoadPrefabs()
+    {
+        prefabDict["LaserStart"] = Resources.Load<GameObject>("Prefabs/LaserStart");
+    }
+
+    private void SaveStageData()
+    {
+        string json = JsonHelper.ToJson(stageData, true);
+        File.WriteAllText(stageDataPath, json);
     }
 
     private void LoadStageData()
     {
-        //test data
-        stages[0] = new StageData();
-        stages[0].Drawing = new Vector3[]
+        if(File.Exists(stageDataPath))
         {
-            new Vector3(0, 0, 0),
-            new Vector3(0, 0, 10)
-        };
+            string json = File.ReadAllText(stageDataPath);
+            stageData = JsonHelper.FromJson<StageDataNew>(json);
+        }
+        else
+        {
+            stageData = new StageDataNew[MaxStage];
+            for(int i=0; i<MaxStage; i++) 
+            {
+                stageData[i] = new StageDataNew();
+                stageData[i].drawing = new Vector3[2];
+                stageData[i].objects = new ObjectDataNew[1];
+                stageData[i].objects[0] = new ObjectDataNew();
+                stageData[i].objects[0].prefab = "LaserStart";
+            }
+            SaveStageData();
+        }
     }
 
-    public void SaveData()
+    private void SavePlayerData()
     {
-
+        string json = JsonUtility.ToJson(playerData, true);
+        File.WriteAllText(playerDataPath, json);
     }
 
-    public void LoadData()
+    private void LoadPlayerData()
     {
-        
+        if(File.Exists(playerDataPath))
+        {
+            string json = File.ReadAllText(playerDataPath);
+            playerData = JsonUtility.FromJson<PlayerData>(json);
+        }
+        else
+        {
+            playerData = new PlayerData();
+            playerData.stars = new int[MaxStage];
+            Array.Clear(playerData.stars, 0, MaxStage);
+            SavePlayerData();
+        }
     }
 }
