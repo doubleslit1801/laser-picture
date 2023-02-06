@@ -13,7 +13,7 @@ public class ObjectControl : MonoBehaviour
     private bool isMouseObjMovable, isMouseRightButtonDown;
     private Camera cam;
     private Vector3 initObjAngle, initMouseVector;
-    private float rotateBoundDist;
+    private float rotateBoundDist, objHeight;
 
     void Start()
     {
@@ -30,6 +30,8 @@ public class ObjectControl : MonoBehaviour
         curMouseState = mouseState.Neutral;
 
         rotateBoundDist = 100.0f;
+
+        objHeight = 0.0f;
     }
     
     void Update()
@@ -180,14 +182,14 @@ public class ObjectControl : MonoBehaviour
         {
             if (hits[i].transform.gameObject.CompareTag("Plane"))
             {
-                hitPos = new Vector3(hits[i].point.x, 0.5f, hits[i].point.z);
+                hitPos = new Vector3(hits[i].point.x, objHeight, hits[i].point.z);
             }
         }
 
         return hitPos;
     }
 
-    public void InstantiateObj(GameObject obj)
+    public void InstantiateObj(GameObject obj, float height)
     {
         if (mouseObject != null)
         {
@@ -200,6 +202,8 @@ public class ObjectControl : MonoBehaviour
             selectedObj = null;
             isMouseObjMovable = false;
         }
+
+        objHeight = height;
 
         Vector3 point = GetMousePos();
 

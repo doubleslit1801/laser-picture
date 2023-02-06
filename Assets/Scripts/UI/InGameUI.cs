@@ -7,24 +7,32 @@ using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
-    public GameObject laserStart, oneSideMirror, doubleSideMirror, objSelPanel, trashCan, grabButton, rotateImage;
+    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
+    public GameObject grabButton, rotateImage;
+    public GameObject objSelPanel, settingsPanel, trashCan;
     public Sprite openTrash, closeTrash;
 
-    private Camera cam;
+    #region Private Variables
+        private Camera cam;
 
-    private bool isHide, isControlButtonExist;
+        private bool isHide, isControlButtonExist;
 
-    private GameObject preMouseUIObj;
+        private GameObject preMouseUIObj, selectedObjUI;
 
-    private Canvas m_canvas;
-    private GraphicRaycaster m_gr;
-    private PointerEventData m_ped;
+        private Canvas m_canvas;
+        private GraphicRaycaster m_gr;
+        private PointerEventData m_ped;
 
-    private Transform infoBoxSetTR;
+        private Transform infoBoxSetTR;
 
-    private List<GameObject> objControlButtonLst;
+        private List<GameObject> objControlButtonLst;
 
-    private ObjectControl objControl;
+        private ObjectControl objControl;
+
+        private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
+        private int selectedObjUIIdx;
+        
+    #endregion
 
     void Start()
     {
@@ -44,6 +52,8 @@ public class InGameUI : MonoBehaviour
         objControlButtonLst = new List<GameObject>();
 
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
+        
+        selectedObjUIIdx = -1;
 
         for (int i = 0; i < infoBoxSetTR.childCount; i++)
         {
@@ -58,6 +68,8 @@ public class InGameUI : MonoBehaviour
     void Update()
     {
         UIOverMouseEffect();
+
+        UpdateSelectedObjUI();
 
         if (objControl.curMouseState == ObjectControl.mouseState.Select)
         {
@@ -75,7 +87,6 @@ public class InGameUI : MonoBehaviour
                 isControlButtonExist = false;
             }
         }
-
     }
 
     private bool CheckTagExist(GameObject obj, string[] tags) //tags중 obj의 tag에 해당하는 tag가 있는지 확인.
@@ -183,16 +194,11 @@ public class InGameUI : MonoBehaviour
         selObjPos.z = 0f;
         GameObject tmpObj;
 
-        tmpObj = Instantiate(rotateImage);
-        tmpObj.transform.SetParent(gameObject.transform);
-        tmpObj.GetComponent<RectTransform>().localPosition = selObjPos;
-        tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
+        
+        tmpObj = InstantiateUIObj(rotateImage, selObjPos, Vector3.one);
         objControlButtonLst.Add(tmpObj);
 
-        tmpObj = Instantiate(grabButton);
-        tmpObj.transform.SetParent(gameObject.transform);
-        tmpObj.GetComponent<RectTransform>().localPosition = selObjPos;
-        tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
+        tmpObj = InstantiateUIObj(grabButton, selObjPos, Vector3.one);
         objControlButtonLst.Add(tmpObj);
     }
 
@@ -204,6 +210,61 @@ public class InGameUI : MonoBehaviour
         }
 
         objControlButtonLst.Clear();
+    }
+
+    private GameObject InstantiateUIObj(GameObject obj, Vector3 localPos, Vector3 localScale)
+    {
+        if (obj.GetComponent<RectTransform>() != null)
+        {
+            GameObject tmpObj = null;
+            tmpObj = Instantiate(obj);
+            tmpObj.transform.SetParent(gameObject.transform);
+            tmpObj.GetComponent<RectTransform>().localPosition = localPos;
+            tmpObj.GetComponent<RectTransform>().localScale = localScale;
+            return tmpObj;
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("InGameUI.InstantiateUIObj Got Object With No RectTransform Component!");
+            return null;
+        }
+    }
+
+    private void UpdateSelectedObjUI()
+    {
+        if (objControl.selectedObj != null)
+        {
+            for (int i = 0; i < objNameLst.Length; i++)
+            {
+                if (objControl.selectedObj.name == objNameLst[i])
+                {
+                    if (selectedObjUIIdx != i)
+                    {
+                        selectedObjUIIdx = i;
+
+                        if (selectedObjUI != null)
+                        {
+                            Destroy(selectedObjUI);
+                            selectedObjUI = null;
+                        }
+
+                        GameObject targetUIObj = objSelPanel.transform.GetChild(0).GetChild(i).GetChild(0).gameObject;
+                        Vector3 uiPos = gameObject.transform.Find("OptionPanel").gameObject.GetComponent<RectTransform>().localPosition + new Vector3(0, 0, -30);
+                        uiPos = uiPos + gameObject.transform.Find("OptionPanel").Find("SelectObjUI").gameObject.GetComponent<RectTransform>().localPosition;
+                        selectedObjUI = InstantiateUIObj(targetUIObj, uiPos, targetUIObj.GetComponent<RectTransform>().localScale);
+                    }
+                    break;
+                }
+            }
+
+
+        }
+        else
+        {
+            Destroy(selectedObjUI);
+            selectedObjUI = null;
+            selectedObjUIIdx = -1;
+        }
     }
 
     private IEnumerator SlideUI(GameObject obj, Vector3 destination, float duration)
@@ -241,21 +302,42 @@ public class InGameUI : MonoBehaviour
 
     public void Button1()
     {
-        objControl.InstantiateObj(laserStart);
+        objControl.InstantiateObj(laserStart, 0.5f);
     }
 
     public void Button2()
     {
-        objControl.InstantiateObj(oneSideMirror);
+        objControl.InstantiateObj(oneSideMirror, 0.5f);
     }
 
     public void Button3()
     {
-        objControl.InstantiateObj(doubleSideMirror);
+        objControl.InstantiateObj(doubleSideMirror, 0.5f);
+    }
+
+    public void Button4()
+    {
+        objControl.InstantiateObj(prism, 0.0f);
     }
 
     public void Trashcan() //선택된 월드 오브젝트 삭제.
     {
         objControl.DestroyMouseObj();
+    }
+
+    public void PauseButton()
+    {
+
+    }
+
+    public void SettingsButton()
+    {
+        settingsPanel.SetActive(true);
+        settingsPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+    }
+
+    public void SubmitButton()
+    {
+
     }
 }
