@@ -106,6 +106,20 @@ public class GameManager : MonoBehaviour
         stages[stageNumber] = data;
     }
 
+    public StageDataNew GetStageDataNew(int stageNumber)
+    {
+        if(stageNumber < 0 && stageNumber >= MaxStage)
+        {
+            //error
+        }
+        return stageData[stageNumber];
+    }
+
+    public void SetStageDataNew(int stageNumber, StageDataNew data)
+    {
+        stageData[stageNumber] = data;
+    }
+
     public int GetPlayerStar(int stageNumber)
     {
         if(stageNumber < 0 && stageNumber >= MaxStage)

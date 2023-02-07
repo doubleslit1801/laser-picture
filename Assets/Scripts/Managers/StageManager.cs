@@ -93,6 +93,58 @@ public class StageManager : MonoBehaviour
         GameManager.Instance.SetStageData(stageNumber, data);
     }
 
+    public void ClearStageNew()
+    {
+        GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("Object");
+        foreach(GameObject obj in stageObjects)
+        {
+            Collider col = obj.GetComponent<Collider>();
+            IDevice device = GameManager.Instance.SearchDevice(col);
+            if(device != null)
+            {
+                GameManager.Instance.RemoveDevice(col);
+                //destory all sibling objects
+            }
+            Destroy(obj);
+        }
+    }
+
+    public void LoadStageNew(int number)
+    {
+        StageDataNew data = GameManager.Instance.GetStageDataNew(number);
+        ClearStageNew();
+
+        stageNumber = number;
+        lr.SetPositions(data.drawing);
+        foreach(ObjectDataNew objData in data.objects)
+        {
+            Instantiate(
+                GameManager.Instance.GetPrefab(objData.prefab), 
+                objData.position, 
+                objData.rotation
+            );
+        }
+    }
+
+    public void SaveStageNew()
+    {
+        StageDataNew data = new StageDataNew();
+        data.drawing = GameManager.Instance.GetStageDataNew(stageNumber).drawing;
+
+        List<ObjectDataNew> objects = new List<ObjectDataNew>();
+        GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("Object");
+        foreach(GameObject obj in stageObjects)
+        {
+            ObjectDataNew objData = new ObjectDataNew();
+            objData.prefab = obj.name.Replace("(Clone)", "");
+            objData.position = obj.transform.position;
+            objData.rotation = obj.transform.rotation;
+            objects.Add(objData);
+        }
+        data.objects = objects.ToArray();
+        GameManager.Instance.SetStageDataNew(stageNumber, data);
+    }
+
     public void AddObject(GameObject obj, GameObject prefab)
     {
         stageObjects.Add(obj, prefab);
