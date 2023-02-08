@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,14 +24,14 @@ public class Blackhole : MonoBehaviour, IDevice
     private Dictionary<Light, LightInfo> lights = new();
     public Material laserMaterial;
     private float _radius = 4.0f;
-    public float Radius {
+    public float Radius
+    {
         get => _radius;
         set
         {
-            _radius= value;
+            _radius = value;
             var col = GetComponent<CapsuleCollider>();
-            col.radius = value;
-            col.height = 2 * value + 2.0f;
+            transform.parent.localScale = Vector3.one * 0.25f * _radius;
         }
     }
     public float InnerRadius
@@ -62,8 +63,7 @@ public class Blackhole : MonoBehaviour, IDevice
             }
             else
             {
-                print("output");
-                i.Value.outputLight.Update((Vector3)(outLightInfo?.origin), (Vector3)(outLightInfo?.direction));
+                i.Value.outputLight.Update(outLightInfo.Value.origin, outLightInfo.Value.direction);
                 i.Value.outputLight.Enable();
             }
         }

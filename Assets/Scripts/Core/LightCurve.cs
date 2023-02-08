@@ -38,6 +38,7 @@ public class LightCurve
     public (Vector3 origin, Vector3 direction)? Enable()
     {
         RaycastHit hit;
+        bool targetFound = false;
 
         Vector3 currentPos = Origin;
         Vector3 prevPos;
@@ -67,6 +68,7 @@ public class LightCurve
             currentPos += direction * 0.1f;
             if (Physics.Raycast(prevPos, direction, out hit, 0.1f, 1 << 6))
             {
+                targetFound = true;
                 positions.Add(hit.point);
                 this.Render(positions);
                 IDevice newTarget = GameManager.Instance.SearchDevice(hit.collider);
@@ -80,10 +82,16 @@ public class LightCurve
                     targetDevice?.HandleInputStop(virtualLight);
                     targetDevice = newTarget;
                 }
+                virtualLight.Update(prevPos, direction);
                 targetDevice?.HandleInput(virtualLight, hit.point);
                 return null;
             }
         } while (blackholes.Count > 0);
+        if (!targetFound)
+        {
+            targetDevice?.HandleInputStop(virtualLight);
+            targetDevice = null;
+        }
         positions.Add(currentPos);
         Render(positions);
         return (currentPos, direction);
