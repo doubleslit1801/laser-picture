@@ -7,14 +7,17 @@ using UnityEngine.UI;
 
 public class InGameUI : MonoBehaviour
 {
-    public GameObject laserStart, oneSideMirror, doubleSideMirror, objSelPanel, trashCan, rotateButtonL, rotateButtonR, grabButton;
+    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
+    public GameObject grabButton, rotateImage;
+    public GameObject objSelPanel, settingsPanel, scorePanel, trashCan;
     public Sprite openTrash, closeTrash;
 
+    #region Private Variables
     private Camera cam;
 
-    private bool isHide, isMouseObjMovable, isMouseRightButtonDown;
+    private bool isHide, isControlButtonExist;
 
-    private GameObject mouseObject, selectedObj, preMouseUIObj;
+    private GameObject preMouseUIObj, selectedObjUI;
 
     private Canvas m_canvas;
     private GraphicRaycaster m_gr;
@@ -24,30 +27,33 @@ public class InGameUI : MonoBehaviour
 
     private List<GameObject> objControlButtonLst;
 
-    private Vector3 initObjAngle, initMouseVector;
+    private ObjectControl objControl;
+
+    private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
+    private int selectedObjUIIdx;
+        
+    #endregion
 
     void Start()
     {
         cam = Camera.main;
 
-        mouseObject = null;
-        selectedObj = null;
         preMouseUIObj = null;
 
         isHide = false;
-        isMouseObjMovable = false;
-        isMouseRightButtonDown = false;
+        isControlButtonExist = false;
 
         m_canvas = gameObject.GetComponent<Canvas>();
         m_gr = m_canvas.GetComponent<GraphicRaycaster>();
         m_ped = new PointerEventData(null);
 
+        objControl = GameObject.Find("ObjectController").GetComponent<ObjectControl>();
+
         objControlButtonLst = new List<GameObject>();
 
-        initObjAngle = Vector3.zero;
-        initMouseVector = Vector3.zero;
-
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
+        
+        selectedObjUIIdx = -1;
 
         for (int i = 0; i < infoBoxSetTR.childCount; i++)
         {
@@ -61,74 +67,25 @@ public class InGameUI : MonoBehaviour
 
     void Update()
     {
-        if (mouseObject != null)
+        UIOverMouseEffect();
+
+        UpdateSelectedObjUI();
+
+        if (objControl.curMouseState == ObjectControl.mouseState.Select)
         {
-            if (isMouseObjMovable)
+            if (!isControlButtonExist)
             {
-                MoveObjToMouse();
-
-                if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    PlaceObjAtMouse();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                DestroyMouseObj();
-            }
-        }
-        else if(selectedObj != null)
-        {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                SelectObj();
-            }
-
-            RotateObjWithMouse();
-
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                DestroyMouseObj();
+                PopControlButton(objControl.selectedObj.transform.position);
+                isControlButtonExist = true;
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (isControlButtonExist)
             {
-                SelectObj();
+                ClearControlButton();
+                isControlButtonExist = false;
             }
-        }
-
-        UIOverMouseEffect();
-    }
-
-    private void RotateObjWithMouse()
-    {
-        if (Input.GetMouseButtonDown(1) && (GetObjUnderMouse() == selectedObj))
-        {
-            isMouseRightButtonDown = true;
-            initObjAngle = selectedObj.transform.eulerAngles;
-
-            Vector3 mousePos = GetMousePos();
-            Vector3 objPos = selectedObj.transform.position;
-            initMouseVector = new Vector3(mousePos.x - objPos.x, 0, mousePos.z - objPos.z);
-        }
-
-        if (isMouseRightButtonDown)
-        {
-            Vector3 mousePos = GetMousePos();
-            Vector3 objPos = selectedObj.transform.position;
-            Vector3 curMouseVector = new Vector3(mousePos.x - objPos.x, 0, mousePos.z - objPos.z);
-
-            SetRotationMouseObj(Quaternion.FromToRotation(initMouseVector, curMouseVector).eulerAngles.y);
-        }
-
-        if (Input.GetMouseButtonUp(1))
-        {
-            isMouseRightButtonDown = false;
-            initObjAngle = Vector3.zero;
-            initMouseVector = Vector3.zero;
         }
     }
 
@@ -229,68 +186,19 @@ public class InGameUI : MonoBehaviour
         return null;
     }
 
-    private void MoveObjToMouse() //선택한 월드 오브젝트 마우스 위치로 이동.
-    {
-        mouseObject.transform.position = GetMousePos();
-    }
-
-    private Vector3 GetMousePos() //마우스가 가리키는 월드 위치 반환.
-    {
-        Vector3 hitPos = Vector3.one;
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
-        {
-            hitPos = new Vector3(hit.point.x, 0.5f, hit.point.z);
-        }
-
-        return hitPos;
-    }
-
-    private GameObject GetObjUnderMouse()
-    {
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit[] hits;
-
-        hits = Physics.RaycastAll(ray);
-        for (int i = 0; i < hits.Length; i++)
-        {
-            if (hits[i].transform.gameObject.CompareTag("Object"))
-            {
-                return hits[i].transform.gameObject;
-            }
-        }
-
-        return null;
-    }
-
-    private void SelectObj() //마우스에 위치한 월드 오브젝트 선택.
-    {
-        selectedObj = null;
-        ClearControlButton();
-
-        GameObject obj = GetObjUnderMouse();
-
-        if (obj != null)
-        {
-            selectedObj = obj;
-
-            PopControlButton();
-        }
-    }
-
-    private void PopControlButton()
+    private void PopControlButton(Vector3 objPos)
     {
         ClearControlButton();
 
-        Vector3 selObjPos = cam.WorldToScreenPoint(selectedObj.transform.position + new Vector3(0, 0.5f, 0)) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
+        Vector3 selObjPos = cam.WorldToScreenPoint(objPos + new Vector3(0, 0.5f, 0)) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
         selObjPos.z = 0f;
+        GameObject tmpObj;
 
-        GameObject tmpObj = Instantiate(grabButton);
-        tmpObj.transform.SetParent(gameObject.transform);
-        tmpObj.GetComponent<RectTransform>().localPosition = selObjPos;
-        tmpObj.GetComponent<RectTransform>().localScale = Vector3.one;
+        
+        tmpObj = InstantiateUIObj(rotateImage, selObjPos, Vector3.one);
+        objControlButtonLst.Add(tmpObj);
+
+        tmpObj = InstantiateUIObj(grabButton, selObjPos, Vector3.one);
         objControlButtonLst.Add(tmpObj);
     }
 
@@ -304,29 +212,59 @@ public class InGameUI : MonoBehaviour
         objControlButtonLst.Clear();
     }
 
-    private void InstantiateObj(GameObject obj)
+    private GameObject InstantiateUIObj(GameObject obj, Vector3 localPos, Vector3 localScale)
     {
-        if (mouseObject != null)
+        if (obj.GetComponent<RectTransform>() != null)
         {
-            Destroy(mouseObject);
-            mouseObject = null;
+            GameObject tmpObj = null;
+            tmpObj = Instantiate(obj);
+            tmpObj.transform.SetParent(gameObject.transform);
+            tmpObj.GetComponent<RectTransform>().localPosition = localPos;
+            tmpObj.GetComponent<RectTransform>().localScale = localScale;
+            return tmpObj;
         }
-
-        if (selectedObj != null)
+        else
         {
-            selectedObj = null;
-            isMouseObjMovable = false;
+            UnityEngine.Debug.LogWarning("InGameUI.InstantiateUIObj Got Object With No RectTransform Component!");
+            return null;
         }
+    }
 
-        ClearControlButton();
+    private void UpdateSelectedObjUI()
+    {
+        if (objControl.selectedObj != null)
+        {
+            for (int i = 0; i < objNameLst.Length; i++)
+            {
+                if (objControl.selectedObj.name == objNameLst[i])
+                {
+                    if (selectedObjUIIdx != i)
+                    {
+                        selectedObjUIIdx = i;
 
-        Vector3 point = GetMousePos();
+                        if (selectedObjUI != null)
+                        {
+                            Destroy(selectedObjUI);
+                            selectedObjUI = null;
+                        }
 
-        mouseObject = Instantiate(obj, point, Quaternion.identity);
+                        GameObject targetUIObj = objSelPanel.transform.GetChild(0).GetChild(i).GetChild(0).gameObject;
+                        Vector3 uiPos = gameObject.transform.Find("OptionPanel").gameObject.GetComponent<RectTransform>().localPosition + new Vector3(0, 0, -30);
+                        uiPos = uiPos + gameObject.transform.Find("OptionPanel").Find("SelectObjUI").gameObject.GetComponent<RectTransform>().localPosition;
+                        selectedObjUI = InstantiateUIObj(targetUIObj, uiPos, targetUIObj.GetComponent<RectTransform>().localScale);
+                    }
+                    break;
+                }
+            }
 
-        isMouseObjMovable = true;
 
-        selectedObj= mouseObject;
+        }
+        else
+        {
+            Destroy(selectedObjUI);
+            selectedObjUI = null;
+            selectedObjUIIdx = -1;
+        }
     }
 
     private IEnumerator SlideUI(GameObject obj, Vector3 destination, float duration)
@@ -347,14 +285,6 @@ public class InGameUI : MonoBehaviour
 
     //===========================Public==============================
 
-    public void SetRotationMouseObj(float angle) //선택된 월드 오브젝트 회전.
-    {
-        if (selectedObj != null)
-        {
-            selectedObj.transform.rotation = Quaternion.Euler(0, angle, 0);
-        }
-    }
-
     public void PopHideButton() //월드 오브젝트 선택 패널 팝업버튼.
     {
         RectTransform rectT = objSelPanel.GetComponent<RectTransform>();
@@ -372,55 +302,44 @@ public class InGameUI : MonoBehaviour
 
     public void Button1()
     {
-        InstantiateObj(laserStart);
+        objControl.InstantiateObj(laserStart, 0.5f);
     }
 
     public void Button2()
     {
-        InstantiateObj(oneSideMirror);
+        objControl.InstantiateObj(oneSideMirror, 0.5f);
     }
 
     public void Button3()
     {
-        InstantiateObj(doubleSideMirror);
+        objControl.InstantiateObj(doubleSideMirror, 0.5f);
     }
 
-    public void DestroyMouseObj() //선택된 월드 오브젝트 삭제.
+    public void Button4()
     {
-        if(mouseObject != null)
-        {
-            Destroy(mouseObject);
-            mouseObject = null;
-        }
-
-        if(selectedObj != null)
-        {
-            Destroy(selectedObj);
-            selectedObj = null;
-            isMouseObjMovable = false;
-        }
-
-        ClearControlButton();
+        objControl.InstantiateObj(prism, 0.0f);
     }
 
-    public void GrabSelectedObj()
+    public void Trashcan() //선택된 월드 오브젝트 삭제.
     {
-        if (selectedObj != null)
-        {
-            mouseObject = selectedObj;
-            isMouseObjMovable = true;
-            ClearControlButton();
-        }
+        objControl.DestroyMouseObj();
     }
 
-    public void PlaceObjAtMouse() //선택한 월드 오브젝트 마우스 위치에 배치.
+    public void PauseButton()
     {
-        mouseObject.transform.position = GetMousePos();
 
-        mouseObject = null;
+    }
 
-        isMouseObjMovable = false;
+    public void SettingsButton()
+    {
+        settingsPanel.SetActive(true);
+        settingsPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+    }
 
-        PopControlButton();
+    public void SubmitButton()
+    {
+        scorePanel.SetActive(true);
+        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+        scorePanel.GetComponent<ScorePanel>().OnActive();
     }
 }

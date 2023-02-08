@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class PopControl : MonoBehaviour
 {
-    private GameObject canvas;
+    private ObjectControl objControl;
 
     void Start()
     {
-        canvas = GameObject.Find("Canvas");
+        objControl = GameObject.Find("ObjectController").GetComponent<ObjectControl>();
     }
 
     public void GrabButtonDown()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            canvas.GetComponent<InGameUI>().GrabSelectedObj();
+            objControl.GrabSelectedObj();
         }
     }
 }
