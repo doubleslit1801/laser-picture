@@ -29,7 +29,10 @@ public class ScoreJudgement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ExtractAnswerMap(1);
+        }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
             UnityEngine.Debug.Log("ClearJudgement : " + JudgeClear(1));
         }
 
@@ -59,13 +62,16 @@ public class ScoreJudgement : MonoBehaviour
 
     private Texture2D CaptureScreenAsTexture()
     {
-        RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+        int renderWidth = resHeight;
+        int renderHeight = resHeight;
+
+        RenderTexture rt = new RenderTexture(renderWidth, renderHeight, 24);
         screenCaptureCamera.targetTexture = rt;
-        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        Texture2D screenShot = new Texture2D(renderWidth, renderHeight, TextureFormat.RGB24, false);
         Rect rec = new Rect(0, 0, screenShot.width, screenShot.height);
         screenCaptureCamera.Render();
         RenderTexture.active = rt;
-        screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+        screenShot.ReadPixels(new Rect(0, 0, screenShot.width, screenShot.height), 0, 0);
         screenShot.Apply();
 
         screenCaptureCamera.targetTexture = null;
@@ -140,30 +146,31 @@ public class ScoreJudgement : MonoBehaviour
         return (tx, positiveLst);
     }
 
-    private Texture2D ExpandTexturePixel(Texture2D tx, List<List<int>> positiveLst, int width, int height, int expandScale)
-    {
-        Texture2D tmpTexture = tx;
+    //private Texture2D ExpandTexturePixel(Texture2D tx, List<List<int>> positiveLst, int width, int height, int expandScale)
+    //{
+    //    Texture2D tmpTexture = tx;
 
-        for (int i = 0; i < positiveLst.Count;i++)
-        {
-            List<int> pivot = positiveLst[i];
+    //    for (int i = 0; i < positiveLst.Count;i++)
+    //    {
+    //        List<int> pivot = positiveLst[i];
 
-            for (int x = pivot[0] - expandScale; x < pivot[0] + expandScale + 1; x++)
-            {
-                for (int y = pivot[1] - expandScale; y < pivot[1] + expandScale + 1; y++)
-                {
-                    if ((x >= 0 && x <= width) && (y >= 0 && y <= height))
-                    {
-                        tmpTexture.SetPixel(x, y, Color.white);
-                    }
-                }
-            }
-        }
+    //        for (int x = pivot[0] - expandScale; x < pivot[0] + expandScale + 1; x++)
+    //        {
+    //            for (int y = pivot[1] - expandScale; y < pivot[1] + expandScale + 1; y++)
+    //            {
+    //                if ((x >= 0 && x <= width) && (y >= 0 && y <= height))
+    //                {
+    //                    tmpTexture.SetPixel(x, y, Color.white);
+    //                }
+    //            }
+    //        }
+    //    }
 
-        return tmpTexture;
-    }
+    //    return tmpTexture;
+    //}
 
     //Scores drawing according to simularity
+
     private float ScoreDrawingByGrid(Texture2D answerTx, Texture2D userDrawingTx, int gridScale)
     {
         if (answerTx.width != userDrawingTx.width || answerTx.height != userDrawingTx.height)
@@ -197,11 +204,29 @@ public class ScoreJudgement : MonoBehaviour
                     }
                 }
 
-                maxCnt++;
-
-                if (isAFilled == isUFilled)
+                if (isAFilled)
                 {
-                    hitCnt++;
+                    maxCnt = maxCnt + 50;
+                    if (isUFilled)
+                    {
+                        hitCnt = hitCnt + 50;
+                    }
+                    else
+                    {
+                        hitCnt = hitCnt + 0;
+                    }
+                }
+                else
+                {
+                    maxCnt = maxCnt + 1;
+                    if (isUFilled)
+                    {
+                        hitCnt = hitCnt - 25;
+                    }
+                    else
+                    {
+                        hitCnt = hitCnt + 1;
+                    }
                 }
             }
         }
@@ -209,31 +234,41 @@ public class ScoreJudgement : MonoBehaviour
         return (float)hitCnt / (float)maxCnt;
     }
 
-    //Judges if the score satisfies the threshold of each stage
-    public bool JudgeClear(int stageNum)
+    //================================PUBLIC=================================================
+
+    //Judges if the score satisfies the threshold of each stage and Returns (star count, simularity)
+    public (int, float) JudgeClear(int stageNum)
     {
         Texture2D answerTx = GetAnswerTexture(stageNum);
         Texture2D userDrawingTx = GetUserDrawingTexture();
 
         if (answerTx == null)
         {
-            UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum);
-            return false;
+            UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum + "  Generate Answer File First!");
+            return (0, 0.0f);
         }
 
-        var simularity = ScoreDrawingByGrid(answerTx, userDrawingTx, 2);
+        var simularity = ScoreDrawingByGrid(answerTx, userDrawingTx, 10);
 
-        UnityEngine.Debug.Log("Simularity : " + simularity);
+        float oneStarThreshold = 0.8f;
+        float twoStarThreshold = 0.9f;
+        float threeStarThreshold = 0.95f;
 
-        float threshold = 0.8f;
-
-        if (simularity > threshold)
+        if (simularity > threeStarThreshold)
         {
-            return true;
+            return (3, simularity);
+        }
+        else if (simularity > twoStarThreshold)
+        {
+            return (2, simularity);
+        }
+        else if (simularity > oneStarThreshold)
+        {
+            return (1, simularity);
         }
         else
         {
-            return false;
+            return (0, simularity);
         }
     }
 

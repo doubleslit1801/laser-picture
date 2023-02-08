@@ -9,28 +9,28 @@ public class InGameUI : MonoBehaviour
 {
     public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
     public GameObject grabButton, rotateImage;
-    public GameObject objSelPanel, settingsPanel, trashCan;
+    public GameObject objSelPanel, settingsPanel, scorePanel, trashCan;
     public Sprite openTrash, closeTrash;
 
     #region Private Variables
-        private Camera cam;
+    private Camera cam;
 
-        private bool isHide, isControlButtonExist;
+    private bool isHide, isControlButtonExist;
 
-        private GameObject preMouseUIObj, selectedObjUI;
+    private GameObject preMouseUIObj, selectedObjUI;
 
-        private Canvas m_canvas;
-        private GraphicRaycaster m_gr;
-        private PointerEventData m_ped;
+    private Canvas m_canvas;
+    private GraphicRaycaster m_gr;
+    private PointerEventData m_ped;
 
-        private Transform infoBoxSetTR;
+    private Transform infoBoxSetTR;
 
-        private List<GameObject> objControlButtonLst;
+    private List<GameObject> objControlButtonLst;
 
-        private ObjectControl objControl;
+    private ObjectControl objControl;
 
-        private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
-        private int selectedObjUIIdx;
+    private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
+    private int selectedObjUIIdx;
         
     #endregion
 
@@ -338,6 +338,8 @@ public class InGameUI : MonoBehaviour
 
     public void SubmitButton()
     {
-
+        scorePanel.SetActive(true);
+        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+        scorePanel.GetComponent<ScorePanel>().OnActive();
     }
 }
