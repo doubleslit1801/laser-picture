@@ -4,12 +4,13 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
     public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
     public GameObject grabButton, rotateImage;
-    public GameObject objSelPanel, settingsPanel, scorePanel, trashCan;
+    public GameObject objSelPanel, settingsPanel, scorePanel, loadingPanel, trashCan;
     public Sprite openTrash, closeTrash;
 
     #region Private Variables
@@ -28,10 +29,11 @@ public class InGameUI : MonoBehaviour
     private List<GameObject> objControlButtonLst;
 
     private ObjectControl objControl;
+    private ScoreJudgement scoreJudgement;
 
     private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
     private int selectedObjUIIdx;
-        
+
     #endregion
 
     void Start()
@@ -48,12 +50,17 @@ public class InGameUI : MonoBehaviour
         m_ped = new PointerEventData(null);
 
         objControl = GameObject.Find("ObjectController").GetComponent<ObjectControl>();
+        scoreJudgement = GameObject.Find("ScoringObject").GetComponent<ScoreJudgement>();
 
         objControlButtonLst = new List<GameObject>();
 
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
         
         selectedObjUIIdx = -1;
+
+        settingsPanel.SetActive(false);
+        scorePanel.SetActive(false);
+        loadingPanel.SetActive(false);
 
         for (int i = 0; i < infoBoxSetTR.childCount; i++)
         {
@@ -86,6 +93,24 @@ public class InGameUI : MonoBehaviour
                 ClearControlButton();
                 isControlButtonExist = false;
             }
+        }
+
+        if (loadingPanel.activeSelf)
+        {
+            UpdateLoadingScreen();
+        }
+    }
+
+    private void UpdateLoadingScreen()
+    {
+        loadingPanel.transform.Find("LoadingCircle").Rotate(10 * Time.deltaTime * Vector3.forward);
+        if (scoreJudgement.progressState != null)
+        {
+            loadingPanel.transform.Find("LoadingText").GetComponent<TMP_Text>().text = "Now Loading... " + scoreJudgement.progressState;
+        }
+        else
+        {
+            loadingPanel.transform.Find("LoadingText").GetComponent<TMP_Text>().text = "Now Loading... ";
         }
     }
 
@@ -283,6 +308,29 @@ public class InGameUI : MonoBehaviour
         rt.anchoredPosition = destination;
     }
 
+    private void ActivateScorePanel()
+    {
+        scorePanel.SetActive(true);
+        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+        scorePanel.GetComponent<ScorePanel>().OnActive();
+    }
+
+    private void ActivateLoadingPanel()
+    {
+        loadingPanel.SetActive(true);
+        loadingPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+    }
+
+    private IEnumerator GetScore()
+    {
+        ActivateLoadingPanel();
+
+        yield return StartCoroutine(scoreJudgement.StartJudge(1));
+
+        loadingPanel.SetActive(false);
+        ActivateScorePanel();
+    }
+
     //===========================Public==============================
 
     public void PopHideButton() //월드 오브젝트 선택 패널 팝업버튼.
@@ -338,8 +386,6 @@ public class InGameUI : MonoBehaviour
 
     public void SubmitButton()
     {
-        scorePanel.SetActive(true);
-        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
-        scorePanel.GetComponent<ScorePanel>().OnActive();
+        StartCoroutine(GetScore());
     }
 }
