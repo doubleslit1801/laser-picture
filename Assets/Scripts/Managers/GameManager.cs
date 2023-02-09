@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
     private string playerDataPath;
     private string stageDataPath;
     private PlayerData playerData;
-    private StageDataNew[] stageData;
-    private StageData[] stages;
+    private StageData[] stageData;
     private Dictionary<string, GameObject> prefabDict;
     private Dictionary<Collider, IDevice> deviceDict;
 
@@ -38,7 +37,6 @@ public class GameManager : MonoBehaviour
         LoadPlayerData();
 
         stageDataPath = Path.Combine(Application.dataPath, "StageData.json");
-        stages = new StageData[MaxStage];
         LoadStageData();
     }
     
@@ -98,26 +96,13 @@ public class GameManager : MonoBehaviour
         {
             //error
         }
-        return stages[stageNumber];
+        return stageData[stageNumber];
     }
 
     public void SetStageData(int stageNumber, StageData data)
     {
-        stages[stageNumber] = data;
-    }
-
-    public StageDataNew GetStageDataNew(int stageNumber)
-    {
-        if(stageNumber < 0 && stageNumber >= MaxStage)
-        {
-            //error
-        }
-        return stageData[stageNumber];
-    }
-
-    public void SetStageDataNew(int stageNumber, StageDataNew data)
-    {
         stageData[stageNumber] = data;
+        SaveStageData();
     }
 
     public int GetPlayerStar(int stageNumber)
@@ -151,17 +136,17 @@ public class GameManager : MonoBehaviour
         if(File.Exists(stageDataPath))
         {
             string json = File.ReadAllText(stageDataPath);
-            stageData = JsonHelper.FromJson<StageDataNew>(json);
+            stageData = JsonHelper.FromJson<StageData>(json);
         }
         else
         {
-            stageData = new StageDataNew[MaxStage];
+            stageData = new StageData[MaxStage];
             for(int i=0; i<MaxStage; i++) 
             {
-                stageData[i] = new StageDataNew();
+                stageData[i] = new StageData();
                 stageData[i].drawing = new Vector3[2];
-                stageData[i].objects = new ObjectDataNew[1];
-                stageData[i].objects[0] = new ObjectDataNew();
+                stageData[i].objects = new ObjectData[1];
+                stageData[i].objects[0] = new ObjectData();
                 stageData[i].objects[0].prefab = "LaserStart";
             }
             SaveStageData();

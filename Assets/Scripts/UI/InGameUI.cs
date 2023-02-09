@@ -342,4 +342,14 @@ public class InGameUI : MonoBehaviour
         scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
         scorePanel.GetComponent<ScorePanel>().OnActive();
     }
+
+    public void SaveStageButton()
+    {
+        StageManager.Instance.SaveStage();
+    }
+
+    public void ClearStageButton()
+    {
+        StageManager.Instance.ClearStage();
+    }
 }
