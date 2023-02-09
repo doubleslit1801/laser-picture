@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class Light
@@ -47,11 +45,27 @@ public class Light
     public void Enable()
     {
         List<Vector3> positions = new List<Vector3>() { Origin };
-        positions.AddRange(Ray(Origin, OriginDirection));
+        var (addPosition, hit) = Ray(Origin, OriginDirection);
+        positions.AddRange(addPosition);
+        if (hit is null)
+        {
+            targetDevice?.HandleInputStop(this);
+            targetDevice = null;
+        }
+        else
+        {
+            IDevice newTarget = GameManager.Instance.SearchDevice(hit.Value.collider);
+            if (targetDevice != newTarget)
+            {
+                targetDevice?.HandleInputStop(this);
+                targetDevice = newTarget;
+            }
+            targetDevice?.HandleInput(this, hit.Value.point);
+        }
         Render(positions);
     }
 
-    private List<Vector3> Ray(Vector3 origin, Vector3 direction)
+    private (List<Vector3>, RaycastHit?) Ray(Vector3 origin, Vector3 direction)
     {
         RaycastHit hit;
         List<Blackhole> blackholes = Physics.OverlapSphere(Origin + Direction * 0.1f, 0.0f, 1 << 7)
@@ -79,7 +93,7 @@ public class Light
                         if (toCenter.magnitude <= b.InnerRadius)
                         {
                             positions.Add(currentPos);
-                            return positions;
+                            return (positions, null);
                         }
                         currentDirection += toCenter.normalized * Mathf.Pow(b.Radius / toCenter.magnitude, 2) * 0.005f;
                     }
@@ -89,54 +103,30 @@ public class Light
                     if (Physics.Raycast(prevPos, currentDirection, out hit, 0.1f, 1 << 6))
                     {
                         positions.Add(hit.point);
-                        IDevice newTarget = GameManager.Instance.SearchDevice(hit.collider);
-
-                        if (targetDevice != newTarget)
-                        {
-                            MonoBehaviour.print("aaaaaaaaaaa");
-                            targetDevice?.HandleInputStop(this);
-                            targetDevice = newTarget;
-                        }
                         Direction = currentDirection;
-                        targetDevice?.HandleInput(this, hit.point);
-
-                        return positions;
+                        return (positions, hit);
                     }
                     positions.Add(currentPos);
                 } while (blackholes.Count > 0);
 
                 //Blackhole 안에서 Device를 만나지 않음
-                MonoBehaviour.print("bbbbbbbbbbbbbb");
-                targetDevice?.HandleInputStop(this);
-                targetDevice = null;
-                positions.AddRange(Ray(currentPos, currentDirection));
-                return positions;
+                var (rayPositions, rayHit) = Ray(currentPos, currentDirection);
+                positions.AddRange(rayPositions);
+                return (positions, rayHit);
             }
             else //Device
             {
                 Direction = direction;
-                Render(hit.point);
                 Debug.DrawRay(origin, direction * hit.distance, Color.red);
-
-                IDevice newTarget = GameManager.Instance.SearchDevice(hit.collider);
-                //target device change
-                if (targetDevice != newTarget)
-                {
-                    MonoBehaviour.print(targetDevice + ">" + newTarget);
-                    targetDevice?.HandleInputStop(this);
-                    targetDevice = newTarget;
-                }
-                targetDevice?.HandleInput(this, hit.point);
-                return new List<Vector3>() { hit.point };
+                return (new List<Vector3>() { hit.point }, hit);
             }
-
         }
         else
         {
             //Device와 Blackhole 만나지 않음
             targetDevice?.HandleInputStop(this);
             targetDevice = null;
-            return new List<Vector3>() { origin + direction * 100f };
+            return (new List<Vector3>() { origin + direction * 100f }, null);
         }
     }
 
