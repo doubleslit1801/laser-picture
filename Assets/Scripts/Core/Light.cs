@@ -68,13 +68,13 @@ public class Light
     private (List<Vector3>, RaycastHit?) Ray(Vector3 origin, Vector3 direction)
     {
         RaycastHit hit;
-        List<Blackhole> blackholes = Physics.OverlapSphere(Origin + Direction * 0.1f, 0.0f, 1 << 7)
+        List<Blackhole> blackholes = Physics.OverlapSphere(origin + direction * 0.1f, 0.0f, 1 << 7)
             .Select(c => c.GetComponent<Blackhole>())
             .ToList();
 
         if (Physics.Raycast(origin, direction, out hit, Mathf.Infinity, (1 << 6) | (1 << 7)) || blackholes.Count > 0)
         {
-            if (hit.collider.gameObject.layer == 7 || blackholes.Count > 0) //Blackhole
+            if (blackholes.Count > 0 || hit.collider.gameObject.layer == 7) //Blackhole
             {
                 List<Vector3> positions = new();
                 Vector3 currentPos = origin;
@@ -95,7 +95,7 @@ public class Light
                             positions.Add(currentPos);
                             return (positions, null);
                         }
-                        currentDirection += toCenter.normalized * Mathf.Pow(b.Radius / toCenter.magnitude, 2) * 0.005f;
+                        currentDirection += 0.005f * Mathf.Pow(b.Radius / toCenter.magnitude, 2) * toCenter.normalized;
                     }
                     currentDirection = currentDirection.normalized;
                     prevPos = currentPos;
