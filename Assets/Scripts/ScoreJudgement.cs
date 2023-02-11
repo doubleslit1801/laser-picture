@@ -11,8 +11,8 @@ using UnityEngine;
 public class ScoreJudgement : MonoBehaviour
 {
     public Camera screenCaptureCamera;
-    public bool isScoreLoad;
-    public string progressState;
+    [HideInInspector] public bool isScoreLoad;
+    [HideInInspector] public string progressState;
 
     private float simularity;
     private int resWidth, resHeight;

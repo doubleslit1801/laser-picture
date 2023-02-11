@@ -7,6 +7,7 @@ using TMPro;
 public class ScorePanel : MonoBehaviour
 {
     public Sprite emptyStar, fullStar;
+    public GameObject canvasObj;
 
     private int simularity, starCnt;
     private ScoreJudgement scoreJudgement;
@@ -85,6 +86,7 @@ public class ScorePanel : MonoBehaviour
 
     public void ExitScorePanel()
     {
+        canvasObj.GetComponent<InGameUI>().Resume();
         gameObject.SetActive(false);
     }
 
