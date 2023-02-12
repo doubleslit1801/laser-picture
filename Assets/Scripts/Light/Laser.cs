@@ -9,19 +9,22 @@ public class Laser : MonoBehaviour
     
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
+        lr = transform.GetChild(0).gameObject.GetComponent<LineRenderer>();
     }
 
     void Update()
     {
-        if(outputLight == null)
+        if(lr != null)
         {
-            outputLight = new Light(transform.position, -transform.right, lr, Color.red);
+            if(outputLight == null)
+            {
+                outputLight = new Light(transform.position, -transform.right, lr, Color.red);
+            }
+            else
+            {
+                outputLight.Update(transform.position, -transform.right);
+            }
+            outputLight.Enable();
         }
-        else
-        {
-            outputLight.Update(transform.position, -transform.right);
-        }
-        outputLight.Enable();
     }
 }
