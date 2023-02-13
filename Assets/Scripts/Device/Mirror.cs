@@ -57,7 +57,7 @@ public class Mirror : MonoBehaviour, IDevice
             lr.endWidth = 0.1f;
             lr.material = laserMaterial;
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
-            Light outputLight = new(hitPos, outputDirection, lr, Color.green);
+            Light outputLight = new(hitPos, outputDirection, lr, inputLight.LightColor);
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
             print(lights.Count);
         }
