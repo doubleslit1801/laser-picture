@@ -15,35 +15,11 @@ public class StageSelectSceneController : MonoBehaviour
 
     }
 
-    public void ToState0()
+    public void ToState(int StateID)
     {
         if (!isRunning)
         {
-            _ = StartCoroutine(ChangeState(State.Initial));
-        }
-        return;
-    }
-    public void ToState1()
-    {
-        if (!isRunning)
-        {
-            _ = StartCoroutine(ChangeState(State.WorldSelect));
-        }
-        return;
-    }
-    public void ToState2()
-    {
-        if (!isRunning)
-        {
-            _ = StartCoroutine(ChangeState(State.StageSelect));
-        }
-        return;
-    }
-    public void ToState3()
-    {
-        if (!isRunning)
-        {
-            _ = StartCoroutine(ChangeState(State.EndState));
+            _ = StartCoroutine(ChangeState((State)StateID));
         }
         return;
     }
@@ -70,12 +46,13 @@ public class StageSelectSceneController : MonoBehaviour
         yield return null;
     }
 
-    private enum State : int
+    public enum State : int
     {
         Initial,
         WorldSelect,
-        StageSelect,
-        EndState,
+        World1,
+        World2,
+        World3,
         Count
     }
 }

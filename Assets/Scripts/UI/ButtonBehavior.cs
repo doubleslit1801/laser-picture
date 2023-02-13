@@ -20,21 +20,26 @@ public class ButtonBehavior : MonoBehaviour
     {
         SceneController ??= GameObject.Find("StageSelectionController");
         StageSelectSceneController Controller = SceneController.GetComponent<StageSelectSceneController>();
+
         if (gameObject.transform.parent.name.Contains("Initial"))
         {
-            Controller.ToState0();
+            Controller.ToState(0);
         }
-        else if (gameObject.transform.parent.name.Contains("World"))
+        else if (gameObject.transform.parent.name.Contains("Select"))
         {
-            Controller.ToState1();
+            Controller.ToState(1);
         }
-        else if (gameObject.transform.parent.name.Contains("Stage"))
+        else if (gameObject.transform.parent.name.Contains("World1"))
         {
-            Controller.ToState2();
+            Controller.ToState(2);
         }
-        else if (gameObject.transform.parent.name.Contains("End"))
+        else if (gameObject.transform.parent.name.Contains("World2"))
         {
-            Controller.ToState3();
+            Controller.ToState(3);
+        }
+        else if (gameObject.transform.parent.name.Contains("World3"))
+        {
+            Controller.ToState(4);
         }
         else
         {
