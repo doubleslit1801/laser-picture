@@ -5,10 +5,13 @@ using UnityEngine.EventSystems;
 
 public class ObjectControl : MonoBehaviour
 {
-    public GameObject mouseObject, selectedObj;
-    public enum mouseState { Grab, Select, Neutral };
-    public mouseState curMouseState;
+    public GameObject canvasObj;
 
+
+    [HideInInspector] public GameObject mouseObject, selectedObj;
+    [HideInInspector] public enum mouseState { Grab, Select, Neutral };
+    [HideInInspector] public mouseState curMouseState;
+    [HideInInspector] public bool isPause, isInit;
 
     private bool isMouseObjMovable, isMouseRightButtonDown;
     private Camera cam;
@@ -19,15 +22,7 @@ public class ObjectControl : MonoBehaviour
     {
         cam = Camera.main;
 
-        mouseObject = null;
-        selectedObj = null;
-        isMouseObjMovable= false;
-        isMouseRightButtonDown = false;
-
-        initObjAngle = Vector3.zero;
-        initMouseVector = Vector3.zero;
-
-        curMouseState = mouseState.Neutral;
+        Init();
 
         rotateBoundDist = 100.0f;
 
@@ -36,46 +31,75 @@ public class ObjectControl : MonoBehaviour
     
     void Update()
     {
-        if (mouseObject != null)
+        if (isPause && !isInit)
         {
-            if (isMouseObjMovable)
-            {
-                MoveObjToMouse();
-
-                if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    PlaceObjAtMouse();
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                DestroyMouseObj();
-            }
-        }
-        else if (selectedObj != null)
-        {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                SelectObj();
-            }
-            if (selectedObj != null)
-            {
-                RotateObjWithMouse();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                DestroyMouseObj();
-            }
+            Init();
+            isInit = true;
         }
         else
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (mouseObject != null)
             {
-                SelectObj();
+                if (isMouseObjMovable)
+                {
+                    MoveObjToMouse();
+
+                    if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        PlaceObjAtMouse();
+                    }
+
+                    GameObject tmpObj = canvasObj.GetComponent<InGameUI>().GetUIObjUnderMouse();
+
+                    if (Input.GetMouseButtonUp(0) && tmpObj != null && tmpObj.name == "Trashcan")
+                    {
+                        DestroyMouseObj();
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Delete))
+                {
+                    DestroyMouseObj();
+                }
+            }
+            else if (selectedObj != null)
+            {
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    SelectObj();
+                }
+                if (selectedObj != null)
+                {
+                    RotateObjWithMouse();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Delete))
+                {
+                    DestroyMouseObj();
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    SelectObj();
+                }
             }
         }
+    }
+
+    private void Init()
+    {
+        mouseObject = null;
+        selectedObj = null;
+        isMouseObjMovable = false;
+        isMouseRightButtonDown = false;
+        isPause = false;
+
+        initObjAngle = Vector3.zero;
+        initMouseVector = Vector3.zero;
+
+        curMouseState = mouseState.Neutral;
     }
 
     private GameObject GetObjUnderMouse() //마우스 아래 월드 오브젝트 반환

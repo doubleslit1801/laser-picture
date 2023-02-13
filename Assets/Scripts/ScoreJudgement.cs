@@ -11,9 +11,12 @@ using UnityEngine;
 public class ScoreJudgement : MonoBehaviour
 {
     public Camera screenCaptureCamera;
+    [HideInInspector] public bool isScoreLoad;
+    [HideInInspector] public string progressState;
 
-    private int resWidth;
-    private int resHeight;
+    private float simularity;
+    private int resWidth, resHeight;
+    private Texture2D userDrawingTexture;
 
     string SCPath = "Assets/Resources/ScreenCapture/";
 
@@ -22,18 +25,16 @@ public class ScoreJudgement : MonoBehaviour
         resWidth = Screen.width;
         resHeight = Screen.height;
 
+        InitScoreVar();
+
         Instantiate(screenCaptureCamera);
     }
+
     void Update() //테스트용 지워도 무관
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ExtractAnswerMap(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            UnityEngine.Debug.Log("ClearJudgement : " + JudgeClear(1));
+            StartCoroutine(ExtractAnswerMap(1));
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
@@ -42,22 +43,28 @@ public class ScoreJudgement : MonoBehaviour
         }
     }
 
+    private void InitScoreVar()
+    {
+        isScoreLoad = false;
+        simularity = 0f;
+    }
+
     private Texture2D GetAnswerTexture(int stageNum)
     {
+        progressState = "Getting Answer Map";
+
         return ReadPNGAsTexture("Answer_Stage" + stageNum);
     }
 
-    private Texture2D GetUserDrawingTexture()
+    private IEnumerator GetUserDrawingTexture()
     {
-        Texture2D screenCapture = CaptureScreenAsTexture();
+        progressState = "Getting User Drawing";
 
-        List<List<int>> positiveLst = new List<List<int>>();
+        userDrawingTexture = CaptureScreenAsTexture();
 
-        (screenCapture, positiveLst) = BinarizeTexture(screenCapture, resWidth, resHeight);
+        yield return StartCoroutine(BinarizeTexture(userDrawingTexture, resWidth, resHeight));
 
-        SaveTextureAsPNG(screenCapture, "UserDrawing");
-
-        return screenCapture;
+        StartCoroutine(SaveTextureAsPNG(userDrawingTexture, "UserDrawing"));
     }
 
     private Texture2D CaptureScreenAsTexture()
@@ -77,27 +84,6 @@ public class ScoreJudgement : MonoBehaviour
         screenCaptureCamera.targetTexture = null;
 
         return screenShot;
-    }
-
-    private void SaveTextureAsPNG(Texture2D tx, string fileName)
-    {
-        //string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        //string fileName = "SCREENSHOT-" + timestamp + ".png";
-        if (!fileName.EndsWith(".png"))
-        {
-            fileName = fileName + ".png";
-        }
-
-        byte[] bytes = tx.EncodeToPNG();
-
-        if (!Directory.Exists(SCPath))
-        {
-            Directory.CreateDirectory(SCPath);
-        }
-
-        File.WriteAllBytes(SCPath + fileName, bytes);
-
-        UnityEngine.Debug.Log("Saved Texture As PNG : " + fileName);
     }
 
     private Texture2D ReadPNGAsTexture(string fileName)
@@ -121,9 +107,32 @@ public class ScoreJudgement : MonoBehaviour
         return texture;
     }
 
-    private (Texture2D, List<List<int>>) BinarizeTexture(Texture2D tx, int width, int height)
+    private IEnumerator SaveTextureAsPNG(Texture2D tx, string fileName)
     {
-        List<List<int>> positiveLst = new List<List<int>>();
+        //string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        //string fileName = "SCREENSHOT-" + timestamp + ".png";
+        if (!fileName.EndsWith(".png"))
+        {
+            fileName = fileName + ".png";
+        }
+
+        byte[] bytes = tx.EncodeToPNG();
+
+        if (!Directory.Exists(SCPath))
+        {
+            Directory.CreateDirectory(SCPath);
+        }
+
+        File.WriteAllBytes(SCPath + fileName, bytes);
+
+        UnityEngine.Debug.Log("Saved Texture As PNG : " + fileName);
+
+        yield return null;
+    }
+
+    private IEnumerator BinarizeTexture(Texture2D tx, int width, int height)
+    {
+        progressState = "Binarizing Texture";
 
         for (int x = 0; x < width; x++)
         {
@@ -133,58 +142,36 @@ public class ScoreJudgement : MonoBehaviour
                 if (rgbValue[0] > 0.8 && rgbValue[1] > 0.8 && rgbValue[2] > 0.8) //색깔에 따른 인식 개선 필요
                 {
                     tx.SetPixel(x, y, Color.white);
-
-                    positiveLst.Add(new List<int> { x, y });
                 }
                 else
                 {
                     tx.SetPixel(x, y, Color.black);
                 }
             }
-        }
 
-        return (tx, positiveLst);
+            if (x % 10 == 0)
+            {
+                yield return null;
+            }
+        }
     }
 
-    //private Texture2D ExpandTexturePixel(Texture2D tx, List<List<int>> positiveLst, int width, int height, int expandScale)
-    //{
-    //    Texture2D tmpTexture = tx;
-
-    //    for (int i = 0; i < positiveLst.Count;i++)
-    //    {
-    //        List<int> pivot = positiveLst[i];
-
-    //        for (int x = pivot[0] - expandScale; x < pivot[0] + expandScale + 1; x++)
-    //        {
-    //            for (int y = pivot[1] - expandScale; y < pivot[1] + expandScale + 1; y++)
-    //            {
-    //                if ((x >= 0 && x <= width) && (y >= 0 && y <= height))
-    //                {
-    //                    tmpTexture.SetPixel(x, y, Color.white);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    return tmpTexture;
-    //}
-
-    //Scores drawing according to simularity
-
-    private float ScoreDrawingByGrid(Texture2D answerTx, Texture2D userDrawingTx, int gridScale)
+    private IEnumerator ScoreDrawingByGrid(Texture2D answerTx, Texture2D userDrawingTx, int gridScale)
     {
+        progressState = "Scoring Laser Drawing";
+
         if (answerTx.width != userDrawingTx.width || answerTx.height != userDrawingTx.height)
         {
             UnityEngine.Debug.Log("Error : ScoringDrawingByGrid() / Texture Size Difference");
-            return 0.0f;
+            yield break;
         }
 
         int maxCnt = 0;
         int hitCnt = 0;
 
-        for (int c = 0; c < answerTx.width - gridScale; c = c + gridScale)
+        for (int r = 0; r < answerTx.height - gridScale; r = r + gridScale)
         {
-            for (int r = 0; r < answerTx.height - gridScale; r = r + gridScale)
+            for (int c = 0; c < answerTx.width - gridScale; c = c + gridScale)
             {
                 bool isAFilled = false;
                 bool isUFilled = false;
@@ -229,26 +216,39 @@ public class ScoreJudgement : MonoBehaviour
                     }
                 }
             }
-        }
 
-        return (float)hitCnt / (float)maxCnt;
+            yield return null;
+        }
+        simularity = (float)hitCnt / (float)maxCnt;
     }
 
     //================================PUBLIC=================================================
 
-    //Judges if the score satisfies the threshold of each stage and Returns (star count, simularity)
-    public (int, float) JudgeClear(int stageNum)
+    public IEnumerator StartJudge(int stageNum)
     {
+        InitScoreVar();
+
         Texture2D answerTx = GetAnswerTexture(stageNum);
-        Texture2D userDrawingTx = GetUserDrawingTexture();
+
+        yield return StartCoroutine(GetUserDrawingTexture());
 
         if (answerTx == null)
         {
             UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum + "  Generate Answer File First!");
+        }
+        yield return StartCoroutine(ScoreDrawingByGrid(answerTx, userDrawingTexture, 10));
+
+        isScoreLoad = true;
+        progressState = null;
+    }
+
+    public (int, float) GetScore()
+    {
+        if (!isScoreLoad)
+        {
+            UnityEngine.Debug.Log("ScoreJudgement : Score Not Loaded Yet");
             return (0, 0.0f);
         }
-
-        var simularity = ScoreDrawingByGrid(answerTx, userDrawingTx, 10);
 
         float oneStarThreshold = 0.8f;
         float twoStarThreshold = 0.9f;
@@ -272,15 +272,16 @@ public class ScoreJudgement : MonoBehaviour
         }
     }
 
-    public void ExtractAnswerMap(int stageNum)
+    public IEnumerator ExtractAnswerMap(int stageNum)
     {
+        progressState = "Extracting Answer Map";
         Texture2D screenCapture = CaptureScreenAsTexture();
 
-        List<List<int>> positiveLst = new List<List<int>>();
+        yield return StartCoroutine(BinarizeTexture(screenCapture, resWidth, resHeight));
 
-        (screenCapture, positiveLst) = BinarizeTexture(screenCapture, resWidth, resHeight);
+        yield return StartCoroutine(SaveTextureAsPNG(screenCapture, "Answer_Stage" + stageNum));
 
-        SaveTextureAsPNG(screenCapture, "Answer_Stage" + stageNum);
+        progressState = null;
     }
 
     public void ResetScreenCaptureDirectory(string path)

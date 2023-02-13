@@ -7,13 +7,38 @@ using TMPro;
 public class ScorePanel : MonoBehaviour
 {
     public Sprite emptyStar, fullStar;
+    public GameObject canvasObj;
 
     private int simularity, starCnt;
     private ScoreJudgement scoreJudgement;
+    private bool isScoreReceived;
+
+    void Start()
+    {
+        isScoreReceived = false;
+        simularity = 0;
+        starCnt = 0;
+        scoreJudgement = GameObject.Find("ScoringObject").GetComponent<ScoreJudgement>();
+    }
 
     void Update()
     {
+        if (scoreJudgement.isScoreLoad && !isScoreReceived)
+        {
+            float tmpSim = 0f;
+            (starCnt, tmpSim) = scoreJudgement.GetScore();
+            simularity = (int)Mathf.Floor(tmpSim * 100);
 
+            UpdateScoreDisplay();
+
+            isScoreReceived = true;
+        }
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        SetSimularityText(simularity);
+        SetStar(starCnt);
     }
 
     private void SetSimularityText(float score)
@@ -52,21 +77,16 @@ public class ScorePanel : MonoBehaviour
 
     public void OnActive()
     {
-        scoreJudgement = GameObject.Find("ScoringObject").GetComponent<ScoreJudgement>();
         simularity = 0;
         starCnt = 0;
+        UpdateScoreDisplay();
 
-        float tmpSim = 0f;
-        (starCnt, tmpSim) = scoreJudgement.JudgeClear(1);
-
-        simularity = (int)Mathf.Floor(tmpSim * 100);
-
-        SetSimularityText(simularity);
-        SetStar(starCnt);
+        isScoreReceived = false;
     }
 
     public void ExitScorePanel()
     {
+        canvasObj.GetComponent<InGameUI>().Resume();
         gameObject.SetActive(false);
     }
 

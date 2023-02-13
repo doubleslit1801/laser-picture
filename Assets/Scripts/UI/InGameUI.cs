@@ -4,20 +4,21 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
     public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
     public GameObject grabButton, rotateImage;
-    public GameObject objSelPanel, settingsPanel, scorePanel, trashCan;
+    public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan;
     public Sprite openTrash, closeTrash;
 
     #region Private Variables
     private Camera cam;
 
-    private bool isHide, isControlButtonExist;
+    private bool isHide, isControlButtonExist, isLaserCountOn, isPause, isInit;
 
-    private GameObject preMouseUIObj, selectedObjUI;
+    private GameObject preMouseUIObj, selectedObjUI, preSelectedObj;
 
     private Canvas m_canvas;
     private GraphicRaycaster m_gr;
@@ -28,6 +29,7 @@ public class InGameUI : MonoBehaviour
     private List<GameObject> objControlButtonLst;
 
     private ObjectControl objControl;
+    private ScoreJudgement scoreJudgement;
 
     private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
     private int selectedObjUIIdx;
@@ -39,21 +41,30 @@ public class InGameUI : MonoBehaviour
         cam = Camera.main;
 
         preMouseUIObj = null;
+        preSelectedObj = null;
 
         isHide = false;
         isControlButtonExist = false;
+        isLaserCountOn = false;
+        isPause = false;
 
         m_canvas = gameObject.GetComponent<Canvas>();
         m_gr = m_canvas.GetComponent<GraphicRaycaster>();
         m_ped = new PointerEventData(null);
 
         objControl = GameObject.Find("ObjectController").GetComponent<ObjectControl>();
+        scoreJudgement = GameObject.Find("ScoringObject").GetComponent<ScoreJudgement>();
 
         objControlButtonLst = new List<GameObject>();
 
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
 
         selectedObjUIIdx = -1;
+
+        settingsPanel.SetActive(false);
+        scorePanel.SetActive(false);
+        loadingPanel.SetActive(false);
+        pauseBlock.SetActive(false);
 
         for (int i = 0; i < infoBoxSetTR.childCount; i++)
         {
@@ -67,25 +78,80 @@ public class InGameUI : MonoBehaviour
 
     void Update()
     {
-        UIOverMouseEffect();
-
-        UpdateSelectedObjUI();
-
-        if (objControl.curMouseState == ObjectControl.mouseState.Select)
+        if (isPause && isInit)
         {
-            if (!isControlButtonExist)
-            {
-                PopControlButton(objControl.selectedObj.transform.position);
-                isControlButtonExist = true;
-            }
+            UpdateSelectedObjUI();
+            ClearControlButton();
+            isInit = true;
         }
         else
         {
-            if (isControlButtonExist)
+            UIOverMouseEffect();
+
+            UpdateSelectedObjUI();
+
+            if (!isLaserCountOn)
             {
-                ClearControlButton();
-                isControlButtonExist = false;
+                StartCoroutine(UpdateLaserCount());
             }
+
+            if (objControl.curMouseState == ObjectControl.mouseState.Select)
+            {
+                if (!isControlButtonExist || preSelectedObj != objControl.selectedObj)
+                {
+                    PopControlButton(objControl.selectedObj.transform.position);
+                    isControlButtonExist = true;
+                    preSelectedObj = objControl.selectedObj;
+                }
+            }
+            else
+            {
+                if (isControlButtonExist)
+                {
+                    ClearControlButton();
+                    isControlButtonExist = false;
+                }
+            }
+        }
+        
+
+        if (loadingPanel.activeSelf)
+        {
+            UpdateLoadingScreen();
+        }
+    }
+
+    private IEnumerator UpdateLaserCount()
+    {
+        isLaserCountOn = true;
+        LineRenderer[] tmpObjLst = FindObjectsOfType(typeof(LineRenderer)) as LineRenderer[];
+
+        int cnt = 0;
+        foreach (LineRenderer lr in tmpObjLst)
+        {
+            if (lr.enabled)
+            {
+                cnt++;
+            }
+        }
+
+        optionPanel.transform.Find("LaserCount").GetComponent<TMP_Text>().text = cnt.ToString() + " / 99";
+
+        yield return new WaitForSeconds(1.0f);
+
+        isLaserCountOn = false;
+    }
+
+    private void UpdateLoadingScreen()
+    {
+        loadingPanel.transform.Find("LoadingCircle").Rotate(10 * Time.deltaTime * Vector3.forward);
+        if (scoreJudgement.progressState != null)
+        {
+            loadingPanel.transform.Find("LoadingText").GetComponent<TMP_Text>().text = "Now Loading... " + scoreJudgement.progressState;
+        }
+        else
+        {
+            loadingPanel.transform.Find("LoadingText").GetComponent<TMP_Text>().text = "Now Loading... ";
         }
     }
 
@@ -170,20 +236,6 @@ public class InGameUI : MonoBehaviour
 
             preMouseUIObj = null;
         }
-    }
-
-    private GameObject GetUIObjUnderMouse() //마우스에 위치한 UI 오브젝트 반환.
-    {
-        m_ped.position = Input.mousePosition;
-        List<RaycastResult> results = new List<RaycastResult>();
-        m_gr.Raycast(m_ped, results);
-
-        if (results.Count > 0)
-        {
-            return results[0].gameObject;
-        }
-
-        return null;
     }
 
     private void PopControlButton(Vector3 objPos)
@@ -283,7 +335,60 @@ public class InGameUI : MonoBehaviour
         rt.anchoredPosition = destination;
     }
 
+    private void ActivateScorePanel()
+    {
+        scorePanel.SetActive(true);
+        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+        scorePanel.GetComponent<ScorePanel>().OnActive();
+    }
+
+    private void ActivateLoadingPanel()
+    {
+        loadingPanel.SetActive(true);
+        loadingPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+    }
+
+    private IEnumerator GetScore()
+    {
+        ActivateLoadingPanel();
+
+        yield return StartCoroutine(scoreJudgement.StartJudge(1));
+
+        loadingPanel.SetActive(false);
+        ActivateScorePanel();
+    }
+
     //===========================Public==============================
+
+    public GameObject GetUIObjUnderMouse() //마우스에 위치한 UI 오브젝트 반환.
+    {
+        m_ped.position = Input.mousePosition;
+        List<RaycastResult> results = new List<RaycastResult>();
+        m_gr.Raycast(m_ped, results);
+
+        if (results.Count > 0)
+        {
+            return results[0].gameObject;
+        }
+
+        return null;
+    }
+
+    public void Pause()
+    {
+        pauseBlock.SetActive(true);
+        objControl.isPause = true;
+        objControl.isInit = false;
+        isPause = true;
+        isInit = false;
+    }
+
+    public void Resume()
+    {
+        pauseBlock.SetActive(false);
+        objControl.isPause = false;
+        isPause = false;
+    }
 
     public void PopHideButton() //월드 오브젝트 선택 패널 팝업버튼.
     {
@@ -325,22 +430,19 @@ public class InGameUI : MonoBehaviour
         objControl.DestroyMouseObj();
     }
 
-    public void PauseButton()
-    {
-
-    }
-
     public void SettingsButton()
     {
         settingsPanel.SetActive(true);
         settingsPanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
+
+        Pause();
     }
 
     public void SubmitButton()
     {
-        scorePanel.SetActive(true);
-        scorePanel.GetComponent<RectTransform>().localPosition = Vector3.zero;
-        scorePanel.GetComponent<ScorePanel>().OnActive();
+        StartCoroutine(GetScore());
+
+        Pause();
     }
 
     public void SaveStageButton()
