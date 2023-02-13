@@ -17,9 +17,9 @@ public class TestDevice : MonoBehaviour, IDevice
 
     void Update()
     {
-        if(inputLight != null)
+        if (inputLight != null)
         {
-            if(outputLight == null)
+            if (outputLight == null)
             {
                 outputLight = new Light(transform.position, transform.forward, lr, Color.green);
             }
@@ -35,7 +35,7 @@ public class TestDevice : MonoBehaviour, IDevice
         }
     }
 
-    public void HandleInput(Light light, Vector3 hitPos) 
+    public void HandleInput(Light light, Vector3 hitPos)
     {
         inputLight = light;
         inputPos = hitPos;

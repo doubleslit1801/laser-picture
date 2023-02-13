@@ -9,7 +9,7 @@ public class StageManager : MonoBehaviour
     private LineRenderer lr;
 
     public static StageManager Instance;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,7 +32,7 @@ public class StageManager : MonoBehaviour
     void Update()
     {
         //test code
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             SaveStage();
             StartCoroutine(TestCoroutine());
@@ -47,11 +47,11 @@ public class StageManager : MonoBehaviour
     public void ClearStage()
     {
         GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("Object");
-        foreach(GameObject obj in stageObjects)
+        foreach (GameObject obj in stageObjects)
         {
             Collider col = obj.GetComponent<Collider>();
             IDevice device = GameManager.Instance.SearchDevice(col);
-            if(device != null)
+            if (device != null)
             {
                 GameManager.Instance.RemoveDevice(col);
                 //destory all sibling objects
@@ -67,11 +67,11 @@ public class StageManager : MonoBehaviour
 
         stageNumber = number;
         lr.SetPositions(data.drawing);
-        foreach(ObjectData objData in data.objects)
+        foreach (ObjectData objData in data.objects)
         {
             Instantiate(
-                GameManager.Instance.GetPrefab(objData.prefab), 
-                objData.position, 
+                GameManager.Instance.GetPrefab(objData.prefab),
+                objData.position,
                 objData.rotation
             );
         }
@@ -84,7 +84,7 @@ public class StageManager : MonoBehaviour
 
         List<ObjectData> objects = new List<ObjectData>();
         GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("Object");
-        foreach(GameObject obj in stageObjects)
+        foreach (GameObject obj in stageObjects)
         {
             ObjectData objData = new ObjectData();
             objData.prefab = obj.name.Replace("(Clone)", "");

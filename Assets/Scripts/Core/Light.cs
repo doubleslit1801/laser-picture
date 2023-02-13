@@ -25,18 +25,18 @@ public class Light
         Direction = direction;
     }
 
-    public void Enable() 
+    public void Enable()
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(Origin, Direction, out hit, Mathf.Infinity, 1 << 6))
+        if (Physics.Raycast(Origin, Direction, out hit, Mathf.Infinity, 1 << 6))
         {
             Render(hit.point);
             Debug.DrawRay(Origin, Direction * hit.distance, Color.red);
 
             IDevice newTarget = GameManager.Instance.SearchDevice(hit.collider);
             //target device change
-            if(targetDevice != newTarget)
+            if (targetDevice != newTarget)
             {
                 MonoBehaviour.print(targetDevice + ">" + newTarget);
                 targetDevice?.HandleInputStop(this);
@@ -60,9 +60,9 @@ public class Light
         targetDevice = null;
     }
 
-    private void Render(float length = 100.0f) 
+    private void Render(float length = 100.0f)
     {
-        if(length == 0)
+        if (length == 0)
         {
             Renderer.enabled = false;
         }

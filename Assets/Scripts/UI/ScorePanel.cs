@@ -13,7 +13,7 @@ public class ScorePanel : MonoBehaviour
 
     void Update()
     {
-        
+
     }
 
     private void SetSimularityText(float score)
@@ -47,7 +47,7 @@ public class ScorePanel : MonoBehaviour
             gameObject.transform.Find("Stars").GetChild(1).GetComponent<UnityEngine.UI.Image>().sprite = emptyStar;
             gameObject.transform.Find("Stars").GetChild(2).GetComponent<UnityEngine.UI.Image>().sprite = emptyStar;
         }
-        
+
     }
 
     public void OnActive()

@@ -6,7 +6,7 @@ public class Laser : MonoBehaviour
 {
     private LineRenderer lr;
     private Light outputLight;
-    
+
     void Start()
     {
         lr = transform.GetChild(0).gameObject.GetComponent<LineRenderer>();
@@ -14,9 +14,9 @@ public class Laser : MonoBehaviour
 
     void Update()
     {
-        if(lr != null)
+        if (lr != null)
         {
-            if(outputLight == null)
+            if (outputLight == null)
             {
                 outputLight = new Light(transform.position, -transform.right, lr, Color.red);
             }

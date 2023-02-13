@@ -31,7 +31,7 @@ public class InGameUI : MonoBehaviour
 
     private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
     private int selectedObjUIIdx;
-        
+
     #endregion
 
     void Start()
@@ -52,7 +52,7 @@ public class InGameUI : MonoBehaviour
         objControlButtonLst = new List<GameObject>();
 
         infoBoxSetTR = objSelPanel.transform.Find("InfoBoxSet");
-        
+
         selectedObjUIIdx = -1;
 
         for (int i = 0; i < infoBoxSetTR.childCount; i++)
@@ -112,7 +112,7 @@ public class InGameUI : MonoBehaviour
             {
                 uiObjUnderMouse.transform.GetChild(0).Rotate(new Vector3(10f, 20f, 30f) * Time.deltaTime);
 
-                
+
                 Transform tr = null;
                 if (infoBoxSetTR.childCount > uiObjUnderMouse.transform.GetSiblingIndex())
                 {
@@ -194,7 +194,7 @@ public class InGameUI : MonoBehaviour
         selObjPos.z = 0f;
         GameObject tmpObj;
 
-        
+
         tmpObj = InstantiateUIObj(rotateImage, selObjPos, Vector3.one);
         objControlButtonLst.Add(tmpObj);
 
@@ -204,7 +204,7 @@ public class InGameUI : MonoBehaviour
 
     private void ClearControlButton()
     {
-        for (int i = 0; i < objControlButtonLst.Count;i++)
+        for (int i = 0; i < objControlButtonLst.Count; i++)
         {
             Destroy(objControlButtonLst[i]);
         }

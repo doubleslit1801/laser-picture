@@ -33,7 +33,8 @@ public class Prism : MonoBehaviour, IDevice
         foreach (var i in lights)
         {
             //print(Vector3.Angle(i.Key.Direction, transform.forward));
-            if(Vector3.Angle(i.Key.Direction, transform.forward) <= 30.0f){
+            if (Vector3.Angle(i.Key.Direction, transform.forward) <= 30.0f)
+            {
                 i.Value.isEnabled = true;
                 for (int j = 0; j < 2; j++)
                 {

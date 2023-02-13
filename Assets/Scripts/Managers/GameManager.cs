@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private Dictionary<Collider, IDevice> deviceDict;
 
     public static GameManager Instance;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -39,24 +39,24 @@ public class GameManager : MonoBehaviour
         stageDataPath = Path.Combine(Application.dataPath, "StageData.json");
         LoadStageData();
     }
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public GameObject GetPrefab(string name)
     {
         GameObject prefab;
 
-        if(prefabDict.TryGetValue(name, out prefab))
+        if (prefabDict.TryGetValue(name, out prefab))
         {
             return prefab;
         }
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
     {
         IDevice device;
 
-        if(deviceDict.TryGetValue(col, out device))
+        if (deviceDict.TryGetValue(col, out device))
         {
             return device;
         }
@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void registerDevice(Collider col, IDevice device) 
+    public void registerDevice(Collider col, IDevice device)
     {
         deviceDict[col] = device;
     }
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
 
     public StageData GetStageData(int stageNumber)
     {
-        if(stageNumber < 0 && stageNumber >= MaxStage)
+        if (stageNumber < 0 && stageNumber >= MaxStage)
         {
             //error
         }
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
 
     public int GetPlayerStar(int stageNumber)
     {
-        if(stageNumber < 0 && stageNumber >= MaxStage)
+        if (stageNumber < 0 && stageNumber >= MaxStage)
         {
             //error
         }
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadStageData()
     {
-        if(File.Exists(stageDataPath))
+        if (File.Exists(stageDataPath))
         {
             string json = File.ReadAllText(stageDataPath);
             stageData = JsonHelper.FromJson<StageData>(json);
@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
         else
         {
             stageData = new StageData[MaxStage];
-            for(int i=0; i<MaxStage; i++) 
+            for (int i = 0; i < MaxStage; i++)
             {
                 stageData[i] = new StageData();
                 stageData[i].drawing = new Vector3[2];
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadPlayerData()
     {
-        if(File.Exists(playerDataPath))
+        if (File.Exists(playerDataPath))
         {
             string json = File.ReadAllText(playerDataPath);
             playerData = JsonUtility.FromJson<PlayerData>(json);
