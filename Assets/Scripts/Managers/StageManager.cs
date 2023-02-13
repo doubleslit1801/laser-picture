@@ -6,6 +6,7 @@ public class StageManager : MonoBehaviour
 {
     [SerializeField]
     private int stageNumber = 0;
+    private int stageMaxLaser = 0;
     private LineRenderer lr;
 
     public static StageManager Instance;
@@ -66,6 +67,7 @@ public class StageManager : MonoBehaviour
         ClearStage();
 
         stageNumber = number;
+        stageMaxLaser = data.maxLaser;
         lr.SetPositions(data.drawing);
         foreach (ObjectData objData in data.objects)
         {
@@ -80,6 +82,7 @@ public class StageManager : MonoBehaviour
     public void SaveStage()
     {
         StageData data = new StageData();
+        data.maxLaser = stageMaxLaser;
         data.drawing = GameManager.Instance.GetStageData(stageNumber).drawing;
 
         List<ObjectData> objects = new List<ObjectData>();

@@ -13,6 +13,7 @@ public class ObjectData
 [System.Serializable]
 public class StageData
 {
+    public int maxLaser;
     public Vector3[] drawing;
     public ObjectData[] objects;
 }
