@@ -9,6 +9,10 @@ public class StageManager : MonoBehaviour
     private int stageMaxLaser = 0;
     private LineRenderer lr;
 
+    private bool countReserved;
+    public int StageMaxLaser { get => stageMaxLaser; }
+    public int LaserCnt { get; private set; }
+
     public static StageManager Instance;
 
     private void Awake()
@@ -32,6 +36,15 @@ public class StageManager : MonoBehaviour
 
     void Update()
     {
+        if (countReserved)
+        {
+            LaserCount();
+            if (LaserCnt > stageMaxLaser)
+            {
+                ClearStage();
+                LaserCnt = 0;
+            }
+        }
         //test code
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -106,5 +119,28 @@ public class StageManager : MonoBehaviour
         ClearStage();
         yield return new WaitForSeconds(3);
         LoadStage(0);
+    }
+
+    public void ReservCount()
+    {
+        countReserved = true;
+    }
+
+    private void LaserCount()
+    {
+        print("count");
+        LineRenderer[] tmpObjLst = FindObjectsOfType<LineRenderer>();
+
+        int cnt = 0;
+        foreach (LineRenderer lr in tmpObjLst)
+        {
+            if (lr.enabled)
+            {
+                cnt++;
+            }
+        }
+
+        LaserCnt = cnt;
+        countReserved = false;
     }
 }

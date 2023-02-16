@@ -20,6 +20,8 @@ public class Prism : MonoBehaviour, IDevice
         public bool isEnabled;
     }
     private Dictionary<Light, LightInfo> lights = new();
+    private bool enableChanged;
+
     public Material laserMaterial;
 
     void Start()
@@ -35,6 +37,10 @@ public class Prism : MonoBehaviour, IDevice
             //print(Vector3.Angle(i.Key.Direction, transform.forward));
             if (Vector3.Angle(i.Key.Direction, transform.forward) <= 30.0f)
             {
+                if (!i.Value.isEnabled)
+                {
+                    enableChanged = true;
+                }
                 i.Value.isEnabled = true;
                 for (int j = 0; j < 2; j++)
                 {
@@ -53,6 +59,10 @@ public class Prism : MonoBehaviour, IDevice
             }
             else
             {
+                if (i.Value.isEnabled)
+                {
+                    enableChanged = true;
+                }
                 i.Value.isEnabled = false;
             }
         }
@@ -72,6 +82,11 @@ public class Prism : MonoBehaviour, IDevice
                 i.Value.outputLight.Item1.Disable();
                 i.Value.outputLight.Item2.Disable();
             }
+        }
+        if (enableChanged)
+        {
+            StageManager.Instance.ReservCount();
+            enableChanged = false;
         }
     }
 
@@ -98,7 +113,12 @@ public class Prism : MonoBehaviour, IDevice
                 Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, Normal(i)) * -1;
                 outputLight[i] = new(outputPos, outputDirection, lr, inputLight.LightColor);
             }
-            lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1]), Vector3.Angle(inputLight.Direction, transform.forward) <= 30.0f));
+            bool isEnabled = Vector3.Angle(inputLight.Direction, transform.forward) <= 30.0f;
+            lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1]), isEnabled));
+            if (isEnabled)
+            {
+                StageManager.Instance.ReservCount();
+            }
         }
     }
 
@@ -111,6 +131,7 @@ public class Prism : MonoBehaviour, IDevice
         Destroy(stopLight.laserObject.Item1);
         Destroy(stopLight.laserObject.Item2);
         lights.Remove(light);
+        StageManager.Instance.ReservCount();
     }
 
     private Vector3 Normal(int i)

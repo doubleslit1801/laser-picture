@@ -124,20 +124,13 @@ public class InGameUI : MonoBehaviour
     private IEnumerator UpdateLaserCount()
     {
         isLaserCountOn = true;
-        LineRenderer[] tmpObjLst = FindObjectsOfType(typeof(LineRenderer)) as LineRenderer[];
 
-        int cnt = 0;
-        foreach (LineRenderer lr in tmpObjLst)
-        {
-            if (lr.enabled)
-            {
-                cnt++;
-            }
-        }
+        int cnt = StageManager.Instance.LaserCnt;
+        int maxLaser = StageManager.Instance.StageMaxLaser;
 
-        optionPanel.transform.Find("LaserCount").GetComponent<TMP_Text>().text = cnt.ToString() + " / 99";
+        optionPanel.transform.Find("LaserCount").GetComponent<TMP_Text>().text = cnt + " / " + maxLaser;
 
-        yield return new WaitForSeconds(1.0f);
+        yield return null;
 
         isLaserCountOn = false;
     }
