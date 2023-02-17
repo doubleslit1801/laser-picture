@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public readonly int MaxStage = 100;
+    public int NowStage { get; set; }
 
     private string playerDataPath;
     private string stageDataPath;
@@ -123,6 +124,10 @@ public class GameManager : MonoBehaviour
     private void LoadPrefabs()
     {
         prefabDict["LaserStart"] = Resources.Load<GameObject>("Prefabs/LaserStart");
+        prefabDict["OnesideMirror"] = Resources.Load<GameObject>("Prefabs/OnesideMirror");
+        prefabDict["DoublesideMirror"] = Resources.Load<GameObject>("Prefabs/DoublesideMirror");
+        prefabDict["Prism"] = Resources.Load<GameObject>("Prefabs/Prism");
+        prefabDict["Blackhole"] = Resources.Load<GameObject>("Prefabs/Blackhole");
     }
 
     private void SaveStageData()

@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
-{
-    [SerializeField]
-    private int stageNumber = 0;
+{ 
     private int stageMaxLaser = 0;
     private LineRenderer lr;
 
+    public int stageNumber = 0;
     public static StageManager Instance;
 
     private void Awake()
@@ -27,7 +27,8 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         lr = GetComponent<LineRenderer>();
-        //StartCoroutine(TestCoroutine());
+        stageNumber = GameManager.Instance.NowStage;
+        LoadStage(stageNumber);
     }
 
     void Update()
@@ -71,6 +72,7 @@ public class StageManager : MonoBehaviour
         lr.SetPositions(data.drawing);
         foreach (ObjectData objData in data.objects)
         {
+            Debug.Log(objData.prefab);
             Instantiate(
                 GameManager.Instance.GetPrefab(objData.prefab),
                 objData.position,
