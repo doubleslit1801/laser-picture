@@ -519,7 +519,7 @@ GameObject:
   - component: {fileID: 1967756386}
   m_Layer: 6
   m_Name: Composer
-  m_TagString: Object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -615,7 +615,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightColor: {r: 0, g: 0, b: 0, a: 0}
-  laserMaterial: {fileID: 2100000, guid: b234e1586ac9f524f8162eb03da23c35, type: 2}
 --- !u!1 &2057893699
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,7 +714,7 @@ GameObject:
   - component: {fileID: 3519853159173399829}
   m_Layer: 6
   m_Name: LaserStart (1)
-  m_TagString: Object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -827,7 +826,7 @@ GameObject:
   - component: {fileID: 3519853160781481271}
   m_Layer: 6
   m_Name: LaserStart
-  m_TagString: Object
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -923,7 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289ffa7b19ea15946a1114ffa0bdc574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputColor: {r: 1, g: 0, b: 0, a: 1}
+  outputColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!4 &4056045297016954799
 Transform:
   m_ObjectHideFlags: 0
@@ -1040,7 +1039,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.1
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1138,8 +1137,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.1
+        time: 0.011173184
+        value: 1
         inSlope: 0
         outSlope: 0
         tangentMode: 0
