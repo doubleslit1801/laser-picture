@@ -19,7 +19,7 @@ public class Laser : MonoBehaviour
             if (outputLight == null)
             {
                 outputLight = new Light(transform.position, -transform.right, lr, Color.red);
-                StageManager.Instance.ReservCount();
+                StageManager.Instance.ReserveCount();
             }
             else
             {

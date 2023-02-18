@@ -123,7 +123,7 @@ public class StageManager : MonoBehaviour
         LoadStage(0);
     }
 
-    public void ReservCount()
+    public void ReserveCount()
     {
         countReserved = true;
     }
