@@ -60,6 +60,7 @@ public class Mirror : MonoBehaviour, IDevice
             Light outputLight = new(hitPos, outputDirection, lr, inputLight.LightColor);
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
             print(lights.Count);
+            StageManager.Instance.ReservCount();
         }
     }
 
@@ -71,5 +72,6 @@ public class Mirror : MonoBehaviour, IDevice
         Destroy(stopLight.laserObject);
         lights.Remove(light);
         print(lights.Count);
+        StageManager.Instance.ReservCount();
     }
 }
