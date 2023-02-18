@@ -34,7 +34,7 @@ public class ScoreJudgement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(ExtractAnswerMap(1));
+            StartCoroutine(ExtractAnswerMap(StageManager.Instance.GetCurrentStage()));
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
@@ -60,17 +60,24 @@ public class ScoreJudgement : MonoBehaviour
     {
         progressState = "Getting User Drawing";
 
-        userDrawingTexture = CaptureScreenAsTexture();
+        int[] maskLst = { LayerMask.NameToLayer("Default"), LayerMask.NameToLayer("Light Raycast") };
+        userDrawingTexture = CaptureScreenAsTexture(maskLst);
 
         yield return StartCoroutine(BinarizeTexture(userDrawingTexture, resWidth, resHeight));
 
         StartCoroutine(SaveTextureAsPNG(userDrawingTexture, "UserDrawing"));
     }
 
-    private Texture2D CaptureScreenAsTexture()
+    private Texture2D CaptureScreenAsTexture(int[] maskLst)
     {
         int renderWidth = resHeight;
         int renderHeight = resHeight;
+
+        screenCaptureCamera.cullingMask = 0;
+        foreach (int mask in maskLst)
+        {
+            screenCaptureCamera.cullingMask |= 1 << LayerMask.NameToLayer("Group");
+        }
 
         RenderTexture rt = new RenderTexture(renderWidth, renderHeight, 24);
         screenCaptureCamera.targetTexture = rt;
@@ -109,6 +116,7 @@ public class ScoreJudgement : MonoBehaviour
 
     private IEnumerator SaveTextureAsPNG(Texture2D tx, string fileName)
     {
+        progressState = progressState + " Saving Texture";
         //string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         //string fileName = "SCREENSHOT-" + timestamp + ".png";
         if (!fileName.EndsWith(".png"))
@@ -132,7 +140,7 @@ public class ScoreJudgement : MonoBehaviour
 
     private IEnumerator BinarizeTexture(Texture2D tx, int width, int height)
     {
-        progressState = "Binarizing Texture";
+        progressState = progressState + " Binarizing Texture";
 
         for (int x = 0; x < width; x++)
         {
@@ -228,7 +236,11 @@ public class ScoreJudgement : MonoBehaviour
     {
         InitScoreVar();
 
+        yield return StartCoroutine(ExtractAnswerMap(stageNum));
+
         Texture2D answerTx = GetAnswerTexture(stageNum);
+
+        progressState = "Getting User Drawing";
 
         yield return StartCoroutine(GetUserDrawingTexture());
 
@@ -275,9 +287,13 @@ public class ScoreJudgement : MonoBehaviour
     public IEnumerator ExtractAnswerMap(int stageNum)
     {
         progressState = "Extracting Answer Map";
-        Texture2D screenCapture = CaptureScreenAsTexture();
+
+        int[] maskLst = { LayerMask.NameToLayer("Default") };
+        Texture2D screenCapture = CaptureScreenAsTexture(maskLst);
 
         yield return StartCoroutine(BinarizeTexture(screenCapture, resWidth, resHeight));
+
+        progressState = "Extracting Answer Map";
 
         yield return StartCoroutine(SaveTextureAsPNG(screenCapture, "Answer_Stage" + stageNum));
 

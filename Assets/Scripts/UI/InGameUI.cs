@@ -8,8 +8,8 @@ using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
-    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism;
-    public GameObject grabButton, rotateImage;
+    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism, blackhole;
+    public GameObject grabButton, rotateImage, blackholePowerSlider;
     public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan;
     public Sprite openTrash, closeTrash;
 
@@ -235,13 +235,20 @@ public class InGameUI : MonoBehaviour
     {
         ClearControlButton();
 
-        Vector3 selObjPos = cam.WorldToScreenPoint(objPos + new Vector3(0, 0.5f, 0)) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
+        Vector3 selObjPos = cam.WorldToScreenPoint(objPos) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
         selObjPos.z = 0f;
         GameObject tmpObj;
 
-
-        tmpObj = InstantiateUIObj(rotateImage, selObjPos, Vector3.one);
-        objControlButtonLst.Add(tmpObj);
+        if (objControl.selectedObj.layer == LayerMask.NameToLayer("Blackhole"))
+        {
+            tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one);
+            objControlButtonLst.Add(tmpObj);
+        }
+        else
+        {
+            tmpObj = InstantiateUIObj(rotateImage, selObjPos, Vector3.one);
+            objControlButtonLst.Add(tmpObj);
+        }
 
         tmpObj = InstantiateUIObj(grabButton, selObjPos, Vector3.one);
         objControlButtonLst.Add(tmpObj);
@@ -345,7 +352,7 @@ public class InGameUI : MonoBehaviour
     {
         ActivateLoadingPanel();
 
-        yield return StartCoroutine(scoreJudgement.StartJudge(1));
+        yield return StartCoroutine(scoreJudgement.StartJudge(StageManager.Instance.GetCurrentStage()));
 
         loadingPanel.SetActive(false);
         ActivateScorePanel();
@@ -416,6 +423,11 @@ public class InGameUI : MonoBehaviour
     public void Button4()
     {
         objControl.InstantiateObj(prism, 0.0f);
+    }
+
+    public void Button5()
+    {
+        objControl.InstantiateObj(blackhole, 0.5f);
     }
 
     public void Trashcan() //선택된 월드 오브젝트 삭제.

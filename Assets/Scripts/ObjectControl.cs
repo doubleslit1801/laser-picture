@@ -110,9 +110,12 @@ public class ObjectControl : MonoBehaviour
         hits = Physics.RaycastAll(ray);
         for (int i = 0; i < hits.Length; i++)
         {
-            if (hits[i].transform.gameObject.CompareTag("Object"))
+            GameObject hitObj = hits[i].transform.gameObject;
+            Vector2 diff = new Vector2(hitObj.transform.position.x - hits[i].point.x, hitObj.transform.position.z - hits[i].point.z);
+
+            if (hitObj.CompareTag("Object") && diff.magnitude < 1)
             {
-                return hits[i].transform.gameObject;
+                return hitObj;
             }
         }
 

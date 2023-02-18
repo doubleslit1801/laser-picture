@@ -25,25 +25,74 @@ public class ScorePanel : MonoBehaviour
     {
         if (scoreJudgement.isScoreLoad && !isScoreReceived)
         {
+            SetStageNumber(StageManager.Instance.GetCurrentStage());
+
             float tmpSim = 0f;
             (starCnt, tmpSim) = scoreJudgement.GetScore();
             simularity = (int)Mathf.Floor(tmpSim * 100);
 
-            UpdateScoreDisplay();
+            StartCoroutine(UpdateScoreDisplay());
 
             isScoreReceived = true;
         }
     }
 
-    private void UpdateScoreDisplay()
+    private IEnumerator UpdateScoreDisplay()
     {
-        SetSimularityText(simularity);
-        SetStar(starCnt);
+        int tmpStarCnt = 0;
+        string tmpJudgement = "Fail";
+
+        for (int tmpSim = 0; tmpSim <= simularity; tmpSim++)
+        {
+            if (tmpSim > 95)
+            {
+                tmpStarCnt = 3;
+                tmpJudgement = "Excellent!";
+            }
+            else if (tmpSim > 90)
+            {
+                tmpStarCnt = 2;
+                tmpJudgement = "Good";
+            }
+            else if (tmpSim > 80)
+            {
+                tmpStarCnt = 1;
+                tmpJudgement = "Not Bad";
+            }
+
+            SetSimularityText(tmpSim);
+            SetStar(tmpStarCnt);
+
+            if (tmpSim > 80)
+            {
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (tmpSim > 70)
+            {
+                yield return new WaitForSeconds(0.05f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+
+        SetJudgement(tmpJudgement);
     }
 
     private void SetSimularityText(float score)
     {
         gameObject.transform.Find("Simularity").GetComponent<TMP_Text>().text = score.ToString() + "%";
+    }
+
+    private void SetStageNumber(int stageNumber)
+    {
+        gameObject.transform.Find("Title").GetComponent<TMP_Text>().text = "Stage " + stageNumber;
+    }
+
+    private void SetJudgement(string judgement)
+    {
+        gameObject.transform.Find("Judgement").GetComponent<TMP_Text>().text = judgement;
     }
 
     private void SetStar(int cnt)
@@ -84,24 +133,20 @@ public class ScorePanel : MonoBehaviour
         isScoreReceived = false;
     }
 
-    public void ExitScorePanel()
-    {
-        canvasObj.GetComponent<InGameUI>().Resume();
-        gameObject.SetActive(false);
-    }
-
     public void ResetStage()
     {
-
+        canvasObj.GetComponent<InGameUI>().Resume();
+        StageManager.Instance.ClearStage();
+        gameObject.SetActive(false);
     }
 
     public void ReturnStageSelectScene()
     {
-
+        //씬 이동
     }
 
     public void NextStage()
     {
-
+        //씬 이동 or 로드
     }
 }
