@@ -28,6 +28,10 @@ public class Composer : MonoBehaviour, IDevice
     {
         if (inputLights.Count > 0)
         {
+            if (outputLight is null)
+            {
+                StageManager.Instance.ReserveCount();
+            }
             Vector3 outputPos = transform.position + transform.up * 0.5f + transform.forward;
             Color newColor = new(0, 0, 0);
             foreach (var light in inputLights)
@@ -48,6 +52,10 @@ public class Composer : MonoBehaviour, IDevice
         }
         else
         {
+            if (outputLight is not null)
+            {
+                StageManager.Instance.ReserveCount();
+            }
             outputLight?.Disable();
             outputLight = null;
             lightColor = new(0, 0, 0, 0);
