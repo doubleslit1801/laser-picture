@@ -14,6 +14,5 @@ public class ObjectData
 public class StageData
 {
     public int maxLaser;
-    public Vector3[] drawing;
     public ObjectData[] objects;
 }

@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 { 
+    [SerializeField]
+    private GameObject drawing;
+
     private int stageMaxLaser = 0;
-    private LineRenderer lr;
 
     private bool countReserved;
     public int StageMaxLaser { get => stageMaxLaser; }
@@ -30,7 +32,6 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
         stageNumber = GameManager.Instance.NowStage;
         LoadStage(stageNumber);
     }
@@ -78,11 +79,12 @@ public class StageManager : MonoBehaviour
     public void LoadStage(int number)
     {
         StageData data = GameManager.Instance.GetStageData(number);
+        Texture texture = GameManager.Instance.GetStageDrawing(number);
         ClearStage();
 
         stageNumber = number;
         stageMaxLaser = data.maxLaser;
-        lr.SetPositions(data.drawing);
+        drawing.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
         foreach (ObjectData objData in data.objects)
         {
             Debug.Log(objData.prefab);
@@ -98,7 +100,6 @@ public class StageManager : MonoBehaviour
     {
         StageData data = new StageData();
         data.maxLaser = stageMaxLaser;
-        data.drawing = GameManager.Instance.GetStageData(stageNumber).drawing;
 
         List<ObjectData> objects = new List<ObjectData>();
         GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("Object");

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     private string playerDataPath;
     private string stageDataPath;
     private PlayerData playerData;
+    private Texture[] stageDrawings;
     private StageData[] stageData;
     private Dictionary<string, GameObject> prefabDict;
     private Dictionary<Collider, IDevice> deviceDict;
@@ -33,6 +34,9 @@ public class GameManager : MonoBehaviour
         prefabDict = new Dictionary<string, GameObject>();
         deviceDict = new Dictionary<Collider, IDevice>();
         LoadPrefabs();
+
+        stageDrawings = new Texture[MaxStage];
+        LoadStageDrawings();
 
         playerDataPath = Path.Combine(Application.dataPath, "PlayerData.json");
         LoadPlayerData();
@@ -106,6 +110,15 @@ public class GameManager : MonoBehaviour
         SaveStageData();
     }
 
+    public Texture GetStageDrawing(int stageNumber)
+    {
+        if (stageNumber < 0 && stageNumber >= MaxStage)
+        {
+            //error
+        }
+        return stageDrawings[stageNumber];
+    }
+
     public int GetPlayerStar(int stageNumber)
     {
         if (stageNumber < 0 && stageNumber >= MaxStage)
@@ -130,6 +143,12 @@ public class GameManager : MonoBehaviour
         prefabDict["Blackhole"] = Resources.Load<GameObject>("Prefabs/Blackhole");
     }
 
+    private void LoadStageDrawings()
+    {
+        stageDrawings[0] = ReadPNGAsTexture("drawing_none");
+        stageDrawings[1] = ReadPNGAsTexture("drawing_test");
+    }
+
     private void SaveStageData()
     {
         string json = JsonHelper.ToJson(stageData, true);
@@ -150,7 +169,6 @@ public class GameManager : MonoBehaviour
             {
                 stageData[i] = new StageData();
                 stageData[i].maxLaser = 0;
-                stageData[i].drawing = new Vector3[2];
                 stageData[i].objects = new ObjectData[1];
                 stageData[i].objects[0] = new ObjectData();
                 stageData[i].objects[0].prefab = "LaserStart";
@@ -179,5 +197,28 @@ public class GameManager : MonoBehaviour
             Array.Clear(playerData.stars, 0, MaxStage);
             SavePlayerData();
         }
+    }
+
+    private Texture2D ReadPNGAsTexture(string fileName)
+    {
+        string SCPath = "Assets/Resources/ScreenCapture/";
+
+        if (!fileName.EndsWith(".png"))
+        {
+            fileName = fileName + ".png";
+        }
+
+        if (!File.Exists(SCPath + fileName))
+        {
+            return null;
+        }
+
+        byte[] byteTexture = File.ReadAllBytes(SCPath + fileName);
+        Texture2D texture = new Texture2D(1, 1);
+        texture.LoadImage(byteTexture);
+
+        UnityEngine.Debug.Log("Read PNG As Texture : " + fileName);
+
+        return texture;
     }
 }

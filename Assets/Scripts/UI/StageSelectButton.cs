@@ -22,6 +22,6 @@ public class StageSelectButton : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         SceneManager.LoadScene("InGameUITestScene");
-        GameManager.Instance.NowStage = 0;
+        GameManager.Instance.NowStage = 1;
     }
 }
