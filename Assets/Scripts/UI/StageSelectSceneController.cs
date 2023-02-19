@@ -9,10 +9,29 @@ public class StageSelectSceneController : MonoBehaviour
     public GameObject cameraObj;
     private bool isRunning = false;
 
+    private static GameObject stageSelectButton;
+
     private void Start()
     {
         cameraObj = Camera.main.gameObject;
 
+        stageSelectButton ??= Resources.Load<GameObject>("Prefabs/UI/StageSelect");
+
+        for (int world = 0; world < 3; world++)
+        {
+            for (int row = 0; row < 4; row++)
+            {
+                for (int col = 0; col < 8; col++)
+                {
+                    int stage = world * 32 + row * 8 + col;
+                    print("created button: " + stage);
+                    GameObject button = MonoBehaviour.Instantiate(stageSelectButton);
+                    Vector3 pos = new Vector3(30 * (world + 2) + 2 * col - 5, 0, 3 - 2.5f * row);
+                    button.transform.position = pos;
+                    button.transform.GetChild(0).GetComponent<StageSelectButton>().Stage = stage;
+                }
+            }
+        }
     }
 
     public void ToState(int StateID)
