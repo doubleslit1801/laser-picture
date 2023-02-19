@@ -34,12 +34,27 @@ public class ScoreJudgement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(ExtractAnswerMap(StageManager.Instance.GetCurrentStage()));
+            //StartCoroutine(ExtractAnswerMap(StageManager.Instance.GetCurrentStage()));
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            ResetScreenCaptureDirectory(SCPath);
+            //ResetScreenCaptureDirectory(SCPath);
+        }
+    }
+
+    //임시 테스트용
+    private void SetLaserLayer()
+    {
+        LineRenderer[] tmpObjLst = FindObjectsOfType<LineRenderer>();
+
+        foreach (LineRenderer lr in tmpObjLst)
+        {
+            if (lr.enabled)
+            {
+                lr.gameObject.layer = LayerMask.NameToLayer("Laser");
+            }
         }
     }
 
@@ -60,7 +75,7 @@ public class ScoreJudgement : MonoBehaviour
     {
         progressState = "Getting User Drawing";
 
-        int[] maskLst = { LayerMask.NameToLayer("Default"), LayerMask.NameToLayer("Light Raycast") };
+        int[] maskLst = { LayerMask.NameToLayer("Laser")};
         userDrawingTexture = CaptureScreenAsTexture(maskLst);
 
         yield return StartCoroutine(BinarizeTexture(userDrawingTexture, resWidth, resHeight));
@@ -73,10 +88,12 @@ public class ScoreJudgement : MonoBehaviour
         int renderWidth = resHeight;
         int renderHeight = resHeight;
 
+        SetLaserLayer();
+
         screenCaptureCamera.cullingMask = 0;
         foreach (int mask in maskLst)
         {
-            screenCaptureCamera.cullingMask |= 1 << LayerMask.NameToLayer("Group");
+            screenCaptureCamera.cullingMask |= 1 << mask;
         }
 
         RenderTexture rt = new RenderTexture(renderWidth, renderHeight, 24);
@@ -147,7 +164,7 @@ public class ScoreJudgement : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 Color rgbValue = tx.GetPixel(x, y);
-                if (rgbValue[0] > 0.8 && rgbValue[1] > 0.8 && rgbValue[2] > 0.8) //색깔에 따른 인식 개선 필요
+                if (rgbValue != Color.black) //색깔에 따른 인식 개선 필요
                 {
                     tx.SetPixel(x, y, Color.white);
                 }
@@ -230,6 +247,33 @@ public class ScoreJudgement : MonoBehaviour
         simularity = (float)hitCnt / (float)maxCnt;
     }
 
+    private void SetPlayerStar()
+    {
+        int starCnt = 0;
+        float oneStarThreshold = 0.8f;
+        float twoStarThreshold = 0.9f;
+        float threeStarThreshold = 0.95f;
+
+        if (simularity > threeStarThreshold)
+        {
+            starCnt = 3;
+        }
+        else if (simularity > twoStarThreshold)
+        {
+            starCnt = 2;
+        }
+        else if (simularity > oneStarThreshold)
+        {
+            starCnt = 1;
+        }
+        else
+        {
+            starCnt = 0;
+        }
+
+        GameManager.Instance.SetPlayerStar(StageManager.Instance.GetCurrentStage(), starCnt);
+    }
+
     //================================PUBLIC=================================================
 
     public IEnumerator StartJudge(int stageNum)
@@ -250,6 +294,8 @@ public class ScoreJudgement : MonoBehaviour
         }
         yield return StartCoroutine(ScoreDrawingByGrid(answerTx, userDrawingTexture, 10));
 
+        SetPlayerStar();
+
         isScoreLoad = true;
         progressState = null;
     }
@@ -262,33 +308,14 @@ public class ScoreJudgement : MonoBehaviour
             return (0, 0.0f);
         }
 
-        float oneStarThreshold = 0.8f;
-        float twoStarThreshold = 0.9f;
-        float threeStarThreshold = 0.95f;
-
-        if (simularity > threeStarThreshold)
-        {
-            return (3, simularity);
-        }
-        else if (simularity > twoStarThreshold)
-        {
-            return (2, simularity);
-        }
-        else if (simularity > oneStarThreshold)
-        {
-            return (1, simularity);
-        }
-        else
-        {
-            return (0, simularity);
-        }
+        return (GameManager.Instance.GetPlayerStar(StageManager.Instance.GetCurrentStage()), simularity);
     }
 
     public IEnumerator ExtractAnswerMap(int stageNum)
     {
         progressState = "Extracting Answer Map";
 
-        int[] maskLst = { LayerMask.NameToLayer("Default") };
+        int[] maskLst = { LayerMask.NameToLayer("Answer") };
         Texture2D screenCapture = CaptureScreenAsTexture(maskLst);
 
         yield return StartCoroutine(BinarizeTexture(screenCapture, resWidth, resHeight));

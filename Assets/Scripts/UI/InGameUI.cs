@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
 public class InGameUI : MonoBehaviour
 {
-    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism, blackhole;
-    public GameObject grabButton, rotateImage, blackholePowerSlider;
+    public GameObject laserStart, oneSideMirror, doubleSideMirror, prism, blackhole, composer;
+    public GameObject grabButton, rotateImage, blackholePowerSlider, blackholeRange;
     public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan;
     public Sprite openTrash, closeTrash;
 
@@ -31,8 +32,11 @@ public class InGameUI : MonoBehaviour
     private ObjectControl objControl;
     private ScoreJudgement scoreJudgement;
 
-    private string[] objNameLst = { "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)" };
+    private string[] objNameLst = { "LaserStart(Clone)", "LaserStart(Clone)", "LaserStart(Clone)", "OnesideMirror(Clone)", "DoublesideMirror(Clone)", "Prism(Clone)", "Blackhole(Clone)", "Composer(Clone)" };
     private int selectedObjUIIdx;
+
+    private Slider blackholeSlider;
+    private GameObject blackholeRangeSaveObj;
 
     #endregion
 
@@ -42,6 +46,8 @@ public class InGameUI : MonoBehaviour
 
         preMouseUIObj = null;
         preSelectedObj = null;
+        blackholeSlider = null;
+        blackholeRangeSaveObj = null;
 
         isHide = false;
         isControlButtonExist = false;
@@ -99,9 +105,17 @@ public class InGameUI : MonoBehaviour
             {
                 if (!isControlButtonExist || preSelectedObj != objControl.selectedObj)
                 {
-                    PopControlButton(objControl.selectedObj.transform.position);
+                    PopControlButton(objControl.selectedObj);
                     isControlButtonExist = true;
                     preSelectedObj = objControl.selectedObj;
+                }
+
+                if (blackholeSlider != null)
+                {
+                    CapsuleCollider blackholeCol = objControl.selectedObj.transform.Find("Range").GetComponent<CapsuleCollider>();
+                    blackholeCol.radius = blackholeSlider.value;
+                    float radius = blackholeCol.radius;
+                    blackholeRangeSaveObj.transform.localScale = radius * Vector3.one;
                 }
             }
             else
@@ -148,70 +162,47 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    private bool CheckTagExist(GameObject obj, string[] tags) //tags중 obj의 tag에 해당하는 tag가 있는지 확인.
-    {
-        for (int i = 0; i < tags.Length; i++)
-        {
-            if (obj.CompareTag(tags[i]))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void UIOverMouseEffect() //마우스 호버링 이펙트 모음.
     {
         GameObject uiObjUnderMouse = GetUIObjUnderMouse();
-        string[] tagMask = { "SelectButton", "Trashcan" };
 
-        if (uiObjUnderMouse != null && CheckTagExist(uiObjUnderMouse, tagMask))
+        if (uiObjUnderMouse != null && uiObjUnderMouse.CompareTag("SelectButton"))
         {
-            if (uiObjUnderMouse.CompareTag("SelectButton"))
+            uiObjUnderMouse.transform.GetChild(0).Rotate(new Vector3(10f, 20f, 30f) * Time.deltaTime);
+
+
+            Transform tr = null;
+            if (infoBoxSetTR.childCount > uiObjUnderMouse.transform.GetSiblingIndex())
             {
-                uiObjUnderMouse.transform.GetChild(0).Rotate(new Vector3(10f, 20f, 30f) * Time.deltaTime);
-
-
-                Transform tr = null;
-                if (infoBoxSetTR.childCount > uiObjUnderMouse.transform.GetSiblingIndex())
-                {
-                    tr = infoBoxSetTR.GetChild(uiObjUnderMouse.transform.GetSiblingIndex());
-                }
-
-                if (tr != null)
-                {
-                    if (tr.gameObject.activeSelf == false)
-                    {
-                        tr.gameObject.SetActive(true);
-                    }
-
-                    RectTransform uiRT = tr.gameObject.GetComponent<RectTransform>();
-                    RectTransform buttonRT = uiObjUnderMouse.GetComponent<RectTransform>();
-                    Vector2 mousePos = Input.mousePosition;
-
-                    Vector3 pivotPos = new Vector3(0f, Screen.height / 2, 0f);
-                    Vector3 uiLocalPos = new Vector3(mousePos.x + uiRT.rect.width / 2, mousePos.y - uiRT.rect.height / 2, -100f) - pivotPos;
-
-                    uiRT.localPosition = uiLocalPos;
-                }
-
-                preMouseUIObj = uiObjUnderMouse;
+                tr = infoBoxSetTR.GetChild(uiObjUnderMouse.transform.GetSiblingIndex());
             }
 
-            if (uiObjUnderMouse.CompareTag("Trashcan"))
+            if (tr != null)
             {
-                trashCan.GetComponent<UnityEngine.UI.Image>().sprite = openTrash;
+                if (tr.gameObject.activeSelf == false)
+                {
+                    tr.gameObject.SetActive(true);
+                }
 
-                preMouseUIObj = uiObjUnderMouse;
+                RectTransform uiRT = tr.gameObject.GetComponent<RectTransform>();
+                RectTransform buttonRT = uiObjUnderMouse.GetComponent<RectTransform>();
+                Vector2 mousePos = Input.mousePosition;
+
+                Vector3 pivotPos = new Vector3(0f, Screen.height / 2, 0f);
+                Vector3 uiLocalPos = new Vector3(mousePos.x + uiRT.rect.width / 2, mousePos.y - uiRT.rect.height / 2, -100f) - pivotPos;
+
+                if (uiLocalPos.y + pivotPos.y < uiRT.rect.height / 2)
+                {
+                    uiLocalPos.y = uiRT.rect.height / 2 - pivotPos.y;
+                }
+
+                uiRT.localPosition = uiLocalPos;
             }
+
+            preMouseUIObj = uiObjUnderMouse;
         }
         else if (preMouseUIObj != null)
         {
-            if (preMouseUIObj.CompareTag("Trashcan"))
-            {
-                trashCan.GetComponent<UnityEngine.UI.Image>().sprite = closeTrash;
-            }
-
             if (preMouseUIObj.CompareTag("SelectButton"))
             {
                 preMouseUIObj.transform.GetChild(0).localRotation = Quaternion.Euler(0f, 45f, 45f);
@@ -231,17 +222,23 @@ public class InGameUI : MonoBehaviour
         }
     }
 
-    private void PopControlButton(Vector3 objPos)
+    private void PopControlButton(GameObject targetObj)
     {
         ClearControlButton();
 
-        Vector3 selObjPos = cam.WorldToScreenPoint(objPos) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
+        Vector3 selObjPos = cam.WorldToScreenPoint(targetObj.transform.position) + new Vector3(-Screen.width / 2, -Screen.height / 2, 0.0f);
         selObjPos.z = 0f;
         GameObject tmpObj;
 
-        if (objControl.selectedObj.layer == LayerMask.NameToLayer("Blackhole"))
+        if (targetObj.layer == LayerMask.NameToLayer("Blackhole"))
         {
             tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one);
+            blackholeSlider = tmpObj.GetComponent<Slider>();
+            blackholeSlider.value = targetObj.transform.Find("Range").GetComponent<CapsuleCollider>().radius;
+            objControlButtonLst.Add(tmpObj);
+
+            tmpObj = Instantiate(blackholeRange, targetObj.transform.position, Quaternion.identity);
+            blackholeRangeSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
         }
         else
@@ -412,22 +409,40 @@ public class InGameUI : MonoBehaviour
 
     public void Button2()
     {
-        objControl.InstantiateObj(oneSideMirror, 0.5f);
+        objControl.InstantiateObj(laserStart, 0.5f);
     }
 
     public void Button3()
     {
-        objControl.InstantiateObj(doubleSideMirror, 0.5f);
+        objControl.InstantiateObj(laserStart, 0.5f);
+        objControl.ColorLaser(Color.red);
     }
 
     public void Button4()
     {
-        objControl.InstantiateObj(prism, 0.0f);
+        objControl.InstantiateObj(oneSideMirror, 0.5f);
+        objControl.ColorLaser(Color.green);
     }
 
     public void Button5()
     {
+        objControl.InstantiateObj(doubleSideMirror, 0.5f);
+        objControl.ColorLaser(Color.blue);
+    }
+
+    public void Button6()
+    {
+        objControl.InstantiateObj(prism, 0.0f);
+    }
+
+    public void Button7()
+    {
         objControl.InstantiateObj(blackhole, 0.5f);
+    }
+
+    public void Button8()
+    {
+        objControl.InstantiateObj(composer, 0.0f);
     }
 
     public void Trashcan() //선택된 월드 오브젝트 삭제.
@@ -458,5 +473,24 @@ public class InGameUI : MonoBehaviour
     public void ClearStageButton()
     {
         StageManager.Instance.ClearStage();
+    }
+
+    private IEnumerator MoveToSelect()
+    {
+        //Camera.main.gameObject.transform.Translate(new Vector3(30f, 0, 0));
+        while (GameObject.Find("StageSelectionController") == null)
+        {
+            yield return null;
+        }
+        StageSelectSceneController Controller = GameObject.Find("StageSelectionController").GetComponent<StageSelectSceneController>();
+        Controller.ToState(1);
+        Destroy(gameObject);
+    }
+
+    public void MoveCameraAfterSceneChange()
+    {
+        DontDestroyOnLoad(gameObject);
+        SceneManager.LoadScene("StageSelection");
+        StartCoroutine(MoveToSelect());
     }
 }

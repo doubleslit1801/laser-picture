@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InGameSettings : MonoBehaviour
 {
-    public GameObject canvasObj, soundManagerObject, colorControl;
+    public GameObject canvasObj, colorControl;
     public Slider mainSlider, bgmSlider, sfxSlider;
+    public TMP_InputField mainInputField, bgmInputField, sfxInputField;
     public UnityEngine.UI.Image circlePalette, picker, selectedColor;
     public Material[] BGMaterials;
     public Renderer planeRenderer;
+    [HideInInspector] public Color answerDrawingColor;
 
     private float mainVolume, bgmVolume, sfxVolume;
     private SoundManager soundManager;
@@ -19,11 +22,17 @@ public class InGameSettings : MonoBehaviour
 
     void Start()
     {
-        mainVolume = 0;
-        bgmVolume = 0;
-        sfxVolume = 0;
+        soundManager = SoundManager.Instance.GetComponent<SoundManager>();
 
-        soundManager = soundManagerObject.GetComponent<SoundManager>();
+        InitSettingData();
+
+        mainSlider.value = mainVolume;
+        bgmSlider.value = bgmVolume;
+        sfxSlider.value = sfxVolume;
+
+        mainInputField.text = ((int)(mainVolume * 100f)).ToString();
+        bgmInputField.text = ((int)(bgmVolume * 100f)).ToString();
+        sfxInputField.text = ((int)(sfxVolume * 100f)).ToString();
 
         paletteCollider = circlePalette.GetComponent<CircleCollider2D>();
 
@@ -42,18 +51,40 @@ public class InGameSettings : MonoBehaviour
         if (mainSlider.value != mainVolume)
         {
             mainVolume = mainSlider.value;
+            SettingData.Instance.mainVolume = mainVolume;
             soundManager.SetBGMVolume(mainVolume * bgmVolume);
             soundManager.SetSFXVolume(mainVolume * sfxVolume);
+            mainInputField.text = ((int)(mainVolume * 100f)).ToString();
         }
         if (bgmSlider.value != bgmVolume)
         {
             bgmVolume = bgmSlider.value;
             soundManager.SetBGMVolume(mainVolume * bgmVolume);
+            bgmInputField.text = ((int)(bgmVolume * 100f)).ToString();
         }
         if (sfxSlider.value != sfxVolume)
         {
             sfxVolume = sfxSlider.value;
             soundManager.SetSFXVolume(mainVolume * sfxVolume);
+            sfxInputField.text = ((int)(sfxVolume * 100f)).ToString();
+        }
+    }
+
+    private void InitSettingData()
+    {
+        mainVolume = SettingData.Instance.mainVolume;
+        bgmVolume = soundManager.GetBGMVolume();
+        sfxVolume = soundManager.GetSFXVolume();
+
+
+
+        answerDrawingColor = SettingData.Instance.answerDrawingColor;
+
+        SetAnswerColor(answerDrawingColor);
+
+        if (SettingData.Instance.BGMaterial != null)
+        {
+            planeRenderer.material = SettingData.Instance.BGMaterial;
         }
     }
 
@@ -64,7 +95,13 @@ public class InGameSettings : MonoBehaviour
 
         pickerRT.localPosition = diff;
 
-        selectedColor.color = getColor();
+        answerDrawingColor = getColor();
+
+        selectedColor.color = answerDrawingColor;
+
+        SetAnswerColor(answerDrawingColor);
+
+        SettingData.Instance.answerDrawingColor = answerDrawingColor;
     }
 
     private Color getColor()
@@ -80,6 +117,15 @@ public class InGameSettings : MonoBehaviour
         Color circularSelectedColor = texture.GetPixelBilinear(normalized.x, normalized.y);
 
         return circularSelectedColor;
+    }
+
+    private void SetAnswerColor(Color color)
+    {
+        GameObject answerDrawingObj = GameObject.Find("AnswerDrawing");
+        if (answerDrawingObj != null)
+        {
+            answerDrawingObj.GetComponent<MeshRenderer>().material.color = color;
+        }
     }
 
     public void mousePointerDown()
@@ -101,10 +147,27 @@ public class InGameSettings : MonoBehaviour
     public void SetBGMaterial1()
     {
         planeRenderer.material = BGMaterials[0];
+        SettingData.Instance.BGMaterial = BGMaterials[0];
     }
 
     public void SetBGMaterial2()
     {
         planeRenderer.material = BGMaterials[1];
+        SettingData.Instance.BGMaterial = BGMaterials[1];
+    }
+
+    public void InputFieldOnEndEdit()
+    {
+        mainVolume = (float)int.Parse(mainInputField.text) / 100f;
+        bgmVolume = (float)int.Parse(bgmInputField.text) / 100f;
+        sfxVolume = (float)int.Parse(sfxInputField.text) / 100f;
+
+        mainSlider.value = mainVolume;
+        bgmSlider.value = bgmVolume;
+        sfxSlider.value = sfxVolume;
+
+        SettingData.Instance.mainVolume = mainVolume;
+        soundManager.SetBGMVolume(mainVolume * bgmVolume);
+        soundManager.SetSFXVolume(mainVolume * sfxVolume);
     }
 }
