@@ -83,7 +83,7 @@ public class Prism : MonoBehaviour, IDevice
         }
         if (enableChanged)
         {
-            StageManager.Instance.ReservCount();
+            StageManager.Instance.ReserveCount();
             enableChanged = false;
         }
     }
@@ -112,7 +112,7 @@ public class Prism : MonoBehaviour, IDevice
             lights.Add(inputLight, new LightInfo(inputPos, (outputLight[0], outputLight[1]), (laserObject[0], laserObject[1]), isEnabled));
             if (isEnabled)
             {
-                StageManager.Instance.ReservCount();
+                StageManager.Instance.ReserveCount();
             }
         }
     }
@@ -126,7 +126,7 @@ public class Prism : MonoBehaviour, IDevice
         Destroy(stopLight.laserObject.Item1);
         Destroy(stopLight.laserObject.Item2);
         lights.Remove(light);
-        StageManager.Instance.ReservCount();
+        StageManager.Instance.ReserveCount();
     }
 
     private Vector3 Normal(int i)
