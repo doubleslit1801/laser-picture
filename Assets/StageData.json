@@ -2,9 +2,10 @@
     "Items": [
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -21,9 +22,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -40,9 +42,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -59,9 +62,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -78,9 +82,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -97,9 +102,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -116,9 +122,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -135,9 +142,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -154,9 +162,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -173,9 +182,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -192,9 +202,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -211,9 +222,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -230,9 +242,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -249,9 +262,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -268,9 +282,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -287,9 +302,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -306,9 +322,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -325,9 +342,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -344,9 +362,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -363,9 +382,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -382,9 +402,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -401,9 +422,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -420,9 +442,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -439,9 +462,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -458,9 +482,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -477,9 +502,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -496,9 +522,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -515,9 +542,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -534,9 +562,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -553,9 +582,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -572,9 +602,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -591,9 +622,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -610,9 +642,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -629,9 +662,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -648,9 +682,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -667,9 +702,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -686,9 +722,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -705,9 +742,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -724,9 +762,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -743,9 +782,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -762,9 +802,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -781,9 +822,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -800,9 +842,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -819,9 +862,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -838,9 +882,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -857,9 +902,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -876,9 +922,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -895,9 +942,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -914,9 +962,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -933,9 +982,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -952,9 +1002,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -971,9 +1022,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -990,9 +1042,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1009,9 +1062,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1028,9 +1082,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1047,9 +1102,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1066,9 +1122,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1085,9 +1142,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1104,9 +1162,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1123,9 +1182,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1142,9 +1202,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1161,9 +1222,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1180,9 +1242,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1199,9 +1262,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1218,9 +1282,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1237,9 +1302,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1256,9 +1322,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1275,9 +1342,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1294,9 +1362,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1313,9 +1382,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1332,9 +1402,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1351,9 +1422,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1370,9 +1442,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1389,9 +1462,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1408,9 +1482,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1427,9 +1502,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1446,9 +1522,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1465,9 +1542,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1484,9 +1562,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1503,9 +1582,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1522,9 +1602,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1541,9 +1622,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1560,9 +1642,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1579,9 +1662,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1598,9 +1682,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1617,9 +1702,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1636,9 +1722,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1655,9 +1742,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1674,9 +1762,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1693,9 +1782,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1712,9 +1802,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1731,9 +1822,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1750,9 +1842,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1769,9 +1862,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1788,9 +1882,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1807,9 +1902,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1826,9 +1922,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1845,9 +1942,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1864,9 +1962,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1883,9 +1982,10 @@
         },
         {
             "maxLaser": 0,
+            "world": 0,
             "objects": [
                 {
-                    "prefab": "LaserStart",
+                    "prefab": "",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,

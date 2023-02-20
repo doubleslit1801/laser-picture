@@ -169,9 +169,8 @@ public class GameManager : MonoBehaviour
             {
                 stageData[i] = new StageData();
                 stageData[i].maxLaser = 0;
+                stageData[i].world = 0;
                 stageData[i].objects = new ObjectData[1];
-                stageData[i].objects[0] = new ObjectData();
-                stageData[i].objects[0].prefab = "LaserStart";
             }
             SaveStageData();
         }

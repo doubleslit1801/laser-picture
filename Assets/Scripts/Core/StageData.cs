@@ -14,5 +14,6 @@ public class ObjectData
 public class StageData
 {
     public int maxLaser;
+    public int world;
     public ObjectData[] objects;
 }

@@ -47,12 +47,6 @@ public class StageManager : MonoBehaviour
                 LaserCnt = 0;
             }
         }
-        //test code
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SaveStage();
-            StartCoroutine(TestCoroutine());
-        }
     }
 
     public int GetCurrentStage()
@@ -87,7 +81,6 @@ public class StageManager : MonoBehaviour
         drawing.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
         foreach (ObjectData objData in data.objects)
         {
-            Debug.Log(objData.prefab);
             Instantiate(
                 GameManager.Instance.GetPrefab(objData.prefab),
                 objData.position,
@@ -113,15 +106,6 @@ public class StageManager : MonoBehaviour
         }
         data.objects = objects.ToArray();
         GameManager.Instance.SetStageData(stageNumber, data);
-    }
-
-    private IEnumerator TestCoroutine()
-    {
-        //SaveStage(0);
-        yield return new WaitForSeconds(3);
-        ClearStage();
-        yield return new WaitForSeconds(3);
-        LoadStage(0);
     }
 
     public void ReservCount()
