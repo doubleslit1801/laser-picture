@@ -28,12 +28,18 @@ public class Light
         }
     }
 
+    private static Material lightMaterial = Resources.Load<Material>("Materials/laser");
+
     public Light(Vector3 origin, Vector3 direction, LineRenderer renderer, Color color)
     {
         Origin = origin;
         OriginDirection = direction;
         Renderer = renderer;
         LightColor = color;
+        Renderer.startColor = color;
+        Renderer.endColor = color;
+        Renderer.widthMultiplier = 0.1f;
+        Renderer.material = lightMaterial;
     }
 
     public void Update(Vector3 origin, Vector3 direction)

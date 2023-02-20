@@ -10,7 +10,6 @@ public class Composer : MonoBehaviour, IDevice
     [SerializeField]
     private Color lightColor;
 
-    public Material laserMaterial;
     void Start()
     {
         GameManager.Instance.registerDevice(GetComponent<Collider>(), this);
@@ -19,9 +18,6 @@ public class Composer : MonoBehaviour, IDevice
         laserObject.transform.parent = transform;
 
         lr = laserObject.AddComponent<LineRenderer>();
-        lr.startWidth = 0.1f;
-        lr.endWidth = 0.1f;
-        lr.material = laserMaterial;
     }
 
     void Update()

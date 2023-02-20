@@ -22,8 +22,6 @@ public class Prism : MonoBehaviour, IDevice
     private Dictionary<Light, LightInfo> lights = new();
     private bool enableChanged;
 
-    public Material laserMaterial;
-
     void Start()
     {
         GameManager.Instance.registerDevice(GetComponent<Collider>(), this);
@@ -105,9 +103,6 @@ public class Prism : MonoBehaviour, IDevice
             {
                 laserObject[i].transform.parent = transform;
                 LineRenderer lr = laserObject[i].AddComponent<LineRenderer>();
-                lr.startWidth = 0.1f;
-                lr.endWidth = 0.1f;
-                lr.material = laserMaterial;
                 Quaternion rotation = Quaternion.AngleAxis(120 * (i + 1), transform.up);
                 Vector3 outputPos = rotation * (inputPos - transform.parent.position) + transform.parent.position;
                 Vector3 outputDirection = Vector3.Reflect((rotation * inputLight.Direction) * -1, Normal(i)) * -1;

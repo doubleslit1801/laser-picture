@@ -17,7 +17,6 @@ public class Mirror : MonoBehaviour, IDevice
         public GameObject laserObject;
     }
     private Dictionary<Light, LightInfo> lights = new();
-    public Material laserMaterial;
 
     void Start()
     {
@@ -53,9 +52,6 @@ public class Mirror : MonoBehaviour, IDevice
             GameObject laserChild = new("laser");
             laserChild.transform.parent = transform;
             LineRenderer lr = laserChild.AddComponent<LineRenderer>();
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.material = laserMaterial;
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
             Light outputLight = new(hitPos, outputDirection, lr, inputLight.LightColor);
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
