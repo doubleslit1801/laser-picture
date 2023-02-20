@@ -124,6 +124,11 @@ public class ScorePanel : MonoBehaviour
 
     }
 
+    private int GetCurrentStageNum()
+    {
+        return StageManager.Instance.GetCurrentStage();
+    }
+
     public void OnActive()
     {
         simularity = 0;
@@ -142,11 +147,14 @@ public class ScorePanel : MonoBehaviour
 
     public void ReturnStageSelectScene()
     {
-        //씬 이동
+        transform.root.GetComponent<InGameUI>().MoveCameraAfterSceneChange();
     }
 
     public void NextStage()
     {
-        //씬 이동 or 로드
+        canvasObj.GetComponent<InGameUI>().Resume();
+        StageManager.Instance.ClearStage();
+        StageManager.Instance.LoadStage(GetCurrentStageNum());
+        gameObject.SetActive(false);
     }
 }

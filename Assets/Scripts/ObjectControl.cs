@@ -111,9 +111,8 @@ public class ObjectControl : MonoBehaviour
         for (int i = 0; i < hits.Length; i++)
         {
             GameObject hitObj = hits[i].transform.gameObject;
-            Vector2 diff = new Vector2(hitObj.transform.position.x - hits[i].point.x, hitObj.transform.position.z - hits[i].point.z);
 
-            if (hitObj.CompareTag("Object") && diff.magnitude < 1)
+            if (hitObj.CompareTag("Object"))
             {
                 return hitObj;
             }
@@ -241,6 +240,18 @@ public class ObjectControl : MonoBehaviour
         selectedObj = mouseObject;
 
         curMouseState = mouseState.Grab;
+    }
+
+    //임시 테스트용
+    public void ColorLaser(Color color)
+    {
+        if (mouseObject != null)
+        {
+            LineRenderer renderer = mouseObject.transform.GetChild(0).GetComponent<LineRenderer>();
+
+            renderer.startColor = color;
+            renderer.endColor = color;
+        }
     }
 
     public void DestroyMouseObj() //선택된 월드 오브젝트 삭제.
