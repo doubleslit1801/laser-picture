@@ -230,14 +230,9 @@ public class ScoreJudgement : MonoBehaviour
                 }
                 else
                 {
-                    maxCnt = maxCnt + 1;
                     if (isUFilled)
                     {
                         hitCnt = hitCnt - 25;
-                    }
-                    else
-                    {
-                        hitCnt = hitCnt + 1;
                     }
                 }
             }

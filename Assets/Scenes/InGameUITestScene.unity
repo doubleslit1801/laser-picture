@@ -917,6 +917,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 5465465048431616492, guid: 13048cc679688b24cb5c6d3af8a42b21, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13048cc679688b24cb5c6d3af8a42b21, type: 3}
 --- !u!1 &99891972
@@ -11779,7 +11783,8 @@ PrefabInstance:
       propertyPath: drawing
       value: 
       objectReference: {fileID: 1863184475}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5526744460843799390, guid: 5a87802e7fa36f240bcb76573d6ac453, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5a87802e7fa36f240bcb76573d6ac453, type: 3}
 --- !u!1 &1643480368
 GameObject:
