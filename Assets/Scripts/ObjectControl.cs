@@ -247,10 +247,7 @@ public class ObjectControl : MonoBehaviour
     {
         if (mouseObject != null)
         {
-            LineRenderer renderer = mouseObject.transform.GetChild(0).GetComponent<LineRenderer>();
-
-            renderer.startColor = color;
-            renderer.endColor = color;
+            mouseObject.GetComponent<ColorLaser>().outputColor = color;
         }
     }
 

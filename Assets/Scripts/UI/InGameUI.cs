@@ -405,29 +405,29 @@ public class InGameUI : MonoBehaviour
     public void Button1()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
+        objControl.ColorLaser(Color.red);
     }
 
     public void Button2()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
+        objControl.ColorLaser(Color.green);
     }
 
     public void Button3()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
-        objControl.ColorLaser(Color.red);
+        objControl.ColorLaser(Color.blue);
     }
 
     public void Button4()
     {
         objControl.InstantiateObj(oneSideMirror, 0.5f);
-        objControl.ColorLaser(Color.green);
     }
 
     public void Button5()
     {
         objControl.InstantiateObj(doubleSideMirror, 0.5f);
-        objControl.ColorLaser(Color.blue);
     }
 
     public void Button6()

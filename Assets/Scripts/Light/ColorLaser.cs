@@ -7,7 +7,7 @@ public class ColorLaser : MonoBehaviour
     private LineRenderer lr;
     private Light outputLight;
     [SerializeField]
-    private Color outputColor;
+    public Color outputColor;
 
     void Start()
     {
@@ -21,6 +21,7 @@ public class ColorLaser : MonoBehaviour
             if (outputLight == null)
             {
                 outputLight = new Light(transform.position, -transform.right, lr, outputColor);
+                StageManager.Instance.ReserveCount();
             }
             else
             {

@@ -126,7 +126,7 @@ public class InGameSettings : MonoBehaviour
     {
         if (CheckInGameScene())
         {
-            GameObject answerDrawingObj = GameObject.Find("AnswerDrawing");
+            GameObject answerDrawingObj = GameObject.Find("Drawing");
             if (answerDrawingObj != null)
             {
                 answerDrawingObj.GetComponent<MeshRenderer>().material.color = color;
