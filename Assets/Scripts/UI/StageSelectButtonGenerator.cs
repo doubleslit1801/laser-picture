@@ -8,7 +8,7 @@ public class StageSelectButtonGenerator : MonoBehaviour
 
     void Start()
     {
-        button = Resources.Load<GameObject>("Prefabs/StageSelectButton");
+        /*button = Resources.Load<GameObject>("Prefabs/StageSelectButton");
 
         //world1
         float startX = 55, startY = (float)-16.5, startZ = 3;
@@ -46,7 +46,7 @@ public class StageSelectButtonGenerator : MonoBehaviour
                 newButton.transform.GetChild(0).gameObject.GetComponent<StageSelectButton>().SetStageNumber(i);
                 i += 1;
             }
-        }
+        }*/
     }
 
     void Update()

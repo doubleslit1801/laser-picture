@@ -108,7 +108,7 @@ public class StageManager : MonoBehaviour
         GameManager.Instance.SetStageData(stageNumber, data);
     }
 
-    public void ReservCount()
+    public void ReserveCount()
     {
         countReserved = true;
     }
