@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
 public class InGameSettings : MonoBehaviour
 {
-    public GameObject canvasObj, colorControl;
+    public GameObject canvasObj, colorControl, pauseBlock;
     public Slider mainSlider, bgmSlider, sfxSlider;
     public TMP_InputField mainInputField, bgmInputField, sfxInputField;
     public UnityEngine.UI.Image circlePalette, picker, selectedColor;
@@ -59,12 +60,14 @@ public class InGameSettings : MonoBehaviour
         if (bgmSlider.value != bgmVolume)
         {
             bgmVolume = bgmSlider.value;
+            SettingData.Instance.bgmVolume = bgmVolume;
             soundManager.SetBGMVolume(mainVolume * bgmVolume);
             bgmInputField.text = ((int)(bgmVolume * 100f)).ToString();
         }
         if (sfxSlider.value != sfxVolume)
         {
             sfxVolume = sfxSlider.value;
+            SettingData.Instance.sfxVolume = sfxVolume;
             soundManager.SetSFXVolume(mainVolume * sfxVolume);
             sfxInputField.text = ((int)(sfxVolume * 100f)).ToString();
         }
@@ -73,8 +76,8 @@ public class InGameSettings : MonoBehaviour
     private void InitSettingData()
     {
         mainVolume = SettingData.Instance.mainVolume;
-        bgmVolume = soundManager.GetBGMVolume();
-        sfxVolume = soundManager.GetSFXVolume();
+        bgmVolume = SettingData.Instance.bgmVolume;
+        sfxVolume = SettingData.Instance.sfxVolume;
 
 
 
@@ -121,14 +124,30 @@ public class InGameSettings : MonoBehaviour
 
     private void SetAnswerColor(Color color)
     {
-        GameObject answerDrawingObj = GameObject.Find("AnswerDrawing");
-        if (answerDrawingObj != null)
+        if (CheckInGameScene())
         {
-            answerDrawingObj.GetComponent<MeshRenderer>().material.color = color;
+            GameObject answerDrawingObj = GameObject.Find("AnswerDrawing");
+            if (answerDrawingObj != null)
+            {
+                answerDrawingObj.GetComponent<MeshRenderer>().material.color = color;
+            }
         }
     }
 
-    public void mousePointerDown()
+    private bool CheckInGameScene()
+    {
+        return SceneManager.GetActiveScene().name == "InGameUITestScene";
+    }
+
+    private void SetBGMaterial(Material mat)
+    {
+        if (CheckInGameScene())
+        {
+            planeRenderer.material = mat;
+        }
+    }
+
+        public void mousePointerDown()
     {
         selectColor();
     }
@@ -140,20 +159,27 @@ public class InGameSettings : MonoBehaviour
 
     public void ExitSettings()
     {
-        canvasObj.GetComponent<InGameUI>().Resume();
+        if (CheckInGameScene())
+        {
+            canvasObj.GetComponent<InGameUI>().Resume();
+        }
+        else
+        {
+            pauseBlock.SetActive(false);
+        }
         gameObject.SetActive(false);
     }
 
     public void SetBGMaterial1()
     {
-        planeRenderer.material = BGMaterials[0];
         SettingData.Instance.BGMaterial = BGMaterials[0];
+        SetBGMaterial(BGMaterials[0]);
     }
 
     public void SetBGMaterial2()
     {
-        planeRenderer.material = BGMaterials[1];
         SettingData.Instance.BGMaterial = BGMaterials[1];
+        SetBGMaterial(BGMaterials[1]);
     }
 
     public void InputFieldOnEndEdit()
@@ -167,6 +193,9 @@ public class InGameSettings : MonoBehaviour
         sfxSlider.value = sfxVolume;
 
         SettingData.Instance.mainVolume = mainVolume;
+        SettingData.Instance.bgmVolume = bgmVolume;
+        SettingData.Instance.sfxVolume = sfxVolume;
+
         soundManager.SetBGMVolume(mainVolume * bgmVolume);
         soundManager.SetSFXVolume(mainVolume * sfxVolume);
     }
