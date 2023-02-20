@@ -74,4 +74,9 @@ public class Mirror : MonoBehaviour, IDevice
         print(lights.Count);
         StageManager.Instance.ReservCount();
     }
+
+    public void DestroyAll()
+    {
+
+    }
 }

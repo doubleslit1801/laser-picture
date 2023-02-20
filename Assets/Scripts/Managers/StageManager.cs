@@ -63,8 +63,8 @@ public class StageManager : MonoBehaviour
             IDevice device = GameManager.Instance.SearchDevice(col);
             if (device != null)
             {
+                device.DestroyAll();
                 GameManager.Instance.RemoveDevice(col);
-                //destory all sibling objects
             }
             Destroy(obj);
         }

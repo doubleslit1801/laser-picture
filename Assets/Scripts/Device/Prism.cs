@@ -138,4 +138,9 @@ public class Prism : MonoBehaviour, IDevice
     {
         return Quaternion.AngleAxis(120 * (i + 1), transform.up) * transform.forward;
     }
+
+    public void DestroyAll()
+    {
+        
+    }
 }

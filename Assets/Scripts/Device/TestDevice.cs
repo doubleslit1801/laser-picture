@@ -46,4 +46,9 @@ public class TestDevice : MonoBehaviour, IDevice
         inputLight = null;
         outputLight?.Disable();
     }
+
+    public void DestroyAll()
+    {
+        
+    }
 }
