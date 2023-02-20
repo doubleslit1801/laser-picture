@@ -112,9 +112,9 @@ public class InGameUI : MonoBehaviour
 
                 if (blackholeSlider != null)
                 {
-                    CapsuleCollider blackholeCol = objControl.selectedObj.transform.Find("Range").GetComponent<CapsuleCollider>();
-                    blackholeCol.radius = blackholeSlider.value;
-                    float radius = blackholeCol.radius;
+                    Blackhole blackholeScript = objControl.selectedObj.transform.Find("Range").GetComponent<Blackhole>();
+                    blackholeScript.Radius = blackholeSlider.value;
+                    float radius = blackholeScript.Radius;
                     blackholeRangeSaveObj.transform.localScale = radius * Vector3.one;
                 }
             }
