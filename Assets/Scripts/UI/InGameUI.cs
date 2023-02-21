@@ -36,7 +36,7 @@ public class InGameUI : MonoBehaviour
     private int selectedObjUIIdx;
 
     private Slider blackholeSlider;
-    private GameObject blackholeRangeSaveObj;
+    private GameObject blackholeRangeSaveObj, blackholeSliderSaveObj;
 
     #endregion
 
@@ -48,6 +48,7 @@ public class InGameUI : MonoBehaviour
         preSelectedObj = null;
         blackholeSlider = null;
         blackholeRangeSaveObj = null;
+        blackholeSliderSaveObj = null;
 
         isHide = false;
         isControlButtonExist = false;
@@ -115,6 +116,10 @@ public class InGameUI : MonoBehaviour
                     Blackhole blackholeScript = objControl.selectedObj.transform.Find("Range").GetComponent<Blackhole>();
                     blackholeScript.Radius = blackholeSlider.value;
                     float radius = blackholeScript.Radius;
+                    if (blackholeSliderSaveObj != null)
+                    {
+                        blackholeSliderSaveObj.transform.GetChild(2).GetChild(0).Find("ValueText").GetComponent<TMP_Text>().text = ((int)radius).ToString();
+                    }
                     blackholeRangeSaveObj.transform.localScale = radius * Vector3.one;
                 }
             }
@@ -232,9 +237,10 @@ public class InGameUI : MonoBehaviour
 
         if (targetObj.layer == LayerMask.NameToLayer("Blackhole"))
         {
-            tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one);
+            tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one * 2);
             blackholeSlider = tmpObj.GetComponent<Slider>();
-            blackholeSlider.value = targetObj.transform.Find("Range").GetComponent<CapsuleCollider>().radius;
+            blackholeSlider.value = targetObj.transform.Find("Range").GetComponent<Blackhole>().Radius;
+            blackholeSliderSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
 
             tmpObj = Instantiate(blackholeRange, targetObj.transform.position, Quaternion.identity);
