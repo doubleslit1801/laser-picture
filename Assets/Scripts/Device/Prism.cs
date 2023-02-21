@@ -136,6 +136,11 @@ public class Prism : MonoBehaviour, IDevice
 
     public void DestroyAll()
     {
-        
+        foreach (var light in lights)
+        {
+            light.Value.outputLight.Item1.Disable();
+            light.Value.outputLight.Item2.Disable();
+        }
+        lights.Clear();
     }
 }

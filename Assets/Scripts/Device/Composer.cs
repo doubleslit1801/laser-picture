@@ -79,6 +79,7 @@ public class Composer : MonoBehaviour, IDevice
 
     public void DestroyAll()
     {
-        
+        inputLights.Clear();
+        outputLight?.Disable();
     }
 }
