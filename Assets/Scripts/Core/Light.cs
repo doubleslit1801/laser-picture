@@ -130,8 +130,14 @@ public class Light
         else
         {
             //Device와 Blackhole 만나지 않음
-            targetDevice?.HandleInputStop(this);
-            targetDevice = null;
+            try
+            {
+                targetDevice?.HandleInputStop(this);
+            }
+            finally
+            {
+                targetDevice = null;
+            }
             return (new List<Vector3>() { origin + direction * 100f }, null);
         }
     }
