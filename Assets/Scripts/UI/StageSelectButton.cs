@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class StageSelectButton : MonoBehaviour
 {
-    private int stageNumber = 0;
     private GameObject[] stars;
     private GameObject stageImage;
     private int _stage;
@@ -56,6 +55,6 @@ public class StageSelectButton : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         SceneManager.LoadScene("InGameUITestScene");
-        GameManager.Instance.NowStage = stageNumber;
+        GameManager.Instance.NowStage = _stage;
     }
 }

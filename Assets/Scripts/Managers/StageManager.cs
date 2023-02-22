@@ -14,7 +14,7 @@ public class StageManager : MonoBehaviour
     public int StageMaxLaser { get => stageMaxLaser; }
     public int LaserCnt { get; private set; }
 
-    public int stageNumber = 0;
+    public int stageNumber = -1;
     public static StageManager Instance;
 
     private void Awake()
@@ -32,8 +32,7 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        stageNumber = GameManager.Instance.NowStage;
-        LoadStage(stageNumber);
+        
     }
 
     void Update()
@@ -46,6 +45,12 @@ public class StageManager : MonoBehaviour
                 ClearStage();
                 LaserCnt = 0;
             }
+        }
+
+        if(stageNumber != GameManager.Instance.NowStage)
+        {
+            stageNumber = GameManager.Instance.NowStage;
+            LoadStage(stageNumber);
         }
     }
 
@@ -73,7 +78,7 @@ public class StageManager : MonoBehaviour
     public void LoadStage(int number)
     {
         StageData data = GameManager.Instance.GetStageData(number);
-        Texture texture = GameManager.Instance.GetStageDrawing(number);
+        Texture2D texture = GameManager.Instance.GetStageDrawing(number);
         ClearStage();
 
         stageNumber = number;
@@ -81,11 +86,14 @@ public class StageManager : MonoBehaviour
         drawing.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
         foreach (ObjectData objData in data.objects)
         {
-            Instantiate(
-                GameManager.Instance.GetPrefab(objData.prefab),
-                objData.position,
-                objData.rotation
-            );
+            if (objData.prefab != "")
+            {
+                Instantiate(
+                    GameManager.Instance.GetPrefab(objData.prefab),
+                    objData.position,
+                    objData.rotation
+                );
+            }
         }
     }
 

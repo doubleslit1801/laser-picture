@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class InGameUI : MonoBehaviour
 {
+    public float blackholeRangeYPos;
     public GameObject laserStart, oneSideMirror, doubleSideMirror, prism, blackhole, composer;
     public GameObject grabButton, rotateImage, blackholePowerSlider, blackholeRange;
-    public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan;
+    public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan, clearCheckPanel;
     public Sprite openTrash, closeTrash;
 
     #region Private Variables
@@ -36,7 +38,7 @@ public class InGameUI : MonoBehaviour
     private int selectedObjUIIdx;
 
     private Slider blackholeSlider;
-    private GameObject blackholeRangeSaveObj;
+    private GameObject blackholeRangeSaveObj, blackholeSliderSaveObj;
 
     #endregion
 
@@ -48,6 +50,7 @@ public class InGameUI : MonoBehaviour
         preSelectedObj = null;
         blackholeSlider = null;
         blackholeRangeSaveObj = null;
+        blackholeSliderSaveObj = null;
 
         isHide = false;
         isControlButtonExist = false;
@@ -110,12 +113,16 @@ public class InGameUI : MonoBehaviour
                     preSelectedObj = objControl.selectedObj;
                 }
 
-                if (blackholeSlider != null)
+                if (blackholeSlider != null && objControl.selectedObj != null)
                 {
-                    CapsuleCollider blackholeCol = objControl.selectedObj.transform.Find("Range").GetComponent<CapsuleCollider>();
-                    blackholeCol.radius = blackholeSlider.value;
-                    float radius = blackholeCol.radius;
-                    blackholeRangeSaveObj.transform.localScale = radius * Vector3.one;
+                    Blackhole blackholeScript = objControl.selectedObj.transform.Find("Range").GetComponent<Blackhole>();
+                    blackholeScript.Radius = blackholeSlider.value;
+                    float radius = blackholeScript.Radius;
+                    if (blackholeSliderSaveObj != null)
+                    {
+                        blackholeSliderSaveObj.transform.GetChild(2).GetChild(0).Find("ValueText").GetComponent<TMP_Text>().text = ((int)radius).ToString();
+                    }
+                    blackholeRangeSaveObj.transform.localScale = 2 * radius * Vector3.one;
                 }
             }
             else
@@ -232,12 +239,13 @@ public class InGameUI : MonoBehaviour
 
         if (targetObj.layer == LayerMask.NameToLayer("Blackhole"))
         {
-            tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one);
+            tmpObj = InstantiateUIObj(blackholePowerSlider, selObjPos + new Vector3(80, 0, 0), Vector3.one * 2);
             blackholeSlider = tmpObj.GetComponent<Slider>();
-            blackholeSlider.value = targetObj.transform.Find("Range").GetComponent<CapsuleCollider>().radius;
+            blackholeSlider.value = targetObj.transform.Find("Range").GetComponent<Blackhole>().Radius;
+            blackholeSliderSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
 
-            tmpObj = Instantiate(blackholeRange, targetObj.transform.position, Quaternion.identity);
+            tmpObj = Instantiate(blackholeRange, targetObj.transform.position + blackholeRangeYPos * Vector3.up, Quaternion.Euler(new Vector3(90, 0, 0)));
             blackholeRangeSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
         }
@@ -405,29 +413,29 @@ public class InGameUI : MonoBehaviour
     public void Button1()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
+        objControl.ColorLaser(Color.red);
     }
 
     public void Button2()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
+        objControl.ColorLaser(Color.green);
     }
 
     public void Button3()
     {
         objControl.InstantiateObj(laserStart, 0.5f);
-        objControl.ColorLaser(Color.red);
+        objControl.ColorLaser(Color.blue);
     }
 
     public void Button4()
     {
         objControl.InstantiateObj(oneSideMirror, 0.5f);
-        objControl.ColorLaser(Color.green);
     }
 
     public void Button5()
     {
         objControl.InstantiateObj(doubleSideMirror, 0.5f);
-        objControl.ColorLaser(Color.blue);
     }
 
     public void Button6()
@@ -492,5 +500,24 @@ public class InGameUI : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("StageSelection");
         StartCoroutine(MoveToSelect());
+    }
+
+    public void ClearCheckButton()
+    {
+        Pause();
+        clearCheckPanel.SetActive(true);
+    }
+
+    public void QuitClearCheck()
+    {
+        Resume();
+        clearCheckPanel.SetActive(false);
+    }
+
+    public void ClearAllStage()
+    {
+        Resume();
+        clearCheckPanel.SetActive(false);
+        StageManager.Instance.ClearStage();
     }
 }

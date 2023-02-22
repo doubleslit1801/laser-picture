@@ -7,7 +7,7 @@ using TMPro;
 
 public class InGameSettings : MonoBehaviour
 {
-    public GameObject canvasObj, colorControl, pauseBlock;
+    public GameObject canvasObj, colorControl, pauseBlock, returnPanel;
     public Slider mainSlider, bgmSlider, sfxSlider;
     public TMP_InputField mainInputField, bgmInputField, sfxInputField;
     public UnityEngine.UI.Image circlePalette, picker, selectedColor;
@@ -126,7 +126,7 @@ public class InGameSettings : MonoBehaviour
     {
         if (CheckInGameScene())
         {
-            GameObject answerDrawingObj = GameObject.Find("AnswerDrawing");
+            GameObject answerDrawingObj = GameObject.Find("Drawing");
             if (answerDrawingObj != null)
             {
                 answerDrawingObj.GetComponent<MeshRenderer>().material.color = color;
@@ -198,5 +198,20 @@ public class InGameSettings : MonoBehaviour
 
         soundManager.SetBGMVolume(mainVolume * bgmVolume);
         soundManager.SetSFXVolume(mainVolume * sfxVolume);
+    }
+
+    public void ActiveReturnPanel()
+    {
+        returnPanel.SetActive(true);
+    }
+
+    public void DeactiveReturnPanel()
+    {
+        returnPanel.SetActive(false);
+    }
+
+    public void ReturnStageSelectScene()
+    {
+        transform.root.GetComponent<InGameUI>().MoveCameraAfterSceneChange();
     }
 }
