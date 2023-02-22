@@ -217,23 +217,18 @@ public class GameManager : MonoBehaviour
 
     private Texture2D ReadPNGAsTexture(string fileName)
     {
-        string SCPath = "Assets/Resources/ScreenCapture/";
-
-        if (!fileName.EndsWith(".png"))
+        string SCPath = "ScreenCapture/";
+        try
         {
-            fileName = fileName + ".png";
-        }
+            Texture2D texture = Resources.Load<Texture2D>(SCPath + fileName);
+            print("Loaded " + SCPath + fileName);
 
-        if (!File.Exists(SCPath + fileName))
+            return texture;
+        }
+        catch
         {
             return null;
         }
-
-        byte[] byteTexture = File.ReadAllBytes(SCPath + fileName);
-        Texture2D texture = new Texture2D(1, 1);
-        texture.LoadImage(byteTexture);
-
-        return texture;
     }
 
     public int GetStageNumberInWorld(int world)
