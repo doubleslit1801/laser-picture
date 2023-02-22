@@ -48,6 +48,13 @@ public class Light
         OriginDirection = direction;
     }
 
+    public void UpdateColor(Color c)
+    {
+        LightColor = c;
+        Renderer.startColor = c;
+        Renderer.endColor = c;
+    }
+
     public void Enable()
     {
         List<Vector3> positions = new List<Vector3>() { Origin };
@@ -55,16 +62,28 @@ public class Light
         positions.AddRange(addPosition);
         if (hit is null)
         {
-            targetDevice?.HandleInputStop(this);
-            targetDevice = null;
+            try
+            {
+                targetDevice?.HandleInputStop(this);
+            }
+            finally
+            {
+                targetDevice = null;
+            }
         }
         else
         {
             IDevice newTarget = GameManager.Instance.SearchDevice(hit.Value.collider);
             if (targetDevice != newTarget)
             {
-                targetDevice?.HandleInputStop(this);
-                targetDevice = newTarget;
+                try
+                {
+                    targetDevice?.HandleInputStop(this);
+                }
+                finally
+                {
+                    targetDevice = newTarget;
+                }
             }
             targetDevice?.HandleInput(this, hit.Value.point);
         }
@@ -146,8 +165,14 @@ public class Light
     public void Disable()
     {
         Render(0);
-        targetDevice?.HandleInputStop(this);
-        targetDevice = null;
+        try
+        {
+            targetDevice?.HandleInputStop(this);
+        }
+        finally
+        {
+            targetDevice = null;
+        }
     }
 
     private void Render(float length = 100.0f)

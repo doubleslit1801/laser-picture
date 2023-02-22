@@ -172,6 +172,14 @@ public class ObjectControl : MonoBehaviour
             selectedObj = obj;
 
             curMouseState = mouseState.Select;
+            if (obj.name == "LaserStart(Clone)" || obj.name == "Blackhole(Clone)" || obj.name.Contains("Mirror"))
+            {
+                objHeight = 0.5f;
+            }
+            else
+            {
+                objHeight = 0.0f;
+            }
         }
         else
         {
