@@ -73,6 +73,9 @@ public class Mirror : MonoBehaviour, IDevice
 
     public void DestroyAll()
     {
-
+        foreach (var light in lights)
+        {
+            light.Value.outputLight.Disable();
+        }
     }
 }

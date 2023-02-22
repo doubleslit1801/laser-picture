@@ -28,4 +28,9 @@ public class Laser : MonoBehaviour
             outputLight.Enable();
         }
     }
+
+    public void DestroyAll()
+    {
+        outputLight.Disable();
+    }
 }

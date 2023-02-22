@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
 
 public class ObjectControl : MonoBehaviour
 {
@@ -258,12 +259,14 @@ public class ObjectControl : MonoBehaviour
     {
         if (mouseObject != null)
         {
+            DisableObject(mouseObject);
             Destroy(mouseObject);
             mouseObject = null;
         }
 
         if (selectedObj != null)
         {
+            DisableObject(selectedObj);
             Destroy(selectedObj);
             selectedObj = null;
             isMouseObjMovable = false;
@@ -280,6 +283,30 @@ public class ObjectControl : MonoBehaviour
             isMouseObjMovable = true;
 
             curMouseState = mouseState.Grab;
+        }
+    }
+
+    void DisableObject(GameObject obj)
+    {
+        if (obj.name == "LaserStart(Clone)")
+        {
+            obj.GetComponent<ColorLaser>()?.DestroyAll();
+            obj.GetComponent<Laser>()?.DestroyAll();
+        }
+        else if (obj.name == "Prism(Clone)")
+        {
+            foreach (Transform child in obj.transform)
+            {
+                child.GetComponent<Prism>()?.DestroyAll();
+            }
+        }
+        else if (obj.name == "Composer(Clone)")
+        {
+            obj.GetComponent<Composer>().DestroyAll();
+        }
+        else if (obj.name.Contains("Mirror"))
+        {
+            obj.GetComponent<Mirror>().DestroyAll();
         }
     }
 }
