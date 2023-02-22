@@ -174,7 +174,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < MaxStage; i++)
             {
                 stageData[i] = new StageData();
-                stageData[i].maxLaser = 0;
+                stageData[i].maxLaser = 100;
                 stageData[i].world = 0;
                 stageData[i].objects = new ObjectData[1];
             }
