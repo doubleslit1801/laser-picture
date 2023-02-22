@@ -19,14 +19,14 @@ public class StageSelectSceneController : MonoBehaviour
 
         for (int world = 0; world < 3; world++)
         {
-            for (int row = 0; row < 4; row++)
+            for (int row = 0; row < 3; row++)
             {
-                for (int col = 0; col < 8; col++)
+                for (int col = 0; col < 5; col++)
                 {
                     int stage = world * 32 + row * 8 + col;
                     print("created button: " + stage);
                     GameObject button = MonoBehaviour.Instantiate(stageSelectButton);
-                    Vector3 pos = new Vector3(30 * (world + 2) + 2 * col - 5, 0, 3 - 2.5f * row);
+                    Vector3 pos = new Vector3(30 * (world + 2) + 3 * col - 5, 0, 3 - 3 * row);
                     button.transform.position = pos;
                     button.transform.GetChild(0).GetComponent<StageSelectButton>().Stage = stage;
                 }
