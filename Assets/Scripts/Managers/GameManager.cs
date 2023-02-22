@@ -117,7 +117,14 @@ public class GameManager : MonoBehaviour
         {
             //error
         }
-        return stageDrawings[stageNumber];
+        try
+        {
+            return stageDrawings[stageNumber];
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public int GetPlayerStar(int stageNumber)
