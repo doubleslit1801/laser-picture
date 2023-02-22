@@ -99,6 +99,8 @@ public class InGameSettings : MonoBehaviour
         {
             planeRenderer.material = SettingData.Instance.BGMaterial;
         }
+
+        SetBGScale(SettingData.Instance.BGScale);
     }
 
     private void selectColor()
@@ -165,6 +167,14 @@ public class InGameSettings : MonoBehaviour
         }
     }
 
+    private void SetBGScale(Vector3 scale)
+    {
+        if (CheckInGameScene())
+        {
+            planeRenderer.gameObject.transform.localScale = scale;
+        }
+    }
+
         public void mousePointerDown()
     {
         selectColor();
@@ -192,12 +202,30 @@ public class InGameSettings : MonoBehaviour
     {
         SettingData.Instance.BGMaterial = BGMaterials[0];
         SetBGMaterial(BGMaterials[0]);
+
+        Vector3 bgScale = new Vector3(3, 1, 3);
+        SettingData.Instance.BGScale = bgScale;
+        SetBGScale(bgScale);
     }
 
     public void SetBGMaterial2()
     {
         SettingData.Instance.BGMaterial = BGMaterials[1];
         SetBGMaterial(BGMaterials[1]);
+
+        Vector3 bgScale = new Vector3(6.4f, 1, 2);
+        SettingData.Instance.BGScale = bgScale;
+        SetBGScale(bgScale);
+    }
+
+    public void SetBGMaterial3()
+    {
+        SettingData.Instance.BGMaterial = BGMaterials[2];
+        SetBGMaterial(BGMaterials[2]);
+
+        Vector3 bgScale = new Vector3(2.9f, 1, 2);
+        SettingData.Instance.BGScale = bgScale;
+        SetBGScale(bgScale);
     }
 
     public void InputFieldOnEndEdit()
