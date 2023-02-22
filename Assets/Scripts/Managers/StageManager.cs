@@ -72,6 +72,8 @@ public class StageManager : MonoBehaviour
             }
             Destroy(obj);
         }
+        LaserCount();
+        LaserCnt = 0;
     }
 
     public void LoadStage(int number)
