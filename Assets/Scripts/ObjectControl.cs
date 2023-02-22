@@ -18,6 +18,7 @@ public class ObjectControl : MonoBehaviour
     private Camera cam;
     private Vector3 initObjAngle, initMouseVector;
     private float rotateBoundDist, objHeight;
+    private bool isPlayed = false;
 
     void Start()
     {
@@ -175,9 +176,11 @@ public class ObjectControl : MonoBehaviour
 
         if (isMouseRightButtonDown)
         {
-            float setAngle = Quaternion.FromToRotation(initMouseVector, curMouseVector).eulerAngles.y + initObjAngle.y;
+            float angleDiff = Quaternion.FromToRotation(initMouseVector, curMouseVector).eulerAngles.y;
+            float setAngle = angleDiff + initObjAngle.y;
 
             SetRotationMouseObj(setAngle);
+            PlayClickSound(angleDiff);
         }
 
         if (Input.GetMouseButtonUp(1))
@@ -185,6 +188,23 @@ public class ObjectControl : MonoBehaviour
             isMouseRightButtonDown = false;
             initObjAngle = Vector3.zero;
             initMouseVector = Vector3.zero;
+        }
+    }
+
+    private void PlayClickSound(float angleDiff)
+    {
+        switch ((int)angleDiff % 7)
+        {
+            case 0:
+                if (!isPlayed)
+                {
+                    SoundManager.Instance.PlaySFXSound("Click_new", 0.7f);
+                    isPlayed = true;
+                }
+                break;
+            default:
+                isPlayed = false;
+                break;
         }
     }
 
