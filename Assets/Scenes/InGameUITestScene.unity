@@ -17762,6 +17762,10 @@ PrefabInstance:
       propertyPath: canvasObj
       value: 
       objectReference: {fileID: 1450458573}
+    - target: {fileID: 3835350391526918649, guid: 9aba31c0de8f0f24a8ea577fd754c1ed, type: 3}
+      propertyPath: arrowKeyMoveRate
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3835350391526918650, guid: 9aba31c0de8f0f24a8ea577fd754c1ed, type: 3}
       propertyPath: m_RootOrder
       value: 10

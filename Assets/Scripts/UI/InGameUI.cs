@@ -520,4 +520,13 @@ public class InGameUI : MonoBehaviour
         clearCheckPanel.SetActive(false);
         StageManager.Instance.ClearStage();
     }
+
+    public void RepopControlUI()
+    {
+        ClearControlButton();
+        if (objControl.selectedObj != null)
+        {
+            PopControlButton(objControl.selectedObj);
+        }
+    }
 }

@@ -87,7 +87,7 @@ public class ScorePanel : MonoBehaviour
 
     private void SetStageNumber(int stageNumber)
     {
-        gameObject.transform.Find("Title").GetComponent<TMP_Text>().text = "Stage " + stageNumber;
+        gameObject.transform.Find("Title").GetComponent<TMP_Text>().text = "Stage " + (stageNumber + 1);
     }
 
     private void SetJudgement(string judgement)

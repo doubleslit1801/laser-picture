@@ -24,26 +24,25 @@ public class Composer : MonoBehaviour, IDevice
     {
         if (inputLights.Count > 0)
         {
-            if (outputLight is null)
-            {
-                StageManager.Instance.ReserveCount();
-            }
             Vector3 outputPos = transform.position + transform.up * 0.5f + transform.forward;
             Color newColor = new(0, 0, 0);
             foreach (var light in inputLights)
             {
                 newColor += light.LightColor;
             }
-
-            if (lightColor == newColor)
+            if (outputLight is null)
             {
-                outputLight.Update(outputPos, transform.forward);
+                outputLight = new(outputPos, transform.forward, lr, newColor);
+                StageManager.Instance.ReserveCount();
             }
             else
             {
-                outputLight?.Disable();
-                outputLight = new(outputPos, transform.forward, lr, newColor);
-                lightColor = newColor;
+                if (lightColor != newColor)
+                {
+                    outputLight.UpdateColor(newColor);
+                    lightColor = newColor;
+                }
+                outputLight.Update(outputPos, transform.forward);
             }
         }
         else
