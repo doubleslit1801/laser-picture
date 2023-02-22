@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class InGameUI : MonoBehaviour
 {
+    public float blackholeRangeYPos;
     public GameObject laserStart, oneSideMirror, doubleSideMirror, prism, blackhole, composer;
     public GameObject grabButton, rotateImage, blackholePowerSlider, blackholeRange;
-    public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan;
+    public GameObject objSelPanel, optionPanel, settingsPanel, scorePanel, loadingPanel, pauseBlock, trashCan, clearCheckPanel;
     public Sprite openTrash, closeTrash;
 
     #region Private Variables
@@ -111,7 +113,7 @@ public class InGameUI : MonoBehaviour
                     preSelectedObj = objControl.selectedObj;
                 }
 
-                if (blackholeSlider != null)
+                if (blackholeSlider != null && objControl.selectedObj != null)
                 {
                     Blackhole blackholeScript = objControl.selectedObj.transform.Find("Range").GetComponent<Blackhole>();
                     blackholeScript.Radius = blackholeSlider.value;
@@ -120,7 +122,7 @@ public class InGameUI : MonoBehaviour
                     {
                         blackholeSliderSaveObj.transform.GetChild(2).GetChild(0).Find("ValueText").GetComponent<TMP_Text>().text = ((int)radius).ToString();
                     }
-                    blackholeRangeSaveObj.transform.localScale = radius * Vector3.one;
+                    blackholeRangeSaveObj.transform.localScale = 2 * radius * Vector3.one;
                 }
             }
             else
@@ -243,7 +245,7 @@ public class InGameUI : MonoBehaviour
             blackholeSliderSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
 
-            tmpObj = Instantiate(blackholeRange, targetObj.transform.position, Quaternion.identity);
+            tmpObj = Instantiate(blackholeRange, targetObj.transform.position + blackholeRangeYPos * Vector3.up, Quaternion.Euler(new Vector3(90, 0, 0)));
             blackholeRangeSaveObj = tmpObj;
             objControlButtonLst.Add(tmpObj);
         }
@@ -498,5 +500,24 @@ public class InGameUI : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("StageSelection");
         StartCoroutine(MoveToSelect());
+    }
+
+    public void ClearCheckButton()
+    {
+        Pause();
+        clearCheckPanel.SetActive(true);
+    }
+
+    public void QuitClearCheck()
+    {
+        Resume();
+        clearCheckPanel.SetActive(false);
+    }
+
+    public void ClearAllStage()
+    {
+        Resume();
+        clearCheckPanel.SetActive(false);
+        StageManager.Instance.ClearStage();
     }
 }

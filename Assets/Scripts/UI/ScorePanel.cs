@@ -141,7 +141,6 @@ public class ScorePanel : MonoBehaviour
     public void ResetStage()
     {
         canvasObj.GetComponent<InGameUI>().Resume();
-        StageManager.Instance.ClearStage();
         gameObject.SetActive(false);
     }
 

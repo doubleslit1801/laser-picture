@@ -17,6 +17,7 @@ public class ScoreJudgement : MonoBehaviour
     private float simularity;
     private int resWidth, resHeight;
     private Texture2D userDrawingTexture;
+    private readonly int scoreIncrement = 50, scoreDecrement = -5;
 
     string SCPath = "Assets/Resources/ScreenCapture/";
 
@@ -218,21 +219,21 @@ public class ScoreJudgement : MonoBehaviour
 
                 if (isAFilled)
                 {
-                    maxCnt = maxCnt + 50;
+                    maxCnt += scoreIncrement;
                     if (isUFilled)
                     {
-                        hitCnt = hitCnt + 50;
+                        hitCnt += scoreIncrement;
                     }
                     else
                     {
-                        hitCnt = hitCnt + 0;
+                        maxCnt -= scoreIncrement + scoreDecrement;
                     }
                 }
                 else
                 {
                     if (isUFilled)
                     {
-                        hitCnt = hitCnt - 25;
+                        hitCnt += scoreDecrement;
                     }
                 }
             }
