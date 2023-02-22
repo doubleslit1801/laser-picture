@@ -91,6 +91,7 @@ public class Light
                 {
                     blackholes = Physics.OverlapSphere(currentPos + currentDirection * 0.1f, 0.0f, 1 << 7)
                         .Select(c => c.GetComponent<Blackhole>())
+                        .Where(b => b is not null)
                         .ToList();
 
                     foreach (var b in blackholes)
