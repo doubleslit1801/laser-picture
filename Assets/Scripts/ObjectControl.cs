@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class ObjectControl : MonoBehaviour
 {
     public GameObject canvasObj;
-
+    public float arrowKeyMoveRate;
 
     [HideInInspector] public GameObject mouseObject, selectedObj;
     [HideInInspector] public enum mouseState { Grab, Select, Neutral };
@@ -74,6 +74,27 @@ public class ObjectControl : MonoBehaviour
                 if (selectedObj != null)
                 {
                     RotateObjWithMouse();
+                }
+
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    selectedObj.transform.position += arrowKeyMoveRate * Vector3.right;
+                    canvasObj.GetComponent<InGameUI>().RepopControlUI();
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    selectedObj.transform.position += arrowKeyMoveRate * Vector3.left;
+                    canvasObj.GetComponent<InGameUI>().RepopControlUI();
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    selectedObj.transform.position += arrowKeyMoveRate * Vector3.back;
+                    canvasObj.GetComponent<InGameUI>().RepopControlUI();
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    selectedObj.transform.position += arrowKeyMoveRate * Vector3.forward;
+                    canvasObj.GetComponent<InGameUI>().RepopControlUI();
                 }
 
                 if (Input.GetKeyDown(KeyCode.Delete))
