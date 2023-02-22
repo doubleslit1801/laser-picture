@@ -29,4 +29,9 @@ public class ColorLaser : MonoBehaviour
             outputLight.Enable();
         }
     }
+
+    public void DestroyAll()
+    {
+        outputLight.Disable();
+    }
 }
