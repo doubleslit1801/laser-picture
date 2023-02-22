@@ -12,7 +12,7 @@ public class Blackhole : MonoBehaviour
         {
             _radius = value;
             var col = GetComponent<CapsuleCollider>();
-            transform.localScale = Vector3.one * 0.25f * _radius;
+            transform.parent.localScale = Vector3.one * 0.25f * _radius;
         }
     }
     public float InnerRadius
