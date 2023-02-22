@@ -9,13 +9,14 @@ public class InGameSettings : MonoBehaviour
 {
     public GameObject canvasObj, colorControl, pauseBlock, returnPanel;
     public Slider mainSlider, bgmSlider, sfxSlider, redSlider, greenSlider, blueSlider;
-    public TMP_InputField mainInputField, bgmInputField, sfxInputField, redInputField, greenInputField, blueInputField;
+    public TMP_InputField mainInputField, bgmInputField, sfxInputField, redInputField, greenInputField, blueInputField, arrowRateField;
     public UnityEngine.UI.Image circlePalette, picker, selectedColor;
     public Material[] BGMaterials;
     public Renderer planeRenderer;
     [HideInInspector] public Color answerDrawingColor;
 
     private float mainVolume, bgmVolume, sfxVolume;
+    private float arrowMoveRate;
     private SoundManager soundManager;
     private Vector2 sizeOfPalette;
     private CircleCollider2D paletteCollider;
@@ -79,6 +80,8 @@ public class InGameSettings : MonoBehaviour
         bgmVolume = SettingData.Instance.bgmVolume;
         sfxVolume = SettingData.Instance.sfxVolume;
 
+        arrowMoveRate = SettingData.Instance.arrowMoveRate;
+
 
 
         answerDrawingColor = SettingData.Instance.answerDrawingColor;
@@ -94,6 +97,8 @@ public class InGameSettings : MonoBehaviour
         redInputField.text = ((int)redSlider.value).ToString();
         greenInputField.text = ((int)greenSlider.value).ToString();
         blueInputField.text = ((int)blueSlider.value).ToString();
+
+        arrowRateField.text = arrowMoveRate.ToString();
 
         if (SettingData.Instance.BGMaterial != null)
         {
@@ -234,6 +239,8 @@ public class InGameSettings : MonoBehaviour
         bgmVolume = (float)int.Parse(bgmInputField.text) / 100f;
         sfxVolume = (float)int.Parse(sfxInputField.text) / 100f;
 
+        arrowMoveRate = float.Parse(arrowRateField.text);
+
         mainSlider.value = mainVolume;
         bgmSlider.value = bgmVolume;
         sfxSlider.value = sfxVolume;
@@ -241,6 +248,8 @@ public class InGameSettings : MonoBehaviour
         SettingData.Instance.mainVolume = mainVolume;
         SettingData.Instance.bgmVolume = bgmVolume;
         SettingData.Instance.sfxVolume = sfxVolume;
+
+        SettingData.Instance.arrowMoveRate = arrowMoveRate;
 
         soundManager.SetBGMVolume(mainVolume * bgmVolume);
         soundManager.SetSFXVolume(mainVolume * sfxVolume);
