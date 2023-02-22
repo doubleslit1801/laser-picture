@@ -2,7 +2,7 @@
     "Items": [
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -22,7 +22,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -42,7 +42,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -62,7 +62,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -82,7 +82,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -102,7 +102,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -122,7 +122,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -142,7 +142,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -162,7 +162,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -182,7 +182,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -202,7 +202,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -222,7 +222,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -242,7 +242,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -262,7 +262,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 1,
             "objects": [
                 {
                     "prefab": "",
@@ -282,7 +282,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -302,7 +302,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -322,7 +322,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -342,7 +342,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -362,7 +362,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -382,7 +382,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -402,7 +402,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -422,7 +422,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -442,7 +442,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -462,7 +462,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -482,7 +482,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -502,7 +502,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 2,
             "objects": [
                 {
                     "prefab": "",
@@ -522,7 +522,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -542,7 +542,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -562,7 +562,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -582,7 +582,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -602,7 +602,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -622,7 +622,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -642,7 +642,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -662,7 +662,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
@@ -682,7 +682,7 @@
         },
         {
             "maxLaser": 100,
-            "world": 0,
+            "world": 3,
             "objects": [
                 {
                     "prefab": "",
