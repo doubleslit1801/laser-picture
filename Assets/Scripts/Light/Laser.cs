@@ -32,5 +32,6 @@ public class Laser : MonoBehaviour
     public void DestroyAll()
     {
         outputLight.Disable();
+        StageManager.Instance.ReserveCount();
     }
 }

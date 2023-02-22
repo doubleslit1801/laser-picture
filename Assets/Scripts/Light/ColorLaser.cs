@@ -34,5 +34,6 @@ public class ColorLaser : MonoBehaviour
     public void DestroyAll()
     {
         outputLight.Disable();
+        StageManager.Instance.ReserveCount();
     }
 }

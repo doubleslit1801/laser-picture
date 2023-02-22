@@ -81,5 +81,6 @@ public class Mirror : MonoBehaviour, IDevice
         {
             light.Value.outputLight.Disable();
         }
+        StageManager.Instance.ReserveCount();
     }
 }

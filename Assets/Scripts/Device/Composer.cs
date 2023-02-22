@@ -80,5 +80,6 @@ public class Composer : MonoBehaviour, IDevice
     {
         inputLights.Clear();
         outputLight?.Disable();
+        StageManager.Instance.ReserveCount();
     }
 }

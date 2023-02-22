@@ -149,5 +149,6 @@ public class Prism : MonoBehaviour, IDevice
             light.Value.outputLight.Item2.Disable();
         }
         lights.Clear();
+        StageManager.Instance.ReserveCount();
     }
 }
