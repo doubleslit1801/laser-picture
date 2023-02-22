@@ -8,8 +8,8 @@ using TMPro;
 public class InGameSettings : MonoBehaviour
 {
     public GameObject canvasObj, colorControl, pauseBlock, returnPanel;
-    public Slider mainSlider, bgmSlider, sfxSlider;
-    public TMP_InputField mainInputField, bgmInputField, sfxInputField;
+    public Slider mainSlider, bgmSlider, sfxSlider, redSlider, greenSlider, blueSlider;
+    public TMP_InputField mainInputField, bgmInputField, sfxInputField, redInputField, greenInputField, blueInputField;
     public UnityEngine.UI.Image circlePalette, picker, selectedColor;
     public Material[] BGMaterials;
     public Renderer planeRenderer;
@@ -85,6 +85,16 @@ public class InGameSettings : MonoBehaviour
 
         SetAnswerColor(answerDrawingColor);
 
+        selectedColor.color = answerDrawingColor;
+
+        redSlider.value = (int)(answerDrawingColor.r * 255);
+        greenSlider.value = (int)(answerDrawingColor.g * 255);
+        blueSlider.value = (int)(answerDrawingColor.b * 255);
+
+        redInputField.text = ((int)redSlider.value).ToString();
+        greenInputField.text = ((int)greenSlider.value).ToString();
+        blueInputField.text = ((int)blueSlider.value).ToString();
+
         if (SettingData.Instance.BGMaterial != null)
         {
             planeRenderer.material = SettingData.Instance.BGMaterial;
@@ -105,6 +115,14 @@ public class InGameSettings : MonoBehaviour
         SetAnswerColor(answerDrawingColor);
 
         SettingData.Instance.answerDrawingColor = answerDrawingColor;
+
+        redSlider.value = (int)(answerDrawingColor.r * 255);
+        greenSlider.value = (int)(answerDrawingColor.g * 255);
+        blueSlider.value = (int)(answerDrawingColor.b * 255);
+
+        redInputField.text = ((int)redSlider.value).ToString();
+        greenInputField.text = ((int)greenSlider.value).ToString();
+        blueInputField.text = ((int)blueSlider.value).ToString();
     }
 
     private Color getColor()
@@ -213,5 +231,52 @@ public class InGameSettings : MonoBehaviour
     public void ReturnStageSelectScene()
     {
         transform.root.GetComponent<InGameUI>().MoveCameraAfterSceneChange();
+    }
+
+    public void ColorSliderChanged()
+    {
+        Color color = new Color(redSlider.value / 255f, greenSlider.value / 255f, blueSlider.value / 255f);
+
+        SetAnswerColor(color);
+
+        selectedColor.color = color;
+
+        SettingData.Instance.answerDrawingColor = color;
+
+        redInputField.text = ((int)redSlider.value).ToString();
+        greenInputField.text = ((int)greenSlider.value).ToString();
+        blueInputField.text = ((int)blueSlider.value).ToString();
+    }
+
+    public void ColorInputFieldChanged()
+    {
+        float red = (float)int.Parse(redInputField.text);
+        float green = (float)int.Parse(greenInputField.text);
+        float blue = (float)int.Parse(blueInputField.text);
+
+        if (red > 255)
+        {
+            red = 255;
+        }
+        if (green > 255)
+        {
+            green = 255;
+        }
+        if (blue > 255)
+        {
+            blue = 255;
+        }
+
+        Color color = new Color(red / 255f, green / 255f, blue / 255f);
+
+        SetAnswerColor(color);
+
+        selectedColor.color = color;
+
+        SettingData.Instance.answerDrawingColor = color;
+
+        redSlider.value = red;
+        greenSlider.value = green;
+        blueSlider.value = blue;
     }
 }
