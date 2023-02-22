@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public readonly int MaxStage = 46;
+    public readonly int MaxStage = 35;
     public int NowStage { get; set; } = 0;
 
     private string playerDataPath;
@@ -225,5 +226,10 @@ public class GameManager : MonoBehaviour
         UnityEngine.Debug.Log("Read PNG As Texture : " + fileName);
 
         return texture;
+    }
+
+    public int GetStageNumberInWorld(int world)
+    {
+        return stageData.Where(s => s.world == world).Count();
     }
 }

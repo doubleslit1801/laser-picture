@@ -17,13 +17,25 @@ public class StageSelectSceneController : MonoBehaviour
 
         stageSelectButton ??= Resources.Load<GameObject>("Prefabs/UI/StageSelect");
 
+        int[] worldStageNumber = new int[3];
+
         for (int world = 0; world < 3; world++)
         {
+            worldStageNumber[world] = GameManager.Instance.GetStageNumberInWorld(world + 1);
             for (int row = 0; row < 3; row++)
             {
                 for (int col = 0; col < 5; col++)
                 {
-                    int stage = world * 15 + row * 5 + col;
+                    int localStage = row * 5 + col;
+                    int stage = localStage;
+                    for (int i = 0; i < world; i++)
+                    {
+                        stage += worldStageNumber[i];
+                    }
+                    if (localStage >= worldStageNumber[world])
+                    {
+                        break;
+                    }
                     print("created button: " + stage);
                     GameObject button = MonoBehaviour.Instantiate(stageSelectButton);
                     Vector3 pos = new Vector3(30 * (world + 2) + 3 * col - 5, 0, 3 - 3 * row);
