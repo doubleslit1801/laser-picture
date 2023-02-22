@@ -42,22 +42,21 @@ public class ScorePanel : MonoBehaviour
         int tmpStarCnt = 0;
         string tmpJudgement = "Fail";
 
+        SetJudgement("");
+
         for (int tmpSim = 0; tmpSim <= simularity; tmpSim++)
         {
             if (tmpSim > 95)
             {
                 tmpStarCnt = 3;
-                tmpJudgement = "Excellent!";
             }
             else if (tmpSim > 90)
             {
                 tmpStarCnt = 2;
-                tmpJudgement = "Good";
             }
             else if (tmpSim > 80)
             {
                 tmpStarCnt = 1;
-                tmpJudgement = "Not Bad";
             }
 
             SetSimularityText(tmpSim);
@@ -75,6 +74,21 @@ public class ScorePanel : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.01f);
             }
+        }
+
+        tmpStarCnt = GameManager.Instance.GetPlayerStar(StageManager.Instance.GetCurrentStage());
+
+        if (tmpStarCnt == 3)
+        {
+            tmpJudgement = "Excellent!";
+        }
+        else if (tmpStarCnt == 2)
+        {
+            tmpJudgement = "Good";
+        }
+        else if (tmpStarCnt == 1)
+        {
+            tmpJudgement = "Not Bad";
         }
 
         SetJudgement(tmpJudgement);
