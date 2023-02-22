@@ -282,7 +282,6 @@ public class InGameUI : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogWarning("InGameUI.InstantiateUIObj Got Object With No RectTransform Component!");
             return null;
         }
     }

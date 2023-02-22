@@ -49,7 +49,7 @@ public class ButtonBehavior : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Undefined Behavior!");
+            //Debug.LogError("Undefined Behavior!");
         }
     }
 }

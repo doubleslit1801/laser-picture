@@ -71,7 +71,6 @@ public class SoundManager : MonoBehaviour
     {
         if (sfxAudioClipsDic.ContainsKey(name) == false)
         {
-            Debug.LogError(name + " is not contained. Please add audioclip in sfxAudioClips array (in SoundManager object)");
             return;
         }
         sfxPlayer.PlayOneShot(sfxAudioClipsDic[name], volume * masterVolumeSFX);

@@ -127,8 +127,6 @@ public class ScoreJudgement : MonoBehaviour
         Texture2D texture = new Texture2D(1, 1);
         texture.LoadImage(byteTexture);
 
-        UnityEngine.Debug.Log("Read PNG As Texture : " + fileName);
-
         return texture;
     }
 
@@ -151,7 +149,6 @@ public class ScoreJudgement : MonoBehaviour
 
         File.WriteAllBytes(SCPath + fileName, bytes);
 
-        UnityEngine.Debug.Log("Saved Texture As PNG : " + fileName);
 
         yield return null;
     }
@@ -188,7 +185,6 @@ public class ScoreJudgement : MonoBehaviour
 
         if (answerTx.width != userDrawingTx.width || answerTx.height != userDrawingTx.height)
         {
-            UnityEngine.Debug.Log("Error : ScoringDrawingByGrid() / Texture Size Difference");
             yield break;
         }
 
@@ -286,7 +282,7 @@ public class ScoreJudgement : MonoBehaviour
 
         if (answerTx == null)
         {
-            UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum + "  Generate Answer File First!");
+            //UnityEngine.Debug.Log("File Doesn't Exist! : " + SCPath + "Answer_Stage" + stageNum + "  Generate Answer File First!");
         }
         yield return StartCoroutine(ScoreDrawingByGrid(answerTx, userDrawingTexture, 10));
 
@@ -300,7 +296,6 @@ public class ScoreJudgement : MonoBehaviour
     {
         if (!isScoreLoad)
         {
-            UnityEngine.Debug.Log("ScoreJudgement : Score Not Loaded Yet");
             return (0, 0.0f);
         }
 
@@ -330,7 +325,5 @@ public class ScoreJudgement : MonoBehaviour
             Directory.Delete(path, true);
         }
         Directory.CreateDirectory(path);
-
-        UnityEngine.Debug.Log("Directory Reset : " + path);
     }
 }

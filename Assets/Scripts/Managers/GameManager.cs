@@ -233,8 +233,6 @@ public class GameManager : MonoBehaviour
         Texture2D texture = new Texture2D(1, 1);
         texture.LoadImage(byteTexture);
 
-        UnityEngine.Debug.Log("Read PNG As Texture : " + fileName);
-
         return texture;
     }
 

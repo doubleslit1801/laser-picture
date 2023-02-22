@@ -143,7 +143,6 @@ public class Light
             else //Device
             {
                 Direction = direction;
-                Debug.DrawRay(origin, direction * hit.distance, Color.red);
                 return (new List<Vector3>() { hit.point }, hit);
             }
         }
