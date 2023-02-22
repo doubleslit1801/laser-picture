@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ebec11afd1b0c54abfd65ced15e1568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainBgmAudioClip: {fileID: 0}
+  mainBgmAudioClip: {fileID: 8300000, guid: 874a31843ff1c82458a5bdf57c9be712, type: 3}
   sfxAudioClips:
   - {fileID: 8300000, guid: b518979afdfd4a24f96983cfb5b73c68, type: 3}
   - {fileID: 8300000, guid: 67b41d4725083dc4888a763bfb56d6ee, type: 3}
