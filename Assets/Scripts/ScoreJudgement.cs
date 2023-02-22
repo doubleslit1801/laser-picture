@@ -246,15 +246,15 @@ public class ScoreJudgement : MonoBehaviour
         float twoStarThreshold = 0.9f;
         float threeStarThreshold = 0.95f;
 
-        if (simularity > threeStarThreshold)
+        if (simularity >= threeStarThreshold)
         {
             starCnt = 3;
         }
-        else if (simularity > twoStarThreshold)
+        else if (simularity >= twoStarThreshold)
         {
             starCnt = 2;
         }
-        else if (simularity > oneStarThreshold)
+        else if (simularity >= oneStarThreshold)
         {
             starCnt = 1;
         }

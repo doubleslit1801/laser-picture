@@ -46,15 +46,15 @@ public class ScorePanel : MonoBehaviour
 
         for (int tmpSim = 0; tmpSim <= simularity; tmpSim++)
         {
-            if (tmpSim > 95)
+            if (tmpSim >= 95)
             {
                 tmpStarCnt = 3;
             }
-            else if (tmpSim > 90)
+            else if (tmpSim >= 90)
             {
                 tmpStarCnt = 2;
             }
-            else if (tmpSim > 80)
+            else if (tmpSim >= 80)
             {
                 tmpStarCnt = 1;
             }
