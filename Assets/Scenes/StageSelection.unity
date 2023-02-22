@@ -5279,7 +5279,7 @@ MonoBehaviour:
   BGMaterials:
   - {fileID: 2100000, guid: a69bb876b5d3d40469fe5f0591f0ebc7, type: 2}
   - {fileID: 2100000, guid: fa5f33651d3ecec468304fd944c73f08, type: 2}
-  - {fileID: 2100000, guid: e3062b70c06184c4497fa9a41493f6d9, type: 2}
+  - {fileID: 2100000, guid: 482a6673c0acbbb49b9611ec7a3a666e, type: 2}
   planeRenderer: {fileID: 0}
   answerDrawingColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &817027037

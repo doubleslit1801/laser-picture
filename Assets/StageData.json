@@ -1,7 +1,7 @@
 {
     "Items": [
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -21,7 +21,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -41,7 +41,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -61,7 +61,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -81,7 +81,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -101,7 +101,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -121,7 +121,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -141,7 +141,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -161,7 +161,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -181,7 +181,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -201,7 +201,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -221,7 +221,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -241,7 +241,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -261,7 +261,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 1,
             "objects": [
                 {
@@ -281,7 +281,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -301,7 +301,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -321,7 +321,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -341,7 +341,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -361,7 +361,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -381,7 +381,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -401,7 +401,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -421,7 +421,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -441,7 +441,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -461,7 +461,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -481,7 +481,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -501,7 +501,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 2,
             "objects": [
                 {
@@ -521,7 +521,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -541,7 +541,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -561,7 +561,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -581,7 +581,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -601,7 +601,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -621,7 +621,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -641,7 +641,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -661,7 +661,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -681,7 +681,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 3,
             "objects": [
                 {
@@ -701,7 +701,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -721,7 +721,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -741,7 +741,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -761,7 +761,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -781,7 +781,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -801,7 +801,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -821,7 +821,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -841,7 +841,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -861,7 +861,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -881,7 +881,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
@@ -901,7 +901,7 @@
             ]
         },
         {
-            "maxLaser": 100,
+            "maxLaser": 99,
             "world": 0,
             "objects": [
                 {
