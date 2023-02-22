@@ -22,8 +22,7 @@ public class StageSelectButton : MonoBehaviour
                 stars[i].GetComponent<SpriteRenderer>().sprite = emptyStar;
             }
 
-            //Texture2D Image = GameManager.Instance.GetStageData(stage).drawing; // �������� �����Ϳ� �̹��� �����ϵ��� ���� �� ����
-            var image = Resources.Load<Texture2D>("Art/LoadingCircle");
+            Texture2D image = GameManager.Instance.GetStageDrawing(_stage);
             stageImage = transform.GetChild(0).gameObject;
             stageImage.GetComponent<Renderer>().material.mainTexture = image;
         }
