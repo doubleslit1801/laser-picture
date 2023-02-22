@@ -8,13 +8,13 @@ public class ButtonBehavior : MonoBehaviour
 
     private void OnMouseDown()
     {
-        gameObject.transform.Translate(new Vector3(0f, -0.5f, 0f));
+        gameObject.transform.Translate(new Vector3(0f, -0.5f, 0f) * transform.lossyScale.x);
         SoundManager.Instance.PlaySFXSound("ButtonDown");
     }
 
     private void OnMouseUp()
     {
-        gameObject.transform.Translate(new Vector3(0f, 0.5f, 0f));
+        gameObject.transform.Translate(new Vector3(0f, 0.5f, 0f) * transform.lossyScale.x);
         SoundManager.Instance.PlaySFXSound("ButtonUp");
     }
 
@@ -42,6 +42,10 @@ public class ButtonBehavior : MonoBehaviour
         else if (gameObject.transform.parent.name.Contains("World3"))
         {
             Controller.ToState(4);
+        }
+        else if (gameObject.transform.parent.name.Contains("Exit"))
+        {
+            Resources.FindObjectsOfTypeAll<ExitCheckPanel>()[0].gameObject.SetActive(true);
         }
         else
         {
