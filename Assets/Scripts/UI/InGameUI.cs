@@ -127,7 +127,7 @@ public class InGameUI : MonoBehaviour
                 }
             }
         }
-        
+
 
         if (loadingPanel.activeSelf)
         {
@@ -447,6 +447,7 @@ public class InGameUI : MonoBehaviour
 
     public void Trashcan() //선택된 월드 오브젝트 삭제.
     {
+        SoundManager.Instance.PlaySFXSound("Trash", 0.7f);
         objControl.DestroyMouseObj();
     }
 

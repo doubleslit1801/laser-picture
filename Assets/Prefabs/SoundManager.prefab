@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainBgmAudioClip: {fileID: 0}
   sfxAudioClips:
-  - {fileID: 8300000, guid: 2c7e4eddb960acf419fd71f358cd9c74, type: 3}
   - {fileID: 8300000, guid: b518979afdfd4a24f96983cfb5b73c68, type: 3}
-  - {fileID: 8300000, guid: 47021f6432960a945b9fab1ea3211da2, type: 3}
   - {fileID: 8300000, guid: 67b41d4725083dc4888a763bfb56d6ee, type: 3}
+  - {fileID: 8300000, guid: 47021f6432960a945b9fab1ea3211da2, type: 3}
+  - {fileID: 8300000, guid: b85b144728e46e8428803bb186ee68ff, type: 3}
+  - {fileID: 8300000, guid: 50dfb6455d0613c4cbe259f50a5af476, type: 3}
