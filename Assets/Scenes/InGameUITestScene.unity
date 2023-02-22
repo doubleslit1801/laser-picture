@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7509,6 +7509,7 @@ MonoBehaviour:
   BGMaterials:
   - {fileID: 2100000, guid: a69bb876b5d3d40469fe5f0591f0ebc7, type: 2}
   - {fileID: 2100000, guid: fa5f33651d3ecec468304fd944c73f08, type: 2}
+  - {fileID: 2100000, guid: e3062b70c06184c4497fa9a41493f6d9, type: 2}
   planeRenderer: {fileID: 1518169568}
   answerDrawingColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &715484957
@@ -12977,7 +12978,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1360183907}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 715484956}
+        m_TargetAssemblyTypeName: InGameSettings, Assembly-CSharp
+        m_MethodName: SetBGMaterial3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1360183907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12998,8 +13011,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 65e37d3cbb60aa74b80eaa871c8afba7, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
