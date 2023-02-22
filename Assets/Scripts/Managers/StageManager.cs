@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 { 
-    [SerializeField]
     private GameObject drawing;
 
     private int stageMaxLaser = 0;
@@ -32,7 +31,7 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        
+        drawing = transform.GetChild(0).gameObject;
     }
 
     void Update()
