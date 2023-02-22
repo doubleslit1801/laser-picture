@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public readonly int MaxStage = 100;
+    public readonly int MaxStage = 1;
     public int NowStage { get; set; }
 
     private string playerDataPath;
@@ -141,12 +141,15 @@ public class GameManager : MonoBehaviour
         prefabDict["DoublesideMirror"] = Resources.Load<GameObject>("Prefabs/DoublesideMirror");
         prefabDict["Prism"] = Resources.Load<GameObject>("Prefabs/Prism");
         prefabDict["Blackhole"] = Resources.Load<GameObject>("Prefabs/Blackhole");
+        prefabDict["Composer"] = Resources.Load<GameObject>("Prefabs/Composer");
     }
 
     private void LoadStageDrawings()
     {
-        stageDrawings[0] = ReadPNGAsTexture("drawing_none");
-        stageDrawings[1] = ReadPNGAsTexture("drawing_test");
+        for(int i=0; i<MaxStage; i++) 
+        {
+            stageDrawings[i] = ReadPNGAsTexture(String.Format("Drawing{0}", i));
+        }
     }
 
     private void SaveStageData()
