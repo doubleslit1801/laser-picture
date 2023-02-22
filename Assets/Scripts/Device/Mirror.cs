@@ -27,6 +27,10 @@ public class Mirror : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
+            if (i.Key.LightColor != i.Value.outputLight.LightColor)
+            {
+                i.Value.outputLight.UpdateColor(i.Key.LightColor);
+            }
             Vector3 outputDirection = Vector3.Reflect(i.Key.Direction, transform.forward);
             i.Value.outputLight.Update(i.Value.inputPos, outputDirection);
         }

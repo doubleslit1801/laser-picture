@@ -48,6 +48,13 @@ public class Light
         OriginDirection = direction;
     }
 
+    public void UpdateColor(Color c)
+    {
+        LightColor = c;
+        Renderer.startColor = c;
+        Renderer.endColor = c;
+    }
+
     public void Enable()
     {
         List<Vector3> positions = new List<Vector3>() { Origin };
