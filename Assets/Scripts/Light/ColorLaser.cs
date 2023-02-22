@@ -20,12 +20,12 @@ public class ColorLaser : MonoBehaviour
         {
             if (outputLight == null)
             {
-                outputLight = new Light(transform.position, -transform.right, lr, outputColor);
+                outputLight = new Light(transform.position - transform.right * 0.5f, -transform.right, lr, outputColor);
                 StageManager.Instance.ReserveCount();
             }
             else
             {
-                outputLight.Update(transform.position, -transform.right);
+                outputLight.Update(transform.position - transform.right * 0.5f, -transform.right);
             }
             outputLight.Enable();
         }

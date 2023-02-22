@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public readonly int MaxStage = 100;
-    public int NowStage { get; set; }
+    public readonly int MaxStage = 7;
+    public int NowStage { get; set; } = 0;
 
     private string playerDataPath;
     private string stageDataPath;
     private PlayerData playerData;
-    private Texture[] stageDrawings;
+    private Texture2D[] stageDrawings;
     private StageData[] stageData;
     private Dictionary<string, GameObject> prefabDict;
     private Dictionary<Collider, IDevice> deviceDict;
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         deviceDict = new Dictionary<Collider, IDevice>();
         LoadPrefabs();
 
-        stageDrawings = new Texture[MaxStage];
+        stageDrawings = new Texture2D[MaxStage];
         LoadStageDrawings();
 
         playerDataPath = Path.Combine(Application.dataPath, "PlayerData.json");
@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
         SaveStageData();
     }
 
-    public Texture GetStageDrawing(int stageNumber)
+    public Texture2D GetStageDrawing(int stageNumber)
     {
         if (stageNumber < 0 && stageNumber >= MaxStage)
         {
@@ -130,8 +130,11 @@ public class GameManager : MonoBehaviour
 
     public void SetPlayerStar(int stageNumber, int star)
     {
-        playerData.stars[stageNumber] = star;
-        SavePlayerData();
+        if(playerData.stars[stageNumber] < star)
+        {
+            playerData.stars[stageNumber] = star;
+            SavePlayerData();
+        }
     }
 
     private void LoadPrefabs()
@@ -145,8 +148,10 @@ public class GameManager : MonoBehaviour
 
     private void LoadStageDrawings()
     {
-        stageDrawings[0] = ReadPNGAsTexture("drawing_none");
-        stageDrawings[1] = ReadPNGAsTexture("drawing_test");
+        for(int i=0; i<MaxStage; i++) 
+        {
+            stageDrawings[i] = ReadPNGAsTexture(String.Format("Drawing{0}", i));
+        }
     }
 
     private void SaveStageData()

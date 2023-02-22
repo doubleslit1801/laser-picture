@@ -870,6 +870,14 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5465465048431616480, guid: 13048cc679688b24cb5c6d3af8a42b21, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465465048431616480, guid: 13048cc679688b24cb5c6d3af8a42b21, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465465048431616480, guid: 13048cc679688b24cb5c6d3af8a42b21, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -12672,6 +12680,10 @@ PrefabInstance:
       propertyPath: drawing
       value: 
       objectReference: {fileID: 1863184475}
+    - target: {fileID: 5526744460843799391, guid: 5a87802e7fa36f240bcb76573d6ac453, type: 3}
+      propertyPath: stageNumber
+      value: -1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5526744460843799390, guid: 5a87802e7fa36f240bcb76573d6ac453, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5a87802e7fa36f240bcb76573d6ac453, type: 3}

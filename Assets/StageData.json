@@ -1,7 +1,7 @@
 {
     "Items": [
         {
-            "maxLaser": 0,
+            "maxLaser": 100,
             "world": 0,
             "objects": [
                 {
