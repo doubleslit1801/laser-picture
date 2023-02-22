@@ -86,4 +86,9 @@ public class StageSelectSceneController : MonoBehaviour
         World3,
         Count
     }
+
+    public void SetCameraToWorld(int world)
+    {
+        cameraObj.transform.position = new(30 * (world + 1), 11, 0);
+    }
 }

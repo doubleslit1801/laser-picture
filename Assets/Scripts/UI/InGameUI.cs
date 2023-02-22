@@ -483,7 +483,7 @@ public class InGameUI : MonoBehaviour
         StageManager.Instance.ClearStage();
     }
 
-    private IEnumerator MoveToSelect()
+    private IEnumerator SetToCurrentWorld(int stageNum)
     {
         //Camera.main.gameObject.transform.Translate(new Vector3(30f, 0, 0));
         while (GameObject.Find("StageSelectionController") == null)
@@ -491,7 +491,7 @@ public class InGameUI : MonoBehaviour
             yield return null;
         }
         StageSelectSceneController Controller = GameObject.Find("StageSelectionController").GetComponent<StageSelectSceneController>();
-        Controller.ToState(1);
+        Controller.SetCameraToWorld(GameManager.Instance.GetStageData(stageNum).world);
         Destroy(gameObject);
     }
 
@@ -499,8 +499,9 @@ public class InGameUI : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("StageSelection");
+        int temp = GameManager.Instance.NowStage;
         GameManager.Instance.NowStage = 45;
-        StartCoroutine(MoveToSelect());
+        StartCoroutine(SetToCurrentWorld(temp));
     }
 
     public void ClearCheckButton()
