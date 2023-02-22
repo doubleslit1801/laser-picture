@@ -56,6 +56,7 @@ public class ObjectControl : MonoBehaviour
                     if (Input.GetMouseButtonUp(0) && tmpObj != null && tmpObj.name == "Trashcan")
                     {
                         DestroyMouseObj();
+
                     }
                 }
 
@@ -277,6 +278,11 @@ public class ObjectControl : MonoBehaviour
 
     public void DestroyMouseObj() //선택된 월드 오브젝트 삭제.
     {
+        if (mouseObject != null || selectedObj != null)
+        {
+            SoundManager.Instance.PlaySFXSound("Trash", 0.7f);
+        }
+
         if (mouseObject != null)
         {
             DisableObject(mouseObject);
@@ -293,6 +299,7 @@ public class ObjectControl : MonoBehaviour
         }
 
         curMouseState = mouseState.Neutral;
+        
     }
 
     public void GrabSelectedObj()

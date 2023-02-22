@@ -35,11 +35,13 @@ public class StageSelectButton : MonoBehaviour
     private void OnMouseDown()
     {
         gameObject.transform.Translate(new Vector3(0f, -0.5f, 0f));
+        SoundManager.Instance.PlaySFXSound("ButtonDown");
     }
 
     private void OnMouseUp()
     {
         gameObject.transform.Translate(new Vector3(0f, 0.5f, 0f));
+        SoundManager.Instance.PlaySFXSound("ButtonUp");
     }
 
     void Awake()
