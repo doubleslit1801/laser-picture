@@ -81,11 +81,14 @@ public class StageManager : MonoBehaviour
         drawing.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
         foreach (ObjectData objData in data.objects)
         {
-            Instantiate(
-                GameManager.Instance.GetPrefab(objData.prefab),
-                objData.position,
-                objData.rotation
-            );
+            if (objData.prefab != "")
+            {
+                Instantiate(
+                    GameManager.Instance.GetPrefab(objData.prefab),
+                    objData.position,
+                    objData.rotation
+                );
+            }
         }
     }
 
