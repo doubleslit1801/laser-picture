@@ -109,6 +109,11 @@ public class ObjectControl : MonoBehaviour
                     SelectObj();
                 }
             }
+
+            if (SettingData.Instance.arrowMoveRate != arrowKeyMoveRate)
+            {
+                arrowKeyMoveRate = SettingData.Instance.arrowMoveRate;
+            }
         }
     }
 
