@@ -499,6 +499,7 @@ public class InGameUI : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("StageSelection");
+        GameManager.Instance.NowStage = 45;
         StartCoroutine(MoveToSelect());
     }
 
