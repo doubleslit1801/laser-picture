@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private string stageDataPath;
     private PlayerData playerData;
     private Texture2D[] stageDrawings;
+    private Texture2D emptyDrawing;
     private StageData[] stageData;
     private Dictionary<string, GameObject> prefabDict;
     private Dictionary<Collider, IDevice> deviceDict;
@@ -44,6 +45,8 @@ public class GameManager : MonoBehaviour
 
         stageDataPath = Path.Combine(Application.dataPath, "StageData.json");
         LoadStageData();
+
+        emptyDrawing = Resources.Load<Texture2D>("ScreenCapture/Drawing45");
     }
 
     // Start is called before the first frame update
@@ -123,7 +126,7 @@ public class GameManager : MonoBehaviour
         }
         catch
         {
-            return null;
+            return emptyDrawing;
         }
     }
 
