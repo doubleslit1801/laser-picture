@@ -52,26 +52,22 @@ public class Mirror : MonoBehaviour, IDevice
         }
         catch
         {
-            print("new input: " + inputLight.GetHashCode());
             GameObject laserChild = new("laser");
             laserChild.transform.parent = transform;
             LineRenderer lr = laserChild.AddComponent<LineRenderer>();
             Vector3 outputDirection = Vector3.Reflect(inputLight.Direction, transform.forward);
             Light outputLight = new(hitPos, outputDirection, lr, inputLight.LightColor);
             lights.Add(inputLight, new LightInfo(outputLight, hitPos, laserChild));
-            print(lights.Count);
             StageManager.Instance.ReserveCount();
         }
     }
 
     public void HandleInputStop(Light light)
     {
-        print("stop input: " + light.GetHashCode());
         var stopLight = lights[light];
         stopLight.outputLight.Disable();
         Destroy(stopLight.laserObject);
         lights.Remove(light);
-        print(lights.Count);
         StageManager.Instance.ReserveCount();
     }
 

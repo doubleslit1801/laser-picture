@@ -32,8 +32,6 @@ public class Prism : MonoBehaviour, IDevice
     {
         foreach (var i in lights)
         {
-            //print(Vector3.Angle(i.Key.Direction, transform.forward));
-
             if (i.Key.LightColor != i.Value.outputLight.Item1.LightColor)
             {
                 i.Value.outputLight.Item1.UpdateColor(i.Key.LightColor);
@@ -103,7 +101,6 @@ public class Prism : MonoBehaviour, IDevice
         }
         catch
         {
-            print(gameObject.name + "\tstart: " + inputLight);
             Light[] outputLight = new Light[2];
             GameObject[] laserObject = new GameObject[] { new("laser0"), new("laser1") };
             for (int i = 0; i < 2; i++)
@@ -126,7 +123,6 @@ public class Prism : MonoBehaviour, IDevice
 
     public void HandleInputStop(Light light)
     {
-        print(gameObject.name + "\tstop: " + light);
         var stopLight = lights[light];
         stopLight.outputLight.Item1.Disable();
         stopLight.outputLight.Item2.Disable();

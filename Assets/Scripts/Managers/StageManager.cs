@@ -124,7 +124,6 @@ public class StageManager : MonoBehaviour
 
     private void LaserCount()
     {
-        print("count");
         LineRenderer[] tmpObjLst = FindObjectsOfType<LineRenderer>();
 
         int cnt = 0;

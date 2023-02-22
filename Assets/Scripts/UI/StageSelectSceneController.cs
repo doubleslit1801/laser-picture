@@ -36,7 +36,6 @@ public class StageSelectSceneController : MonoBehaviour
                     {
                         break;
                     }
-                    print("created button: " + stage);
                     GameObject button = MonoBehaviour.Instantiate(stageSelectButton);
                     Vector3 pos = new Vector3(30 * (world + 2) + 3 * col - 5, 0, 3 - 3 * row);
                     button.transform.position = pos;

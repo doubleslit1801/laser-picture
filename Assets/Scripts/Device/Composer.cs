@@ -67,7 +67,6 @@ public class Composer : MonoBehaviour, IDevice
         if (!inputLights.Contains(inputLight))
         {
             inputLights.Add(inputLight);
-            print("Added");
         }
     }
 
