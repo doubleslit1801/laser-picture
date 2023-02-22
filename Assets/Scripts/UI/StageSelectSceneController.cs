@@ -23,7 +23,7 @@ public class StageSelectSceneController : MonoBehaviour
             {
                 for (int col = 0; col < 5; col++)
                 {
-                    int stage = world * 32 + row * 8 + col;
+                    int stage = world * 15 + row * 5 + col;
                     print("created button: " + stage);
                     GameObject button = MonoBehaviour.Instantiate(stageSelectButton);
                     Vector3 pos = new Vector3(30 * (world + 2) + 3 * col - 5, 0, 3 - 3 * row);

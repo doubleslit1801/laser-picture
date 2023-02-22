@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public readonly int MaxStage = 7;
+    public readonly int MaxStage = 45;
     public int NowStage { get; set; } = 0;
 
     private string playerDataPath;
